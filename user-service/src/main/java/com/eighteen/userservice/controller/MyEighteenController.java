@@ -1,6 +1,7 @@
 package com.eighteen.userservice.controller;
 
 import com.eighteen.userservice.dto.RequestEighteenDto;
+import com.eighteen.userservice.dto.RequestGetEighteenDto;
 import com.eighteen.userservice.dto.ResponseGetEighteenDto;
 import com.eighteen.userservice.service.MyEighteenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +17,9 @@ public class MyEighteenController {
     private MyEighteenService myEighteenService;
 
     @GetMapping("/getEighteen")
-    public ResponseEntity<ResponseGetEighteenDto> getEighteen(@RequestParam("userId") String userId) {
+    public ResponseEntity<ResponseGetEighteenDto> getEighteen(RequestGetEighteenDto requestGetEighteenDto) {
 
-        ResponseGetEighteenDto responseGetEighteenDto = myEighteenService.getEighteen(userId);
+        ResponseGetEighteenDto responseGetEighteenDto = myEighteenService.getEighteen(requestGetEighteenDto);
         return ResponseEntity.status(HttpStatus.OK).body(responseGetEighteenDto);
     }
 

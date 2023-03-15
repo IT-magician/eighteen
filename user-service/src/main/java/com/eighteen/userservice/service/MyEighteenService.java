@@ -1,6 +1,7 @@
 package com.eighteen.userservice.service;
 
 import com.eighteen.userservice.dto.RequestEighteenDto;
+import com.eighteen.userservice.dto.RequestGetEighteenDto;
 import com.eighteen.userservice.dto.ResponseGetEighteenDto;
 import com.eighteen.userservice.entity.Music;
 import com.eighteen.userservice.entity.MyEighteen;
@@ -10,6 +11,8 @@ import com.eighteen.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,10 +29,12 @@ public class MyEighteenService {
     @Autowired
     private UserRepository userRepository;
 
-    public ResponseGetEighteenDto getEighteen(String userId) {
+    public ResponseGetEighteenDto getEighteen(RequestGetEighteenDto requestGetEighteenDto) {
 
-        User user = userRepository.findByUserId(userId);
+        PageRequest pageRequest = PageRequest.of(requestGetEighteenDto.getPage(), requestGetEighteenDto.getSize());
+        User user = userRepository.findByUserId(requestGetEighteenDto.getUserId());
         List<MyEighteen> myEighteens = myEighteenRepository.findByUser(user);
+        Page<MyEighteen> myEighteensPaging = myEighteenRepository.findByUserAndMusicByOrderByMusicIdDesc(pageRequest);
 
         Random random = new Random();
 

@@ -19,7 +19,7 @@ public class User {
 
     @Id
     @Column(name = "user_id")
-    private String userId;
+    private Long userId;
 
     @Column(name = "nickname", nullable = false)
     private String nickname;
@@ -41,5 +41,8 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<MyEighteen> myEighteens = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<URecc> uReccs = new ArrayList<>();
 
 }
