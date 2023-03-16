@@ -16,15 +16,11 @@ import javax.persistence.*;
 public class YoutubeList {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "youtube_list_id")
-    private Integer youtubeListId;
+    @Column(name = "youtube_link")
+    private String youtubeLinkId;
 
     @Column(name = "`order`")
     private Integer order;
-
-    @Column(name = "youtube_link")
-    private String youtubeLink;
 
     @Column(name = "thumbnail_img_url")
     private String thumbnailImgUrl;
