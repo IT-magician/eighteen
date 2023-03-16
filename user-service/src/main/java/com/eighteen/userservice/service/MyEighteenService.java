@@ -1,18 +1,18 @@
 package com.eighteen.userservice.service;
 
-import com.eighteen.userservice.dto.RequestEighteenDto;
-import com.eighteen.userservice.dto.RequestGetEighteenDto;
-import com.eighteen.userservice.dto.ResponseGetEighteenDto;
+import com.eighteen.userservice.dto.request.RequestEighteenDto;
+import com.eighteen.userservice.dto.request.RequestGetEighteenDto;
+import com.eighteen.userservice.dto.response.ResponseGetEighteenDto;
 import com.eighteen.userservice.entity.Music;
 import com.eighteen.userservice.entity.MyEighteen;
 import com.eighteen.userservice.entity.User;
 import com.eighteen.userservice.repository.MyEighteenRepository;
 import com.eighteen.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -31,13 +31,11 @@ public class MyEighteenService {
 
     public ResponseGetEighteenDto getEighteen(RequestGetEighteenDto requestGetEighteenDto) {
 
-        PageRequest pageRequest = PageRequest.of(requestGetEighteenDto.getPage(), requestGetEighteenDto.getSize());
         User user = userRepository.findByUserId(requestGetEighteenDto.getUserId());
+        Pageable pageable = PageRequest.of(requestGetEighteenDto.getPage(), requestGetEighteenDto.getSize());
         List<MyEighteen> myEighteens = myEighteenRepository.findByUser(user);
-        Page<MyEighteen> myEighteensPaging = myEighteenRepository.findByUserAndMusicByOrderByMusicIdDesc(pageRequest);
-
+        Page<MyEighteen> myEighteenPage = myEighteenRepository.findPageByUser(user, pageable);
         Random random = new Random();
-
         List<MyEighteen> quicks = new ArrayList<>();
 
         if (myEighteens.size() > 5) {
@@ -52,10 +50,7 @@ public class MyEighteenService {
             quicks = myEighteens;
         }
 
-        ResponseGetEighteenDto responseGetEighteenDto = ResponseGetEighteenDto.builder()
-                .myEighteens(myEighteens)
-                .quicks(quicks)
-                .build();
+        ResponseGetEighteenDto responseGetEighteenDto = new ResponseGetEighteenDto(myEighteenPage, quicks);
 
         return responseGetEighteenDto;
     }

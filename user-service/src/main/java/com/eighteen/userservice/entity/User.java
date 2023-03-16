@@ -1,6 +1,8 @@
 package com.eighteen.userservice.entity;
 
 import javax.persistence.*;
+
+import com.eighteen.userservice.dto.request.RequestUpdateProfileDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,6 +32,9 @@ public class User {
     @Column(name = "gender", nullable = false)
     private String gender;
 
+    @Column(name = "profile_image", nullable = false)
+    private String profileImage;
+
     @Column(name = "high_pitch", nullable = false)
     private String highPitch;
 
@@ -45,4 +50,14 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<URecc> uReccs = new ArrayList<>();
 
+    public void updateImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
+
+    public void updateProfile(RequestUpdateProfileDto requestUpdateProfileDto) {
+
+        this.nickname = requestUpdateProfileDto.getNickname();
+        this.birth = requestUpdateProfileDto.getBirth();
+        this.gender = requestUpdateProfileDto.getGender();
+    }
 }

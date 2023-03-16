@@ -43,4 +43,17 @@ spring:
         order_updates: true
         format_sql: true
 
+cloud:
+  aws:
+    credentials:
+      accessKey: AKIATMXPXWJ3KXPLFKQU      # AWS IAM AccessKey 적기
+      secretKey: tSEfYVO70M/kfnrWWRMuAZnrI8K+FCaVUt54G6Wt   # AWS IAM SecretKey 적기
+    s3:
+      bucket: eighteen-project    # ex) marryting-gyunny
+      dir: /profileImage # ex) /gyunny
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+
 

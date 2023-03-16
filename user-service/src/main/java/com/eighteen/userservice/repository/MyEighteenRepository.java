@@ -5,8 +5,8 @@ import com.eighteen.userservice.entity.MyEighteen;
 import com.eighteen.userservice.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.domain.Pageable;
 
-import java.awt.print.Pageable;
 import java.util.List;
 
 public interface MyEighteenRepository extends JpaRepository<MyEighteen, Integer> {
@@ -14,7 +14,8 @@ public interface MyEighteenRepository extends JpaRepository<MyEighteen, Integer>
 
     public List<MyEighteen> findByUser(User user);
 
-    Page<MyEighteen> findByUserAndMusicByOrderByMusicIdDesc(Pageable pageable);
+    public Page<MyEighteen> findPageByUser(User user, Pageable pageable);
+
     public MyEighteen findByUserAndMusic(User user, Music music);
 
 }

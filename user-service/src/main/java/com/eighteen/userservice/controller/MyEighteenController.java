@@ -1,8 +1,8 @@
 package com.eighteen.userservice.controller;
 
-import com.eighteen.userservice.dto.RequestEighteenDto;
-import com.eighteen.userservice.dto.RequestGetEighteenDto;
-import com.eighteen.userservice.dto.ResponseGetEighteenDto;
+import com.eighteen.userservice.dto.request.RequestEighteenDto;
+import com.eighteen.userservice.dto.request.RequestGetEighteenDto;
+import com.eighteen.userservice.dto.response.ResponseGetEighteenDto;
 import com.eighteen.userservice.service.MyEighteenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

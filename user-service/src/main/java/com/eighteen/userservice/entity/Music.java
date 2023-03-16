@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +33,7 @@ public class Music {
     @Column(name = "lyricist", nullable = false)
     private String lyricist;
 
-    @Column(name = "youtube_url")
+    @Column(name = "youtube_link")
     private String youtubeUrl;
 
     @OneToOne(mappedBy = "music", cascade = CascadeType.ALL)

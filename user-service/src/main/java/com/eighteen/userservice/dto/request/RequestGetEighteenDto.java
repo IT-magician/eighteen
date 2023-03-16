@@ -1,4 +1,4 @@
-package com.eighteen.userservice.dto;
+package com.eighteen.userservice.dto.request;
 
 import com.eighteen.userservice.entity.Music;
 import io.swagger.annotations.ApiModel;
@@ -21,4 +21,5 @@ public class RequestGetEighteenDto {
 
     @ApiModelProperty(value = "사이즈", required = true)
     private Integer size;
+
 }

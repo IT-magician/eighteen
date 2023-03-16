@@ -1,4 +1,4 @@
-package com.eighteen.userservice.dto;
+package com.eighteen.userservice.dto.request;
 
 import com.eighteen.userservice.entity.Music;
 import com.eighteen.userservice.entity.MyEighteen;
