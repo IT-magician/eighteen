@@ -43,7 +43,7 @@ public class MyEighteenController {
             @ApiResponse(code = 404, message = "Not found"),
             @ApiResponse(code = 500, message = "Internal server error")
     })
-    @PutMapping("/add")
+    @PostMapping("/add")
     public ResponseEntity<String> addEighteen(@ApiParam(value = "유저아이디, 음악", required = true) @RequestBody RequestEighteenDto requestEighteenDto) throws Exception {
 
         String title = myEighteenService.addEighteen(requestEighteenDto);

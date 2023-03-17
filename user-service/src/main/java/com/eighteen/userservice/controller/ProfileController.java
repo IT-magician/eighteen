@@ -66,7 +66,7 @@ public class ProfileController {
             @ApiResponse(code = 404, message = "Not found"),
             @ApiResponse(code = 500, message = "Internal server error")
     })
-    @PutMapping("/updateProfile")
+    @PatchMapping("/updateProfile")
     public ResponseEntity<String> updateProfile(@ApiParam(value = "변경프로필정보", required = true) @RequestBody RequestUpdateProfileDto requestUpdateProfileDto) {
 
         String res = profileService.updateProfile(requestUpdateProfileDto);
