@@ -39,9 +39,8 @@ def kmeans_clustering(data_path=DATA_FILE):
 
     scaler = MinMaxScaler()
     mood_df_scaled = scaler.fit_transform(mood_df)
-    new_mood_df_scaled = np.nan_to_num(mood_df_scaled)
 
     k = 3
     kmeans = KMeans(n_clusters = k, random_state = 10)
-    kmeans.fit(new_mood_df_scaled)
-    df['cluster'] = kmeans.fit_predict(new_mood_df_scaled)
+    kmeans.fit(mood_df_scaled)
+    df['cluster'] = kmeans.fit_predict(mood_df_scaled)
