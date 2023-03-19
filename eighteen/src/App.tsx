@@ -1,26 +1,26 @@
 import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import { Route, Routes } from "react-router";
+import styled from "styled-components";
+import { Favorite, Home, Login, Mypage, Recommend, Song, SongDetail } from "./pages";
 
-function App() {
+const App = (): JSX.Element => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <StyledDiv className="App">
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/recommend/:type" element={<Recommend />} />
+        <Route path="/song" element={<Song />} />
+        <Route path="/song/:songid" element={<SongDetail />} />
+        <Route path="/favorite" element={<Favorite />} />
+        <Route path="/mypage" element={<Mypage />} />
+      </Routes>
+    </StyledDiv>
   );
-}
+};
+
+const StyledDiv = styled.div`
+  min-height: 100vh;
+`;
 
 export default App;
