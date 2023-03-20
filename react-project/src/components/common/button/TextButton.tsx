@@ -12,7 +12,7 @@ interface Props {
 /**
  * 기본 텍스트 버튼 컴포넌트
  */
-const NormalButton = ({ text, color, onClick }: Props): JSX.Element => {
+const TextButton = ({ text, color, onClick }: Props): JSX.Element => {
   return (
     <StyledButton color={color} onClick={onClick}>
       {text}
@@ -22,6 +22,7 @@ const NormalButton = ({ text, color, onClick }: Props): JSX.Element => {
 
 const StyledButton = styled.button<{ color: Colortype }>`
   font: inherit;
+  font-size: 20px;
   font-weight: 900;
   color: var(--black-50);
   padding: 16px 24px;
@@ -70,4 +71,4 @@ const StyledButton = styled.button<{ color: Colortype }>`
   }
 `;
 
-export default NormalButton;
+export default TextButton;
