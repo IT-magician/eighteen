@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from "react";
+import React, { useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import NavItem, { LinkType } from "./NavItem";
