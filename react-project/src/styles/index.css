@@ -45,16 +45,16 @@
   --black-700: #0d0d0d;
   --black-800: #0a0a0a;
   --black-900: #080808;
-  --blue-50: #eee9ff;
-  --blue-100: #c9bcff;
-  --blue-200: #af9bff;
-  --blue-300: #8a6eff;
-  --blue-400: #7451ff;
-  --blue-500: #5126ff;
-  --blue-600: #4a23e8;
-  --blue-700: #3a1bb5;
-  --blue-800: #2d158c;
-  --blue-900: #22106b;
+  --blue-50: #eaedff;
+  --blue-100: #bdc8ff;
+  --blue-200: #9dadff;
+  --blue-300: #7087ff;
+  --blue-400: #5570ff;
+  --blue-500: #2a4cff;
+  --blue-600: #2645e8;
+  --blue-700: #1e36b5;
+  --blue-800: #172a8c;
+  --blue-900: #12206b;
   --gradation: conic-gradient(
     from 180deg at 50% 50%,
     #7211db -42deg,
@@ -69,8 +69,8 @@ html,
 body {
   margin: 0;
   padding: 0;
-  font-family: "NanumSquareNeo", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: "NanumSquareNeo", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--black-900);
