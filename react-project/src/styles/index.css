@@ -63,6 +63,7 @@
     #7211db 318deg,
     #0056fe 417.37deg
   );
+  --shadow: 0px 4px 16px rgba(0, 0, 0, 0.5);
 }
 
 html,
