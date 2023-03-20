@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router";
 import styled from "styled-components";
-import { NavBar } from "./components/common/navigate";
+import { NavBar } from "./components/common/nav";
 import { Favorite, Home, Login, Mypage, Recommend, Song, SongDetail } from "./pages";
 
 const App = (): JSX.Element => {
