@@ -14,3 +14,10 @@ npm:
   script:
     - cd react-project
     - npm install
+    - npm run build
+    # - tar -cvf dist.tar dist
+  artifacts:
+    name: "react-project-dist"
+    expire_in: 30 days
+    paths:
+      - dist/*
