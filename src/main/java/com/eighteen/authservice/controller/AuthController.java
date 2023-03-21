@@ -30,7 +30,7 @@ public class AuthController {
     private PrincipalOauth2UserService oAuth2Service;
 
     @GetMapping("/success")
-    public @ResponseBody String publishToken(
+    public String publishToken(
             HttpServletRequest request, HttpServletResponse response,
                                            Authentication authentication) {
         System.out.println("=======인증체크=========");
@@ -41,7 +41,7 @@ public class AuthController {
     }
 
     @GetMapping("/user")
-    public @ResponseBody String user(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public String user(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         System.out.println("principalDetails:" + principalDetails.getUser());
         return "user";
     }
