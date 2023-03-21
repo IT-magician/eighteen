@@ -12,6 +12,7 @@ npm:
     paths:
       - react-project/node_modules
   script:
+    - echo $CI_PROJECT_DIR
     - cd react-project
     - npm install
     # - tar -cvf dist.tar dist
