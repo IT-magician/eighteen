@@ -23,6 +23,9 @@ npm:
 
 
 react-project:
+  cache:
+    paths:
+      - react-project/node_modules
   stage: build
   script:
     - cd react-project
