@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router";
 import styled from "styled-components";
+import { NavBar } from "./components/common/nav";
 import { Favorite, Home, Login, Mypage, Recommend, Song, SongDetail } from "./pages";
 
 const App = (): JSX.Element => {
@@ -15,6 +16,7 @@ const App = (): JSX.Element => {
         <Route path="/favorite" element={<Favorite />} />
         <Route path="/mypage" element={<Mypage />} />
       </Routes>
+      <NavBar />
     </StyledDiv>
   );
 };
