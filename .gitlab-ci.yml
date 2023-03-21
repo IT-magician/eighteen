@@ -20,4 +20,4 @@ npm:
     name: "react-project-dist"
     expire_in: 30 days
     paths:
-      - dist/*
+      - react-project/dist/*
