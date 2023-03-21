@@ -1,6 +1,6 @@
 stages:          # List of stages for jobs, and their order of execution
   - libs
-  # - build
+  - build
   # - deploy
 
 
@@ -14,10 +14,24 @@ npm:
   script:
     - cd react-project
     - npm install
-    - npm run build
     # - tar -cvf dist.tar dist
   artifacts:
     name: "react-project-dist"
     expire_in: 30 days
     paths:
       - react-project/dist/*
+
+
+react-project:
+  stage: build
+  script:
+    - cd react-project
+    - npm run build
+
+user-service:
+  stage: build
+  script:
+    - cd user-service
+    - chmod +x gradlew
+    - ./gradlew clean bootJar
+
