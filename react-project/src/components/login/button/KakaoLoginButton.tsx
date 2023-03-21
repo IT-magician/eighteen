@@ -2,24 +2,45 @@ import React from "react";
 import styled from "styled-components";
 
 const KakaoLoginButton = (): JSX.Element => {
+  const socialSignIn = (socialType: string) => {
+    return `http://localhost:8080/oauth2/authorization/${socialType}}`;
+  };
+
   return (
     <div className="container">
-      <PrimaryButton>
-        <a id="kakao-login-btn">
-          <img
-            src="https://k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg"
-            width="222"
-            alt="카카오 로그인 버튼"
-          />
-        </a>
-      </PrimaryButton>
-      <LoginButton>카카오 로그인</LoginButton>
+      <LoginButton
+        onClick={(e) => {
+          e.preventDefault();
+          window.location.href = socialSignIn("kakao");
+        }}
+      >
+        <Symbol></Symbol>
+        <Label>카카오로 시작하기</Label>
+      </LoginButton>
     </div>
   );
 };
 
-const PrimaryButton = styled.div``;
+const LoginButton = styled.button`
+  background: #fee500;
+  width: 222px;
+  height: 50px;
+  color: #191919;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
-const LoginButton = styled.button``;
+const Symbol = styled.div``;
+
+const Label = styled.div`
+  height: 30%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: bold;
+`;
 
 export default KakaoLoginButton;
