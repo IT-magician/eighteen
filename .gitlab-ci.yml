@@ -12,7 +12,6 @@ npm:
     paths:
       - react-project/node_modules
   script:
-    - echo $CI_PROJECT_DIR
     - cd react-project
     - npm install
     # - tar -cvf dist.tar dist
@@ -30,7 +29,7 @@ react-project:
     name: "react-project-dist"
     expire_in: 30 days
     paths:
-      - ./react-project/dist/*
+      - $CI_PROJECT_DIR/react-project/dist/*
 
 user-service:
   stage: build
