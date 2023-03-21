@@ -15,11 +15,6 @@ npm:
     - cd react-project
     - npm install
     # - tar -cvf dist.tar dist
-  artifacts:
-    name: "react-project-dist"
-    expire_in: 30 days
-    paths:
-      - ./react-project/dist/*
 
 
 react-project:
@@ -30,6 +25,11 @@ react-project:
   script:
     - cd react-project
     - npm run build
+  artifacts:
+    name: "react-project-dist"
+    expire_in: 30 days
+    paths:
+      - ./react-project/dist/*
 
 user-service:
   stage: build
