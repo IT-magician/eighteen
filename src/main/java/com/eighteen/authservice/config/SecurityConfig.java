@@ -13,10 +13,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-//구글 로그인 이후 후처리 필요
-//1. 코드받기(인증), 2.액세스토큰(권한)
-//3.사용자프로필정보 조회
-//4.정보 토대로 가입 or 로그인
 @Configuration
 @EnableWebSecurity // 스프링 시큐리티 필터가 스프링 필터체인에 등록된다
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -34,10 +30,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http.csrf().disable();
         http.cors();
         http.authorizeRequests()
-                .antMatchers("/user/**").authenticated() //user주소로 들어가려면 인증돼있어야한다
+//                .antMatchers("/auth/**").authenticated() //auth주소로 들어가려면 인증돼있어야한다
                 .anyRequest().permitAll()
                 .and()
                 .formLogin().disable()
@@ -45,11 +42,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler(oAuth2AuthenticationSuccessHandler)
                 .userInfoEndpoint()
                 .userService(principalOauth2UserService);
-
     }
 
     @Bean
     public CorsFilter corsFilter() {
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.addAllowedOriginPattern("*");

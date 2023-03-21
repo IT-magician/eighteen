@@ -21,7 +21,6 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
         this.attributes = attributes;
     }
 
-    //해당 user의 권한 리턴 getrole 우린 유저권한 안써서 구현안해도 될듯
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> collect = new ArrayList<>();

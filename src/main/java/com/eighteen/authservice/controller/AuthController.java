@@ -23,48 +23,26 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequiredArgsConstructor
 public class AuthController {
 
     @Autowired
     private PrincipalOauth2UserService oAuth2Service;
 
-    @Autowired
-    private AuthToken authToken;
-
     @GetMapping("/success")
-    public @ResponseBody String testLogin(
-                                           Authentication authentication,
-                                           @AuthenticationPrincipal PrincipalDetails userDetails,
-                                            HttpServletResponse response) {
-        System.out.println("=======session=========");
+    public @ResponseBody String publishToken(
+            HttpServletRequest request, HttpServletResponse response,
+                                           Authentication authentication) {
+        System.out.println("=======인증체크=========");
+
         PrincipalDetails principalDetails = (PrincipalDetails)authentication.getPrincipal();
-
-        String accessToken = authToken.createAccessToken(principalDetails.getUsername());
-        String refreshToken = authToken.createRefreshToken(userDetails.getUsername());
-
-        Cookie cookie = new Cookie("refreshToken", refreshToken);
-        cookie.setHttpOnly(true);
-        cookie.setMaxAge(24 * 60 * 60); // 1일
-        cookie.setPath("/");
-        response.addCookie(cookie);
-        response.setHeader("Authorization", "Bearer " + accessToken);
-
-        System.out.println(accessToken);
-        System.out.println(refreshToken);
-        System.out.println(principalDetails.getUsername());
-        System.out.println(userDetails.getUsername());
-
+        System.out.println(principalDetails);
         return "토큰 생성";
     }
 
-    @GetMapping("/logout")
-    public String logout(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null){
-            new SecurityContextLogoutHandler().logout(request, response, auth);
-        }
-        return "redirect:/login";
+    @GetMapping("/user")
+    public @ResponseBody String user(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        System.out.println("principalDetails:" + principalDetails.getUser());
+        return "user";
     }
 }
