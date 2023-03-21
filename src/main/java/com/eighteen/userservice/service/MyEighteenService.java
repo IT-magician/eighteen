@@ -1,5 +1,6 @@
 package com.eighteen.userservice.service;
 
+import com.eighteen.userservice.dto.MusicDto;
 import com.eighteen.userservice.dto.request.RequestEighteenDto;
 import com.eighteen.userservice.dto.request.RequestGetEighteenDto;
 import com.eighteen.userservice.dto.response.ResponseGetEighteenDto;
@@ -9,8 +10,10 @@ import com.eighteen.userservice.entity.User;
 import com.eighteen.userservice.repository.MyEighteenRepository;
 import com.eighteen.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -32,25 +35,40 @@ public class MyEighteenService {
     public ResponseGetEighteenDto getEighteen(RequestGetEighteenDto requestGetEighteenDto) {
 
         User user = userRepository.findByUserId(requestGetEighteenDto.getUserId());
-        Pageable pageable = PageRequest.of(requestGetEighteenDto.getPage(), requestGetEighteenDto.getSize());
         List<MyEighteen> myEighteens = myEighteenRepository.findByUser(user);
-        Page<MyEighteen> myEighteenPage = myEighteenRepository.findPageByUser(user, pageable);
-        Random random = new Random();
-        List<MyEighteen> quicks = new ArrayList<>();
 
+        List<MusicDto> musicDtos = new ArrayList<>();
+        for (MyEighteen myEighteen : myEighteens) {
+            MusicDto musicDto = new ModelMapper().map(myEighteen, MusicDto.class);
+            musicDto.setIsEighteen(Boolean.TRUE);
+            musicDtos.add(musicDto);
+        }
+
+        Random random = new Random();
+        List<MusicDto> quicks = new ArrayList<>();
+        Pageable pageable = PageRequest.of(requestGetEighteenDto.getPage(), requestGetEighteenDto.getSize());
+        int start = (int)pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), musicDtos.size());
+        Page<MusicDto> musicDtoPage = new PageImpl<>(musicDtos.subList(start, end), pageable, musicDtos.size());
         if (myEighteens.size() > 5) {
             for (int i = 0; i < 5; i++) {
 
                 int randomIndex = random.nextInt(myEighteens.size());
                 MyEighteen randomElement = myEighteens.get(randomIndex);
-                quicks.add(randomElement);
+                MusicDto quick = new ModelMapper().map(randomElement, MusicDto.class);
+                quick.setIsEighteen(Boolean.TRUE);
+                quicks.add(quick);
             }
         }
         else {
-            quicks = myEighteens;
+            for (MyEighteen myEighteen : myEighteens) {
+                MusicDto quick = new ModelMapper().map(myEighteen, MusicDto.class);
+                quick.setIsEighteen(Boolean.TRUE);
+                quicks.add(quick);
+            }
         }
 
-        ResponseGetEighteenDto responseGetEighteenDto = new ResponseGetEighteenDto(myEighteenPage, quicks);
+        ResponseGetEighteenDto responseGetEighteenDto = new ResponseGetEighteenDto(musicDtoPage, quicks);
 
         return responseGetEighteenDto;
     }

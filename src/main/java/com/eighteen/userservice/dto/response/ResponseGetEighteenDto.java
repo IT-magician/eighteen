@@ -1,5 +1,6 @@
 package com.eighteen.userservice.dto.response;
 
+import com.eighteen.userservice.dto.MusicDto;
 import com.eighteen.userservice.entity.MyEighteen;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -16,14 +17,14 @@ import java.util.List;
 public class ResponseGetEighteenDto {
 
     @ApiModelProperty(value = "애창곡 페이지", required = true)
-    private Page<MyEighteen> myEighteenPage;
+    private Page<MusicDto> musicPage;
 
     @ApiModelProperty(value = "빠른선곡 목록", required = true)
-    private List<MyEighteen> quicks;
+    private List<MusicDto> quicks;
 
-    public ResponseGetEighteenDto(Page<MyEighteen> myEighteenPage, List<MyEighteen> quicks) {
+    public ResponseGetEighteenDto(Page<MusicDto> musicDtoPage, List<MusicDto> quicks) {
 
-        this.myEighteenPage = myEighteenPage;
+        this.musicPage = musicDtoPage;
         this.quicks = quicks;
     }
 }

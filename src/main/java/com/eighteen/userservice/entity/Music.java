@@ -21,17 +21,20 @@ public class Music {
     @Column(name = "music_id")
     private Integer musicId;
 
-    @Column(name = "title", nullable = false)
+    @Column(name = "title")
     private String title;
 
-    @Column(name = "singer", nullable = false)
+    @Column(name = "singer")
     private String singer;
 
-    @Column(name = "composer", nullable = false)
+    @Column(name = "composer")
     private String composer;
 
-    @Column(name = "lyricist", nullable = false)
+    @Column(name = "lyricist")
     private String lyricist;
+
+    @Column(name = "thumbnail_url")
+    private String thumbnailUrl;
 
     @Column(name = "youtube_link")
     private String youtubeUrl;
