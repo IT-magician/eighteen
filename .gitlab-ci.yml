@@ -1,11 +1,4 @@
-stages:
-- test
-
-lets_test:
-  stage: test
+deploy-prod:
+  stage: deploy
   script:
-  - echo hi
-  - cd /home/gitlab-runner
-  - touch devqa
-tags:
-  - devqa90
+    - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
