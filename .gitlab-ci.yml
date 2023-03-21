@@ -8,6 +8,8 @@ npm:
   stage: libs
   # only:
   #   - dev
+  include:
+    - local: './react-project'
   cache:
     paths:
       - react-project/node_modules
