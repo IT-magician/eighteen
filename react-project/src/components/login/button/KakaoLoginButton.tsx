@@ -7,17 +7,15 @@ const KakaoLoginButton = (): JSX.Element => {
   };
 
   return (
-    <div className="container">
-      <LoginButton
-        onClick={(e) => {
-          e.preventDefault();
-          window.location.href = socialSignIn("kakao");
-        }}
-      >
-        <Symbol></Symbol>
-        <Label>카카오로 시작하기</Label>
-      </LoginButton>
-    </div>
+    <LoginButton
+      onClick={(e) => {
+        e.preventDefault();
+        window.location.href = socialSignIn("kakao");
+      }}
+    >
+      <div></div>
+      <p>카카오로 시작하기</p>
+    </LoginButton>
   );
 };
 
@@ -30,17 +28,18 @@ const LoginButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
 
-const Symbol = styled.div``;
+  & > div {
+  }
 
-const Label = styled.div`
-  height: 30%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  font-weight: bold;
+  & > p {
+    height: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: bold;
+  }
 `;
 
 export default KakaoLoginButton;

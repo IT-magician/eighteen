@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const GoogleLoginButton = (): JSX.Element => {
+const NaverLoginButton = (): JSX.Element => {
   const socialSignIn = (socialType: string) => {
     return `http://localhost:8080/oauth2/authorization/${socialType}}`;
   };
@@ -10,10 +10,10 @@ const GoogleLoginButton = (): JSX.Element => {
     <LoginButton
       onClick={(e) => {
         e.preventDefault();
-        window.location.href = socialSignIn("google");
+        window.location.href = socialSignIn("naver");
       }}
     >
-      Google 로그인
+      Naver 로그인
     </LoginButton>
   );
 };
@@ -21,4 +21,4 @@ const GoogleLoginButton = (): JSX.Element => {
 // css
 const LoginButton = styled.button``;
 
-export default GoogleLoginButton;
+export default NaverLoginButton;

@@ -11,7 +11,7 @@ const Page = (): JSX.Element => {
     console.log("backend 요청 전송");
   }, []);
 
-  return <StyledDiv>Login Redirection</StyledDiv>;
+  return <StyledDiv>Login Redirection page</StyledDiv>;
 };
 
 const StyledDiv = styled.div``;
