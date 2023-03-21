@@ -6,6 +6,8 @@ stages:          # List of stages for jobs, and their order of execution
 
 npm:
   stage: libs
+  only:
+    - develop
   # only:
   #   - dev
   cache:
@@ -18,10 +20,12 @@ npm:
 
 
 react-project:
+  stage: build
+  only:
+    - develop
   cache:
     paths:
       - react-project/node_modules
-  stage: build
   script:
     - cd react-project
     - npm run build
@@ -33,6 +37,8 @@ react-project:
 
 user-service:
   stage: build
+  only:
+    - develop
   script:
     - cd user-service
     - chmod +x gradlew
