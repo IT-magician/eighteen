@@ -64,6 +64,7 @@
     #0056fe 417.37deg
   );
   --shadow: 0px 4px 16px rgba(0, 0, 0, 0.5);
+  --black-opacity: #24242480;
 }
 
 html,
