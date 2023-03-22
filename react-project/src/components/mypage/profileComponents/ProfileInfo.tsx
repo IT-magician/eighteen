@@ -2,13 +2,12 @@ import React from "react";
 import styled from "styled-components";
 
 const ProfileInfo = (): JSX.Element => {
-  return (
-    <StyledDiv>
-      <p>Name</p>
-    </StyledDiv>
-  );
+  return <StyledP>Info</StyledP>;
 };
 
-const StyledDiv = styled.div``;
+const StyledP = styled.p`
+  margin: 0px;
+  font-size: 16px;
+`;
 
 export default ProfileInfo;

@@ -17,10 +17,13 @@ const Mypage = (): JSX.Element => {
 };
 
 const StyledDiv = styled.div`
+  max-width: 430px;
   position: relative;
 
   & > div {
     position: absolute;
+    max-width: 374px;
+    width: 100%;
     left: 28px;
     top: 184px;
 
