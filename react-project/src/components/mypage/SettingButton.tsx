@@ -1,14 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 
-const Profile = (): JSX.Element => {
+const SettingButton = (): JSX.Element => {
   return (
     <StyledDiv>
-      <div>Profile</div>
+      <div>button</div>
     </StyledDiv>
   );
 };
 
 const StyledDiv = styled.div``;
 
-export default Profile;
+export default SettingButton;
