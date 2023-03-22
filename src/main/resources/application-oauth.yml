@@ -5,18 +5,19 @@ spring:
         registration:
           #Google
           google:
-            client-id: 74671669145-t2cbs8dmmjfsgv43qs62an2sje8mvkuf.apps.googleusercontent.com
-            client-secret: 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
+            client-id: 101274233050-528rk0ej6i9d1qkjgmjt4sm0dd5rfu3v.apps.googleusercontent.com
+            client-secret: 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
             redirectUri: http://localhost:8080/login/oauth2/code/google
             scope: profile,email
           #kakao
           kakao:
-            client-id: 8d4206c704a5d67ed472c4e4840abf58
-            client-secret: pkaM5FIs8gI7Uc2BTSrLs4pUCXs4zGng
+            client-id: 2787aaa3471a6b9509332d74986caec0
+            client-secret: bfCgKX23CY2ktzAGuq3C4u1IgQsHO8Gs
             scope: profile_nickname,account_email
             client-name: Kakao
             authorization-grant-type: authorization_code
             redirect-uri: http://localhost:8080/login/oauth2/code/kakao
+            logout-redirect-uri: http://localhost:8080/logout/kakao
             client-authentication-method: POST
           naver:
             client-id: EJLbtiYncykaCLVttDrg

@@ -22,6 +22,9 @@ public class User {
     @Column(name = "user_id")
     private String userId;
 
+    @Column(name = "email")
+    private String email;
+
     @Column(name = "nickname")
     private String nickname;
 

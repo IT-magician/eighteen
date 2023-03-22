@@ -62,18 +62,18 @@ public class AuthController {
     }
 
     @RequestMapping("/check")
-    public ResponseEntity<String> check(@RequestHeader Map<String, String> headers) {
+    public ResponseEntity<String> checkAccessToken(@RequestHeader Map<String, String> headers) {
         if (!headers.containsKey("authorization") || !headers.get("authorization").startsWith("Bearer ")) {
             return ResponseEntity.badRequest().body("Missing or invalid authorization header");
         }
-        String jwt = headers.get("authorization").replace("Bearer ", "");
+        String accessToken = headers.get("authorization").replace("Bearer ", "");
         String userId = null;
         String secretKey = env.getProperty("jwt.secret");
         try {
             Claims claims = Jwts.parserBuilder()
                     .setSigningKey(secretKey.getBytes())
                     .build()
-                    .parseClaimsJws(jwt)
+                    .parseClaimsJws(accessToken)
                     .getBody();
             userId = claims.getSubject();
             Date expiration = claims.getExpiration();
