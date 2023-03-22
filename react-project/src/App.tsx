@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router";
 import styled from "styled-components";
 import { Logo } from "./components/common/logo";
 import { NavBar } from "./components/common/nav";
-import { Favorite, Home, Login, Mypage, Recommend, Song, SongDetail } from "./pages";
+import { Favorite, Home, Login, Mypage, Recommend, Song, SongDetail, Setting } from "./pages";
 
 const App = (): JSX.Element => {
   return (
@@ -19,6 +19,7 @@ const App = (): JSX.Element => {
         <Route path="/song/:songid" element={<SongDetail />} />
         <Route path="/favorite" element={<Favorite />} />
         <Route path="/mypage" element={<Mypage />} />
+        <Route path="/setting" element={<Setting />} />
       </Routes>
       <NavBar />
     </StyledDiv>

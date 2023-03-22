@@ -36,6 +36,8 @@ const StyledDiv = styled.div`
     width: 100%;
     left: 28px;
     top: 260px;
+    box-sizing: border-box;
+    padding: 0px 8px 0px;
   }
 `;
 
