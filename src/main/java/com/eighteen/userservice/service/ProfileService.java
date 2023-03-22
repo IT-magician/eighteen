@@ -3,11 +3,13 @@ package com.eighteen.userservice.service;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.eighteen.userservice.dto.MusicDto;
 import com.eighteen.userservice.dto.request.RequestUpdateProfileDto;
 import com.eighteen.userservice.dto.response.ResponseProfileDto;
 import com.eighteen.userservice.entity.User;
 import com.eighteen.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -32,9 +34,10 @@ public class ProfileService {
     public ResponseProfileDto getProfile(String userId) {
 
         User user = userRepository.findByUserId(userId);
-        ResponseProfileDto responseProfileDto = new ResponseProfileDto(user);
+        ResponseProfileDto responseProfileDto = new ModelMapper().map(user, ResponseProfileDto.class);
         return responseProfileDto;
     }
+
     public String checkNickname(String userId, String nickname) {
 
         User user = userRepository.findByNickname(nickname);
