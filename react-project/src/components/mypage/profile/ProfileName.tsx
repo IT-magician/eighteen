@@ -1,14 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 
-const SettingButton = (): JSX.Element => {
+const ProfileInfo = (): JSX.Element => {
   return (
     <StyledDiv>
-      <div>button</div>
+      <p>Name</p>
     </StyledDiv>
   );
 };
 
 const StyledDiv = styled.div``;
 
-export default SettingButton;
+export default ProfileInfo;
