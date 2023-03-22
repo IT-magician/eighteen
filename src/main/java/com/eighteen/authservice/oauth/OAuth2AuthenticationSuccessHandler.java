@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.eighteen.authservice.jwt.AuthToken;
-import com.nimbusds.jose.shaded.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -23,18 +22,19 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException {
-        String url = makeRedirectUrl();
-        System.out.println("url: " + url);
+
+        PrincipalDetails principalDetails = (PrincipalDetails)authentication.getPrincipal();
+        String url = makeRedirectUrl(principalDetails.getCheck());
+        if (authentication != null){
+            new SecurityContextLogoutHandler().logout(request, response, authentication);
+        }
         if (response.isCommitted()) {
             logger.debug("응답이 이미 커밋된 상태입니다. " + url + "로 리다이렉트하도록 바꿀 수 없습니다.");
             return;
         }
-
-        if (authentication != null){
-            new SecurityContextLogoutHandler().logout(request, response, authentication);
-        }
-        PrincipalDetails principalDetails = (PrincipalDetails)authentication.getPrincipal();
+        System.out.println("url: " + url);
         String refreshToken = authToken.createRefreshToken(principalDetails.getUsername());
+        System.out.println(principalDetails.getAttributes());
         Cookie cookie = new Cookie("refreshToken", refreshToken);
         cookie.setHttpOnly(true);
         cookie.setMaxAge(24 * 60 * 60); // 1일
@@ -44,8 +44,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         getRedirectStrategy().sendRedirect(request, response, url);
     }
 
-    private String makeRedirectUrl() {
-        return UriComponentsBuilder.fromUriString("http://localhost:3000/oauth2/success")
+    private String makeRedirectUrl(String check) {
+        return UriComponentsBuilder.fromUriString("http://localhost:3000/oauth2/" + check)
                 .build().toUriString();
     }
 }

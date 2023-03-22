@@ -31,9 +31,6 @@ public class User {
     @Column(name = "gender")
     private String gender;
 
-    @Column(name = "profile_image")
-    private String profileImage;
-
     @Column(name = "high_pitch")
     private String highPitch;
 

@@ -13,12 +13,16 @@ import java.util.Map;
 public class PrincipalDetails implements UserDetails, OAuth2User {
 
     private User user;
+
     private Map<String, Object> attributes;
 
+    private String check;
+
     //소셜 로그인
-    public PrincipalDetails(User user, Map<String, Object> attributes) {
+    public PrincipalDetails(User user, Map<String, Object> attributes, String check) {
         this.user = user;
         this.attributes = attributes;
+        this.check = check;
     }
 
     @Override
@@ -66,7 +70,7 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
 
     @Override
     public Map<String, Object> getAttributes() {
-        return null;
+        return attributes;
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.eighteen.authservice.oauth;
 import com.eighteen.authservice.entity.User;
 import com.eighteen.authservice.oauth.provider.GoogleUserInfo;
 import com.eighteen.authservice.oauth.provider.KakaoUserInfo;
+import com.eighteen.authservice.oauth.provider.NaverUserInfo;
 import com.eighteen.authservice.oauth.provider.OAuth2UserInfo;
 import com.eighteen.authservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-
 import java.util.Map;
 
 @Service
@@ -31,6 +31,10 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         if(userRequest.getClientRegistration().getRegistrationId().equals("google")) {
             System.out.println("google");
             oAuth2UserInfo = new GoogleUserInfo(oAuth2User.getAttributes());
+        }else if(userRequest.getClientRegistration().getRegistrationId().equals("naver")) {
+            System.out.println("naver");
+            System.out.println((Map)oAuth2User.getAttributes().get("response"));
+            oAuth2UserInfo = new NaverUserInfo((Map)oAuth2User.getAttributes().get("response"));
         }else if(userRequest.getClientRegistration().getRegistrationId().equals("kakao")) {
             System.out.println("kakao");
             oAuth2UserInfo = new KakaoUserInfo(oAuth2User.getAttributes());
@@ -44,13 +48,17 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         String userId = provider+"_"+providerId;
 
         User userEntity = userRepository.findByUserId(userId);
-
+        String check = "old";
         if(userEntity==null) {
+            check = "new";
             userEntity = User.builder()
                     .userId(userId)
                     .build();
             userRepository.save(userEntity);
         }
-        return new PrincipalDetails(userEntity, oAuth2User.getAttributes());
+
+        System.out.println(oAuth2User.getAttributes());
+        return new PrincipalDetails(userEntity, oAuth2User.getAttributes(), check);
     }
+
 }

@@ -30,7 +30,7 @@ public class AuthToken {
         System.out.println(tokenExpiresIn);
         return Jwts.builder()
                 .setSubject(id)
-                .signWith(SignatureAlgorithm.HS256, env.getProperty("jwt.secret"))
+                .signWith(SignatureAlgorithm.HS256, env.getProperty("jwt.secret").getBytes())
                 .setExpiration(tokenExpiresIn)
                 .compact();
     }
@@ -42,7 +42,7 @@ public class AuthToken {
         System.out.println(tokenExpiresIn);
         return Jwts.builder()
                 .setSubject(id)
-                .signWith(SignatureAlgorithm.HS256, env.getProperty("jwt.secret"))
+                .signWith(SignatureAlgorithm.HS256, env.getProperty("jwt.secret").getBytes())
                 .setExpiration(tokenExpiresIn)
                 .compact();
     }
