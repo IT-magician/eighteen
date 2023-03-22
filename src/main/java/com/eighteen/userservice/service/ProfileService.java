@@ -56,13 +56,15 @@ public class ProfileService {
     public String updateImage(String userId, MultipartFile profileImage) throws IOException {
 
         User user = userRepository.findByUserId(userId);
-        String s3FileName = UUID.randomUUID() + "-" + profileImage.getOriginalFilename();
+        String s3FileName = userId;
+        boolean isExistObject = amazonS3.doesObjectExist(bucket, s3FileName);
+        if (isExistObject) {
+            amazonS3.deleteObject(bucket, s3FileName);
+        }
         ObjectMetadata objMeta = new ObjectMetadata();
         objMeta.setContentLength(profileImage.getInputStream().available());
         amazonS3.putObject(bucket, s3FileName, profileImage.getInputStream(), objMeta);
         amazonS3.setObjectAcl(bucket, s3FileName, CannedAccessControlList.PublicRead);
-        user.updateImage(amazonS3.getUrl(bucket, s3FileName).toString());
-        userRepository.save(user);
         return amazonS3.getUrl(bucket, s3FileName).toString();
     }
 }
