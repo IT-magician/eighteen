@@ -10,7 +10,7 @@ const ProfileImage = (): JSX.Element => {
 };
 
 const StyledDiv = styled.div`
-  margin-right: 16px;
+  margin: 0px 16px 0px 8px;
   width: 80px;
   height: 80px;
   background: white;

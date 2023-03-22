@@ -7,20 +7,31 @@ const Profile = (): JSX.Element => {
     <StyledDiv>
       <div>
         <ProfileImage />
-        <ProfileName />
-        <ProfileInfo />
+        <div>
+          <ProfileName />
+          <ProfileInfo />
+        </div>
       </div>
-      <div>
-        <SettingButton />
-      </div>
+      <SettingButton />
     </StyledDiv>
   );
 };
 
 const StyledDiv = styled.div`
-  padding: 0px 8px 0px;
+  width: 100%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+
+  & > div {
+    display: flex;
+
+    & > div {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+  }
 `;
 
 export default Profile;

@@ -6,6 +6,7 @@ const SettingButton = (): JSX.Element => {
 };
 
 const StyledButton = styled.button`
+  margin-right: 8px;
   width: 48px;
   height: 48px;
   border-radius: 50%;

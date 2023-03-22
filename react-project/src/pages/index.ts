@@ -1,5 +1,4 @@
 export { default as Login } from "./Login";
-export { default as Dummy } from "./Dummy";
 export { default as Home } from "./Home";
 export { default as Recommend } from "./Recommend";
 export { default as Favorite } from "./Favorite";

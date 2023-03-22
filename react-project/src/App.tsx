@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router";
 import styled from "styled-components";
 import { Logo } from "./components/common/logo";
 import { NavBar } from "./components/common/nav";
-import { Favorite, Home, Login, Mypage, Recommend, Song, SongDetail, Dummy } from "./pages";
+import { Favorite, Home, Login, Mypage, Recommend, Song, SongDetail } from "./pages";
 
 const App = (): JSX.Element => {
   return (
@@ -13,7 +13,6 @@ const App = (): JSX.Element => {
       </div>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/dummy" element={<Dummy />} />
         <Route path="/home" element={<Home />} />
         <Route path="/recommend/:type" element={<Recommend />} />
         <Route path="/song" element={<Song />} />
