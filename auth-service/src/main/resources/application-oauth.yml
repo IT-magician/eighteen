@@ -1,3 +1,5 @@
+api_gateway_url: localhost
+
 spring:
   security:
     oauth2:
@@ -7,7 +9,7 @@ spring:
           google:
             client-id: 101274233050-528rk0ej6i9d1qkjgmjt4sm0dd5rfu3v.apps.googleusercontent.com
             client-secret: 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
-            redirectUri: http://j8b304.p.ssafy.io:8080/login/oauth2/code/google
+            redirectUri: http://${api_gateway_url}:8080/login/oauth2/code/google
             scope: profile,email
           #kakao
           kakao:
@@ -16,8 +18,8 @@ spring:
             scope: profile_nickname,account_email
             client-name: Kakao
             authorization-grant-type: authorization_code
-            redirect-uri: http://j8b304.p.ssafy.io:8080/login/oauth2/code/kakao
-            logout-redirect-uri: http://j8b304.p.ssafy.io:8080/logout/kakao
+            redirect-uri: http://${api_gateway_url}:8080/login/oauth2/code/kakao
+            logout-redirect-uri: http://${api_gateway_url}:8080/logout/kakao
             client-authentication-method: POST
           naver:
             client-id: EJLbtiYncykaCLVttDrg

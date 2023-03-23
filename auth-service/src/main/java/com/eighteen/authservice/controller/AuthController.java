@@ -1,5 +1,6 @@
 package com.eighteen.authservice.controller;
 
+import com.eighteen.authservice.dto.ResponseReIssueDto;
 import com.eighteen.authservice.jwt.AuthToken;
 import com.eighteen.authservice.oauth.PrincipalDetails;
 import com.eighteen.authservice.oauth.PrincipalOauth2UserService;
@@ -8,6 +9,7 @@ import com.eighteen.authservice.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
@@ -76,7 +78,7 @@ public class AuthController {
             System.out.println(userId);
             System.out.println(expiration);
             if (expiration.before(new Date())) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Expired access token");
+                throw new Exception();
             }
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid access token");
@@ -86,11 +88,13 @@ public class AuthController {
         }
         User user = userRepository.findByUserId(userId);
         if (user == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid user");
-        return ResponseEntity.ok(userId);
+        return ResponseEntity.ok()
+                .header("user_id", userId)
+                .build();
     }
 
     @RequestMapping("/reIssue")
-    public ResponseEntity<String> reIssue(HttpServletRequest request) {
+    public ResponseEntity<?> reIssue(HttpServletRequest request) {
 
         // 쿠키에서 refresh token 값을 가져옵니다.
         Cookie[] cookies = request.getCookies();
@@ -132,8 +136,8 @@ public class AuthController {
         if (user == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid user");
         HttpHeaders headers = new HttpHeaders();
         headers.add("accessToken", accessToken);
-
-        return ResponseEntity.ok().headers(headers).body(userId);
+        ResponseReIssueDto responseReIssueDto = new ModelMapper().map(user, ResponseReIssueDto.class);
+        return ResponseEntity.ok().headers(headers).body(responseReIssueDto);
     }
 
 }
