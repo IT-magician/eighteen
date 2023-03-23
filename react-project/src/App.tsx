@@ -58,7 +58,7 @@ const StyledDiv = styled.div`
     position: relative;
     overflow: auto;
     z-index: 1;
-    max-height: calc(100vh - 80px);
+    height: calc(100vh - 80px);
 
     // 스크롤 디자인 CSS
     &::-webkit-scrollbar {
