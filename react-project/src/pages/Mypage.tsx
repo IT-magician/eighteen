@@ -18,6 +18,52 @@ const USERPROFILE: IProfile = {
   name: "김태영",
 };
 
+interface Music {
+  isEighteen: boolean;
+  musicId: number;
+  singer: string;
+  thumbnailUrl: string;
+  title: string;
+}
+
+const MUSICLIST: Music[] = [
+  {
+    isEighteen: true,
+    musicId: 1,
+    singer: "윤하",
+    thumbnailUrl: "string",
+    title: "사건의 지평선",
+  },
+  {
+    isEighteen: false,
+    musicId: 2,
+    singer: "윤하",
+    thumbnailUrl: "string",
+    title: "오르트구름",
+  },
+  {
+    isEighteen: true,
+    musicId: 3,
+    singer: "윤하",
+    thumbnailUrl: "string",
+    title: "꿈 속에서",
+  },
+  {
+    isEighteen: false,
+    musicId: 4,
+    singer: "뉴진스",
+    thumbnailUrl: "string",
+    title: "하입보이",
+  },
+  {
+    isEighteen: false,
+    musicId: 5,
+    singer: "루시",
+    thumbnailUrl: "string",
+    title: "조깅",
+  },
+];
+
 /**
  * 마이페이지
  */
@@ -53,7 +99,7 @@ const Mypage = (): JSX.Element => {
         />
       </div>
       <div className="songHistoryDiv">
-        <SongHistory />
+        <SongHistory musicList={MUSICLIST} />
       </div>
     </StyledDiv>
   );
