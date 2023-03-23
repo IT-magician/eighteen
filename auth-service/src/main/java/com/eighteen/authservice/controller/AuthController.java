@@ -86,6 +86,7 @@ public class AuthController {
         }
         User user = userRepository.findByUserId(userId);
         if (user == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid user");
+        headers.put("user_id", userId);
         return ResponseEntity.ok(userId);
     }
 
