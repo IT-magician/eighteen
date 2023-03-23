@@ -3,11 +3,13 @@ package com.eighteen.userservice.service;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.eighteen.userservice.dto.MusicDto;
 import com.eighteen.userservice.dto.request.RequestUpdateProfileDto;
 import com.eighteen.userservice.dto.response.ResponseProfileDto;
 import com.eighteen.userservice.entity.User;
 import com.eighteen.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -32,10 +34,11 @@ public class ProfileService {
     public ResponseProfileDto getProfile(String userId) {
 
         User user = userRepository.findByUserId(userId);
-        ResponseProfileDto responseProfileDto = new ResponseProfileDto(user);
+        ResponseProfileDto responseProfileDto = new ModelMapper().map(user, ResponseProfileDto.class);
         return responseProfileDto;
     }
-    public String checkNickname(String userId, String nickname) {
+
+    public String checkNickname(String nickname) {
 
         User user = userRepository.findByNickname(nickname);
         String res = "ok";
@@ -45,9 +48,9 @@ public class ProfileService {
         return res;
     }
 
-    public String updateProfile(RequestUpdateProfileDto requestUpdateProfileDto) {
+    public String updateProfile(String userId, RequestUpdateProfileDto requestUpdateProfileDto) {
 
-        User user = userRepository.findByUserId(requestUpdateProfileDto.getUserId());
+        User user = userRepository.findByUserId(userId);
         user.updateProfile(requestUpdateProfileDto);
         userRepository.save(user);
         return "ok";
@@ -57,6 +60,10 @@ public class ProfileService {
 
         User user = userRepository.findByUserId(userId);
         String s3FileName = UUID.randomUUID() + "-" + profileImage.getOriginalFilename();
+//        boolean isExistObject = amazonS3.doesObjectExist(bucket, s3FileName);
+//        if (isExistObject) {
+//            amazonS3.deleteObject(bucket, s3FileName);
+//        }
         ObjectMetadata objMeta = new ObjectMetadata();
         objMeta.setContentLength(profileImage.getInputStream().available());
         amazonS3.putObject(bucket, s3FileName, profileImage.getInputStream(), objMeta);

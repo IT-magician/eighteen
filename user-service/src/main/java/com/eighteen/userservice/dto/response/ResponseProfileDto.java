@@ -16,17 +16,11 @@ public class ResponseProfileDto {
 
     private String nickname;
 
+    private String email;
+
     private String birth;
 
     private String gender;
 
     private String profileImage;
-
-    public ResponseProfileDto(User user) {
-
-        this.nickname = user.getNickname();
-        this.birth = user.getBirth();
-        this.gender = user.getGender();
-        this.profileImage = user.getProfileImage();
-    }
 }

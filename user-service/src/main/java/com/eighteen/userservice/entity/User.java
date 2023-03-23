@@ -21,27 +21,30 @@ public class User {
 
     @Id
     @Column(name = "user_id")
-    private Long userId;
+    private String userId;
 
-    @Column(name = "nickname", nullable = false)
+    @Column(name = "nickname")
     private String nickname;
 
-    @Column(name = "birth", nullable = false)
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "birth")
     private String birth;
 
-    @Column(name = "gender", nullable = false)
+    @Column(name = "gender")
     private String gender;
 
-    @Column(name = "profile_image", nullable = false)
+    @Column(name = "profileImage")
     private String profileImage;
 
-    @Column(name = "high_pitch", nullable = false)
+    @Column(name = "high_pitch")
     private String highPitch;
 
-    @Column(name = "low_pitch", nullable = false)
+    @Column(name = "low_pitch")
     private String lowPitch;
 
-    @Column(name = "vocal", nullable = false)
+    @Column(name = "vocal")
     private String vocal;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
