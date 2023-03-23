@@ -78,7 +78,7 @@ public class AuthController {
             System.out.println(userId);
             System.out.println(expiration);
             if (expiration.before(new Date())) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Expired access token");
+                throw new Exception();
             }
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid access token");
@@ -88,8 +88,9 @@ public class AuthController {
         }
         User user = userRepository.findByUserId(userId);
         if (user == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid user");
-        headers.put("user_id", userId);
-        return ResponseEntity.ok(userId);
+        return ResponseEntity.ok()
+                .header("user_id", userId)
+                .build();
     }
 
     @RequestMapping("/reIssue")
