@@ -44,7 +44,7 @@ const App = (): JSX.Element => {
 };
 
 const StyledDiv = styled.div`
-  min-height: 100vh;
+  height: 100vh;
 
   & > .logo {
     position: absolute;
@@ -73,9 +73,9 @@ const StyledDiv = styled.div`
   // 실제 페이지 정보가 담길 페이지 컴포넌트
   & > *:nth-child(2) {
     position: relative;
-    overflow: auto;
+    overflow: hidden;
     z-index: 1;
-    max-height: calc(100vh - 80px);
+    height: calc(100vh-80px);
 
     // 스크롤 디자인 CSS
     &::-webkit-scrollbar {
