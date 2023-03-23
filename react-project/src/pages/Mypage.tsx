@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import moment from "moment";
 import { Profile } from "../components/mypage/profile";
+import { SongHistory } from "../components/mypage/songHistory";
 
 interface IProfile {
   birth: string;
@@ -44,12 +45,15 @@ const Mypage = (): JSX.Element => {
   return (
     <StyledDiv>
       <p>마이페이지</p>
-      <div>
+      <div className="profileDiv">
         <Profile
           name={userState ? userState?.name : "none"}
           age={age}
           gender={userState ? userState?.gender : "none"}
         />
+      </div>
+      <div className="songHistoryDiv">
+        <SongHistory />
       </div>
     </StyledDiv>
   );
@@ -69,7 +73,7 @@ const StyledDiv = styled.div`
     font-size: 32px;
   }
 
-  & > div {
+  & .profileDiv {
     position: absolute;
     max-width: 374px;
     width: 100%;
@@ -77,6 +81,14 @@ const StyledDiv = styled.div`
     top: 260px;
     box-sizing: border-box;
     padding: 0px 8px 0px;
+  }
+
+  & .songHistoryDiv {
+    position: absolute;
+    max-width: 374px;
+    width: 100%;
+    left: 28px;
+    top: 408px;
   }
 `;
 
