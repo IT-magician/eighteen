@@ -9,9 +9,12 @@ spring:
     include: oauth
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/eighteen?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=true
-    username: blur
-    password: blur
+#    url: jdbc:mysql://localhost:3306/eighteen?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=true
+#    username: blur
+#    password: blur
+    url: jdbc:mysql://j8b304.p.ssafy.io:3306/eighteen?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=true
+    username: root
+    password: b304b304
     hikari:
       pool-name: jpa-hikari-pool
       maximum-pool-size: 5
