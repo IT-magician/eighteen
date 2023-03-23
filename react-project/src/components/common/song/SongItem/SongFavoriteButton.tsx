@@ -1,19 +1,42 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import { TbMusic } from "react-icons/tb";
+import { addEighteen, removeEighteen } from "../../../../apis/myEighteen";
 
 interface Props {
   musicId: number;
   isEighteen: boolean;
-  setEighteen: React.MouseEventHandler<HTMLButtonElement>;
+  setEighteen(bool: boolean): void;
 }
 
 /**
  * 음악 애창곡 등록 버튼 컴포넌트
  */
 const SongFavoriteButton = ({ musicId, isEighteen, setEighteen }: Props): JSX.Element => {
+  const loading = useRef<boolean>(false);
+
+  const onClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+
+    if (loading.current) return;
+    loading.current = true;
+
+    let success = false;
+    try {
+      if (isEighteen) await removeEighteen(musicId);
+      else await addEighteen(musicId);
+      success = true;
+    } finally {
+      // 과도한 요청을 방지하기 위해 1초의 요청 간격을 줍니다
+      await setTimeout(() => {
+        loading.current = false;
+      }, 500);
+      if (success) setEighteen(!isEighteen);
+    }
+  };
+
   return (
-    <StyledButton onClick={setEighteen}>
+    <StyledButton onClick={onClick}>
       {!isEighteen || <div className="gradation-bg" />}
       <TbMusic />
     </StyledButton>
@@ -89,4 +112,4 @@ const StyledButton = styled.button`
   }
 `;
 
-export default SongFavoriteButton;
+export default React.memo(SongFavoriteButton);
