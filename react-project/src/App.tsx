@@ -1,11 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route, Routes } from "react-router";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { Logo } from "./components/common/logo";
 import { NavBar } from "./components/common/nav";
 import { Favorite, Home, Login, Mypage, Recommend, Song, SongDetail } from "./pages";
+import { userState } from "./recoil/atom";
 
 const App = (): JSX.Element => {
+  const [user, setUser] = useRecoilState(userState);
+  useEffect(() => {
+    // 유저 정보가 없는 경우 로그인을 통해 해당 정보를 가져옵니다
+    if (!user) {
+      // TODO: access Token 요청 실행
+      setUser({
+        userid: 0,
+        birth: "1999-03-23",
+        gender: 0,
+        nickname: "봉명동퉁퉁이",
+      });
+
+      // TODO: 실패시 reflesh Token 재발급을 위한 로그인 페이지로 이동
+    }
+  }, [user]);
+
   return (
     <StyledDiv className="App">
       <div className="logo">
