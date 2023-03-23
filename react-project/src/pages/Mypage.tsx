@@ -8,6 +8,7 @@ interface IProfile {
   gender: string;
   email: string;
   name: string;
+  userId: string;
 }
 
 const USERPROFILE: IProfile = {
@@ -15,6 +16,7 @@ const USERPROFILE: IProfile = {
   gender: "남성",
   email: "mokbee27@gamil.com",
   name: "김태영",
+  userId: "1",
 };
 
 /**
@@ -46,9 +48,10 @@ const Mypage = (): JSX.Element => {
       <p>마이페이지</p>
       <div>
         <Profile
-          name={userState ? userState?.name : "none"}
+          name={userState?.name || "none"}
           age={age}
-          gender={userState ? userState?.gender : "none"}
+          gender={userState?.gender || "none"}
+          id={userState?.userId || "none"}
         />
       </div>
     </StyledDiv>

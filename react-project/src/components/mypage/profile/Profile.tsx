@@ -6,13 +6,14 @@ interface Props {
   age: number;
   gender: string;
   name: string;
+  id: string;
 }
 
-const Profile = ({ name, age, gender }: Props): JSX.Element => {
+const Profile = ({ name, age, gender, id }: Props): JSX.Element => {
   return (
     <StyledDiv>
       <div>
-        <ProfileImage />
+        <ProfileImage id={id} />
         <div>
           <ProfileName name={name} />
           <ProfileInfo age={age} gender={gender} />
