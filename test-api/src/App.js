@@ -4,7 +4,7 @@ import "./App.css";
 
 const App = () => {
   const socialSignIn = (socialType) => {
-    return `http://j8b304.p.ssafy.io:8080/oauth2/authorization/kakao`;
+    return `http://localhost:8080/oauth2/authorization/kakao`;
   };
 
   return (
