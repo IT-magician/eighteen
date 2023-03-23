@@ -16,9 +16,6 @@ import java.util.List;
 @ApiModel(value = "RequestEighteenDto", description = "RequestEighteenDto")
 public class RequestEighteenDto {
 
-    @ApiModelProperty(value = "유저 id", required = true)
-    private String userId;
-
     @ApiModelProperty(value = "노래", required = true)
     private Music music;
 }

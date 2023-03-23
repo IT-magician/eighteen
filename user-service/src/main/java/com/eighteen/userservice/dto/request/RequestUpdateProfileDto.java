@@ -12,9 +12,6 @@ import lombok.*;
 @ApiModel(value = "RequestUpdateProfileDto", description = "RequestUpdateProfileDto")
 public class RequestUpdateProfileDto {
 
-    @ApiModelProperty(value = "유저 id", required = true)
-    private String userId;
-
     @ApiModelProperty(value = "유저 닉네임", required = true)
     private String nickname;
 

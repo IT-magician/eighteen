@@ -38,7 +38,7 @@ public class ProfileService {
         return responseProfileDto;
     }
 
-    public String checkNickname(String userId, String nickname) {
+    public String checkNickname(String nickname) {
 
         User user = userRepository.findByNickname(nickname);
         String res = "ok";
@@ -48,9 +48,9 @@ public class ProfileService {
         return res;
     }
 
-    public String updateProfile(RequestUpdateProfileDto requestUpdateProfileDto) {
+    public String updateProfile(String userId, RequestUpdateProfileDto requestUpdateProfileDto) {
 
-        User user = userRepository.findByUserId(requestUpdateProfileDto.getUserId());
+        User user = userRepository.findByUserId(userId);
         user.updateProfile(requestUpdateProfileDto);
         userRepository.save(user);
         return "ok";

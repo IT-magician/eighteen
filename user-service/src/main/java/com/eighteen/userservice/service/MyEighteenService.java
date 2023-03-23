@@ -32,9 +32,9 @@ public class MyEighteenService {
     @Autowired
     private UserRepository userRepository;
 
-    public ResponseGetEighteenDto getEighteen(RequestGetEighteenDto requestGetEighteenDto) {
+    public ResponseGetEighteenDto getEighteen(String userId, RequestGetEighteenDto requestGetEighteenDto) {
 
-        User user = userRepository.findByUserId(requestGetEighteenDto.getUserId());
+        User user = userRepository.findByUserId(userId);
         List<MyEighteen> myEighteens = myEighteenRepository.findByUser(user);
 
         List<MusicDto> musicDtos = new ArrayList<>();
@@ -73,9 +73,9 @@ public class MyEighteenService {
         return responseGetEighteenDto;
     }
 
-    public String addEighteen(RequestEighteenDto requestEighteenDto) {
+    public String addEighteen(String userId, RequestEighteenDto requestEighteenDto) {
 
-        User user = userRepository.findByUserId(requestEighteenDto.getUserId());
+        User user = userRepository.findByUserId(userId);
         Music music = requestEighteenDto.getMusic();
         MyEighteen myEighteen = MyEighteen.builder()
                 .user(user)
@@ -85,9 +85,9 @@ public class MyEighteenService {
         return music.getTitle();
     }
 
-    public String deleteEighteen(RequestEighteenDto requestEighteenDto) {
+    public String deleteEighteen(String userId, RequestEighteenDto requestEighteenDto) {
 
-        User user = userRepository.findByUserId(requestEighteenDto.getUserId());
+        User user = userRepository.findByUserId(userId);
         Music music = requestEighteenDto.getMusic();
         MyEighteen myEighteen = myEighteenRepository.findByUserAndMusic(user, music);
         myEighteenRepository.delete(myEighteen);
