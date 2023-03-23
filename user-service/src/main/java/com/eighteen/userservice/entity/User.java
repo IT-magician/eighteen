@@ -35,6 +35,9 @@ public class User {
     @Column(name = "gender")
     private String gender;
 
+    @Column(name = "profileImage")
+    private String profileImage;
+
     @Column(name = "high_pitch")
     private String highPitch;
 
@@ -49,6 +52,10 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<URecc> uReccs = new ArrayList<>();
+
+    public void updateImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
 
     public void updateProfile(RequestUpdateProfileDto requestUpdateProfileDto) {
 

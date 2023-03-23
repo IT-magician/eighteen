@@ -21,4 +21,6 @@ public class ResponseProfileDto {
     private String birth;
 
     private String gender;
+
+    private String profileImage;
 }
