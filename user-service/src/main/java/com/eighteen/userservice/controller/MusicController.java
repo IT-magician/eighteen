@@ -28,7 +28,7 @@ public class MusicController {
     })
     @GetMapping("")
     public ResponseEntity<ResponseMusicDetailDto> getMusicDetail(@ApiParam(value = "음악 id", required = true) @PathVariable("musicId") Integer musicId,
-                                                                 @ApiParam(value = "사용자 id", required = true) @RequestParam("userId") String userId) {
+                                                                 @RequestHeader("x-for-warded-for-user-id") String userId) {
 //        유튜브 링크는 아직
         ResponseMusicDetailDto responseMusicDetailDto = musicService.getMusicDetail(musicId, userId);
         return ResponseEntity.status(HttpStatus.OK).body(responseMusicDetailDto);

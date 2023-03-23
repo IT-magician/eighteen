@@ -36,9 +36,8 @@ public class ProfileController {
             @ApiResponse(code = 500, message = "Internal server error")
     })
     @GetMapping("")
-    public ResponseEntity<ResponseProfileDto> getProfile(@RequestHeader Map<String, String> headers) {
+    public ResponseEntity<ResponseProfileDto> getProfile(@RequestHeader("x-for-warded-for-user-id") String userId) {
 
-        String userId = headers.get("user_id");
         ResponseProfileDto responseProfileDto = profileService.getProfile(userId);
         return ResponseEntity.status(HttpStatus.OK).body(responseProfileDto);
     }
@@ -69,10 +68,9 @@ public class ProfileController {
             @ApiResponse(code = 500, message = "Internal server error")
     })
     @PatchMapping("")
-    public ResponseEntity<String> updateProfile(@RequestHeader Map<String, String> headers,
+    public ResponseEntity<String> updateProfile(@RequestHeader("x-for-warded-for-user-id") String userId,
                                                 @ApiParam(value = "변경프로필정보", required = true) @RequestBody RequestUpdateProfileDto requestUpdateProfileDto) {
 
-        String userId = headers.get("user_id");
         String res = profileService.updateProfile(userId, requestUpdateProfileDto);
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
@@ -87,10 +85,9 @@ public class ProfileController {
             @ApiResponse(code = 500, message = "Internal server error")
     })
     @PostMapping("/image")
-    public ResponseEntity<String> updateImage(@RequestHeader Map<String, String> headers,
+    public ResponseEntity<String> updateImage(@RequestHeader("x-for-warded-for-user-id") String userId,
                                               @ApiParam(value = "프로필 이미지", required = true) @RequestParam("profileImage") MultipartFile profileImage) throws IOException {
 
-        String userId = headers.get("user_id");
         String res = profileService.updateImage(userId, profileImage);
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }

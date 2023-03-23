@@ -30,11 +30,9 @@ public class MyEighteenController {
             @ApiResponse(code = 500, message = "Internal server error")
     })
     @GetMapping("")
-    public ResponseEntity<ResponseGetEighteenDto> getEighteen(@RequestHeader Map<String, String> headers,
+    public ResponseEntity<ResponseGetEighteenDto> getEighteen(@RequestHeader("x-for-warded-for-user-id") String userId,
                                                               @ApiParam(value = "애창곡 페이지", required = true) @RequestBody RequestGetEighteenDto requestGetEighteenDto) {
 
-
-        String userId = headers.get("user_id");
         ResponseGetEighteenDto responseGetEighteenDto = myEighteenService.getEighteen(userId, requestGetEighteenDto);
         return ResponseEntity.status(HttpStatus.OK).body(responseGetEighteenDto);
     }
@@ -49,11 +47,10 @@ public class MyEighteenController {
             @ApiResponse(code = 500, message = "Internal server error")
     })
     @PostMapping("")
-    public ResponseEntity<String> addEighteen(@RequestHeader Map<String, String> headers,
+    public ResponseEntity<String> addEighteen(@RequestHeader("x-for-warded-for-user-id") String userId,
                                               @ApiParam(value = "유저아이디, 음악", required = true) @RequestBody RequestEighteenDto requestEighteenDto) throws Exception {
 
 
-        String userId = headers.get("user_id");
         String title = myEighteenService.addEighteen(userId, requestEighteenDto);
         return ResponseEntity.status(HttpStatus.OK).body(title + "add");
     }
@@ -68,10 +65,9 @@ public class MyEighteenController {
             @ApiResponse(code = 500, message = "Internal server error")
     })
     @DeleteMapping("")
-    public ResponseEntity<String> deleteEighteen(@RequestHeader Map<String, String> headers,
+    public ResponseEntity<String> deleteEighteen(@RequestHeader("x-for-warded-for-user-id") String userId,
                                                  @ApiParam(value = "유저아이디, 음악", required = true) @RequestBody RequestEighteenDto requestEighteenDto) throws Exception {
 
-        String userId = headers.get("user_id");
         String title = myEighteenService.deleteEighteen(userId, requestEighteenDto);
         return ResponseEntity.status(HttpStatus.OK).body(title + "delete");
     }
