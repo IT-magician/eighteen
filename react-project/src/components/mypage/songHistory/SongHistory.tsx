@@ -28,7 +28,13 @@ const SongHistory = ({ musicList }: Props): JSX.Element => {
       <p>최근 본 노래</p>
       <div>
         {musicList.map((music) => (
-          <SongItem />
+          <SongItem
+            key={music.musicId}
+            musicId={music.musicId}
+            title={music.title}
+            singer={music.singer}
+            isEighteen={music.isEighteen}
+          />
         ))}
       </div>
     </StyledDiv>
