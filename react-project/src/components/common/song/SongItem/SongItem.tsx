@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import SongFavoriteButton from "./SongFavoriteButton";
@@ -8,7 +8,6 @@ interface Props {
   title: string;
   singer: string;
   isEighteen: boolean;
-  setEighteen(): void;
 }
 
 /**
@@ -16,21 +15,17 @@ interface Props {
  * 좌측 버튼 클릭 시 좋아요 여부를 토글할 수 있으며
  * 컴포넌트 클릭 시 해당 노래 상세페이지로 이동합니다.
  */
-const SongItem = ({ musicId, title, singer, isEighteen, setEighteen }: Props): JSX.Element => {
+const SongItem = ({ musicId, title, singer, isEighteen }: Props): JSX.Element => {
   const navigate = useNavigate();
+  const [eighteen, setEighteen] = useState<boolean>(isEighteen);
 
   const onClick = () => {
     navigate(`/song/${musicId}`);
   };
 
-  const toggleEighteen: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    e.stopPropagation();
-    setEighteen();
-  };
-
   return (
     <StyledLi title={title} singer={singer} onClick={onClick}>
-      <SongFavoriteButton isEighteen={isEighteen} musicId={musicId} setEighteen={toggleEighteen} />
+      <SongFavoriteButton isEighteen={eighteen} musicId={musicId} setEighteen={setEighteen} />
       <div className="number">
         <span>{musicId}</span>
       </div>
