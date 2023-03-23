@@ -1,16 +1,55 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import Profile from "../components/mypage/Profile";
+import moment from "moment";
+import { Profile } from "../components/mypage/profile";
+
+interface IProfile {
+  birth: string;
+  gender: string;
+  email: string;
+  name: string;
+}
+
+const USERPROFILE: IProfile = {
+  birth: "1997-03-28",
+  gender: "남성",
+  email: "mokbee27@gamil.com",
+  name: "김태영",
+};
 
 /**
  * 마이페이지
  */
 const Mypage = (): JSX.Element => {
+  const [userState, setUser] = useState<IProfile>();
+
+  useEffect(() => {
+    async function userUpdate() {
+      const userProfile = USERPROFILE;
+      setUser(userProfile);
+    }
+
+    userUpdate();
+  }, []);
+
+  let age = 0;
+
+  /** 나이 계산*/
+  if (userState) {
+    const today = moment(new Date());
+    const birth = moment(`${userState.birth}`, "YYYY-MM-DD");
+    age = today.diff(birth, "years");
+  }
+
   return (
     <StyledDiv>
       <p>마이페이지</p>
       <div>
-        <Profile />
+        <Profile
+          name={userState ? userState?.name : "none"}
+          age={age}
+          gender={userState ? userState?.gender : "none"}
+        />
       </div>
     </StyledDiv>
   );

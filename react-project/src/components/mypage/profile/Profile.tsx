@@ -1,18 +1,24 @@
 import React from "react";
 import styled from "styled-components";
-import { ProfileImage, ProfileInfo, ProfileName, SettingButton } from "./profileComponents";
+import { ProfileImage, ProfileInfo, ProfileName, ProfileSettingButton } from ".";
 
-const Profile = (): JSX.Element => {
+interface Props {
+  age: number;
+  gender: string;
+  name: string;
+}
+
+const Profile = ({ name, age, gender }: Props): JSX.Element => {
   return (
     <StyledDiv>
       <div>
         <ProfileImage />
         <div>
-          <ProfileName />
-          <ProfileInfo />
+          <ProfileName name={name} />
+          <ProfileInfo age={age} gender={gender} />
         </div>
       </div>
-      <SettingButton />
+      <ProfileSettingButton />
     </StyledDiv>
   );
 };

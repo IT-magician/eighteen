@@ -1,8 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 
-const ProfileInfo = (): JSX.Element => {
-  return <StyledP>Name</StyledP>;
+interface Props {
+  name: string;
+}
+
+const ProfileInfo = ({ name }: Props): JSX.Element => {
+  return <StyledP>{name}님</StyledP>;
 };
 
 const StyledP = styled.p`

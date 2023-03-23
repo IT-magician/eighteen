@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import styled from "styled-components";
 import { TbPencil } from "react-icons/tb";
 
-const SettingButton = (): JSX.Element => {
+const ProfileSettingButton = (): JSX.Element => {
   const navigate = useNavigate();
 
   const moveSetPage = () => {
@@ -34,4 +34,4 @@ const StyledButton = styled.button`
   }
 `;
 
-export default SettingButton;
+export default ProfileSettingButton;
