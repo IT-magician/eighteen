@@ -1,0 +1,46 @@
+stages:          # List of stages for jobs, and their order of execution
+  - libs
+  - build
+  # - deploy
+
+
+npm:
+  stage: libs
+  only:
+    - develop
+  # only:
+  #   - dev
+  cache:
+    paths:
+      - react-project/node_modules
+  script:
+    - cd react-project
+    - npm install
+    # - tar -cvf dist.tar dist
+
+
+react-project:
+  stage: build
+  only:
+    - develop
+  cache:
+    paths:
+      - react-project/node_modules
+  script:
+    - cd react-project
+    - npm run build
+  artifacts:
+    name: "react-project-dist"
+    expire_in: 30 days
+    paths:
+      - $CI_PROJECT_DIR/react-project/dist/*
+
+user-service:
+  stage: build
+  only:
+    - develop
+  script:
+    - cd user-service
+    - chmod +x gradlew
+    - ./gradlew clean bootJar
+
