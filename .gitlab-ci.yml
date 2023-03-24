@@ -25,14 +25,13 @@ react-project:
   cache:
     paths:
       - react-project/build
+      - react-project/node_modules
   needs: ["npm"]
   when: on_success
-  cache:
-    paths:
-      - react-project/node_modules
   script:
     - cd react-project
     - CI=false npm run build
+    - docker build -t react-project .
     
 
 user-service:
@@ -43,23 +42,6 @@ user-service:
     - cd user-service
     - chmod +x gradlew
     - ./gradlew clean bootJar
-
-deploy-job-react-project:docker_img_build:      # This job runs in the deploy stage.
-  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
-  needs: ["react-project"]
-  when: on_success
-  environment: production
-  cache:
-    paths:
-      - react-project/build
-  only:
-    - develop
-  allow_failure: true
-  script:
-    - cd react-project
-    - echo -e "\033[32mDeploying application...\033[0m"
-    - echo -e "\033[32m'react project' will be starting...\033[0m"
-    - docker build -t react-project .
 
 deploy-job-react-project:preparing_for_replace:      # This job runs in the deploy stage.
   stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
