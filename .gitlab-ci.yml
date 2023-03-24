@@ -16,7 +16,6 @@ npm:
   script:
     - cd react-project
     - npm install
-    # - tar -cvf dist.tar dist
 
 
 react-project:
