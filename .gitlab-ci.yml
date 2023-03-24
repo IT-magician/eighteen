@@ -1,7 +1,7 @@
 stages:          # List of stages for jobs, and their order of execution
   - libs
   - build
-  # - deploy
+  - deploy
 
 
 npm:
@@ -39,3 +39,30 @@ user-service:
     - chmod +x gradlew
     - ./gradlew clean bootJar
 
+deploy-job-react-project:      # This job runs in the deploy stage.
+  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
+  environment: production
+  only:
+    - develop
+  allow_failure: true
+  script:
+    - echo -e "\033[32mDeploying application...\033[0m"
+    - echo -e "\033[32m'react project' will be starting...\033[0m"
+    - docker container stop react-project
+    - docker container rm react-project
+    - docker build -t react-project .
+    - docker run -p 3000:3000 --name react-project react-project
+
+deploy-job-user-service:      # This job runs in the deploy stage.
+  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
+  environment: production
+  only:
+    - develop
+  allow_failure: true
+  script:
+    - echo -e "\033[32mDeploying application...\033[0m"
+    - echo -e "\033[32m'user service' will be starting...\033[0m"
+    - docker container stop user-service
+    - docker container rm user-service
+    - docker build -t user-service .
+    - docker run -p 3000:3000 --name user-service user-service
