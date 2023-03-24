@@ -10,7 +10,7 @@ interface User {
 /**
  * 사용자관련 STATE
  */
-export const userState = atom<User | null>({
+export const userState = atom<User>({
   key: "user",
-  default: null,
+  default: undefined,
 });
