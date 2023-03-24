@@ -22,6 +22,9 @@ react-project:
   stage: build
   only:
     - develop
+  cache:
+    paths:
+      - react-project/build
   needs: ["npm"]
   when: on_success
   cache:
@@ -48,7 +51,7 @@ deploy-job-react-project:docker_img_build:      # This job runs in the deploy st
   environment: production
   cache:
     paths:
-      - react-project/node_modules
+      - react-project/build
   only:
     - develop
   allow_failure: true
