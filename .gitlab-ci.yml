@@ -29,11 +29,7 @@ react-project:
   script:
     - cd react-project
     - npm run build
-  artifacts:
-    name: "react-project-dist"
-    expire_in: 30 days
-    paths:
-      - $CI_PROJECT_DIR/react-project/dist/*
+    
 
 user-service:
   stage: build
