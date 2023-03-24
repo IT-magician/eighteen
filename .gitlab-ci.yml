@@ -60,11 +60,24 @@ deploy-job-react-project:shutdown:      # This job runs in the deploy stage.
   only:
     - develop
   allow_failure: true
+  needs: ["deploy-job-react-project:build"]
+  script:
+    - echo -e "\033[32mDeploying application...\033[0m"
+    - echo -e "\033[32m'react project' will be deleted...\033[0m"
+    - docker container stop react-project
+    - docker container rm react-project
+    
+deploy-job-react-project:deploy:      # This job runs in the deploy stage.
+  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
+  environment: production
+  only:
+    - develop
+  allow_failure: true
+  needs: ["deploy-job-react-project:build", "deploy-job-react-project:shutdown"]
   script:
     - echo -e "\033[32mDeploying application...\033[0m"
     - echo -e "\033[32m'react project' will be starting...\033[0m"
-    - docker container stop react-project
-    - docker container rm react-project
+    - docker run -p 3000:3000 --name react-project react-project
 
 # deploy-job-user-service:      # This job runs in the deploy stage.
 #   stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
