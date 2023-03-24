@@ -109,8 +109,13 @@ const Mypage = (): JSX.Element => {
 };
 
 const StyledDiv = styled.div`
+  margin: 0px auto 0px;
   max-width: 430px;
   position: relative;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
 
   & > p {
     position: absolute;

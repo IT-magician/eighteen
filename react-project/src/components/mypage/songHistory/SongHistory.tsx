@@ -26,7 +26,7 @@ const SongHistory = ({ musicList }: Props): JSX.Element => {
   return (
     <StyledDiv>
       <p>최근 본 노래</p>
-      <div>
+      <ul>
         {musicList.map((music) => (
           <SongItem
             key={music.musicId}
@@ -36,7 +36,7 @@ const SongHistory = ({ musicList }: Props): JSX.Element => {
             isEighteen={music.isEighteen}
           />
         ))}
-      </div>
+      </ul>
     </StyledDiv>
   );
 };
@@ -45,6 +45,10 @@ const StyledDiv = styled.div`
   & > p {
     margin-top: 0px;
     font-size: 24px;
+  }
+
+  & > ul {
+    padding: 0px;
   }
 `;
 
