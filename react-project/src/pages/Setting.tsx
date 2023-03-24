@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import BackButton from "../components/common/button/BackButton";
 
 /**
  * 프로필 수정 화면
@@ -7,14 +8,20 @@ import styled from "styled-components";
 const Setting = (): JSX.Element => {
   return (
     <StyledDiv>
+      <BackButton />
       <p>프로필 설정</p>
     </StyledDiv>
   );
 };
 
 const StyledDiv = styled.div`
+  margin: 0px auto 0px;
   max-width: 430px;
   position: relative;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
 
   & > p {
     position: absolute;
