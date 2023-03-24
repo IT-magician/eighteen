@@ -40,7 +40,7 @@ deploy-job/react-project:preparing_for_replace:      # This job runs in the depl
   only:
     - develop
   needs: ["react-project"]
-  # allow_failure: true
+  allow_failure: true
   when: on_success
   script:
     - docker container stop react-project && docker container rm react-project
@@ -56,7 +56,7 @@ deploy-job/react-project:replace_docker_container:      # This job runs in the d
   # allow_failure: true
   when: on_success
   script:
-    - docker run -p 3000:3000 --name -d react-project react-project
+    - docker run -p 3000:3000 --name react-project -d react-project
 
 
 
@@ -90,7 +90,7 @@ deploy-job/user-service:replace_docker_container:      # This job runs in the de
   only:
     - develop
   needs: ["deploy-job/user-service:preparing_for_replace"]
-#   allow_failure: true
+  allow_failure: true
   when: on_success
   script:
     - docker run -p 3000:3000 --name user-service -d user-service
