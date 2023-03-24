@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import IconButton from "../../common/button/IconButton";
+import IconButton from "../common/button/IconButton";
 
 /**
  * 프로필 이미지 수정 컴포넌트
