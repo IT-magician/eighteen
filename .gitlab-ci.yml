@@ -93,4 +93,4 @@ deploy-job/user-service:replace_docker_container:      # This job runs in the de
   # allow_failure: true
   when: on_success
   script:
-    - docker run -p 3000:3000 --name user-service -d user-service
+    - docker run -p 9001:8080 --name user-service -d user-service
