@@ -48,9 +48,9 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         String userId = provider+"_"+providerId;
         String email = oAuth2UserInfo.getEmail();
         User userEntity = userRepository.findByUserId(userId);
-        String check = "old";
+        String check = "home";
         if(userEntity==null) {
-            check = "new";
+            check = "register";
             userEntity = User.builder()
                     .userId(userId)
                     .email(email)

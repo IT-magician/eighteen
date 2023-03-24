@@ -1,7 +1,7 @@
 stages:          # List of stages for jobs, and their order of execution
   - libs
   - build
-  # - deploy
+  - deploy
 
 
 npm:
@@ -16,24 +16,20 @@ npm:
   script:
     - cd react-project
     - npm install
-    # - tar -cvf dist.tar dist
 
 
 react-project:
   stage: build
   only:
     - develop
+  needs: ["npm"]
   cache:
     paths:
       - react-project/node_modules
   script:
     - cd react-project
-    - npm run build
-  artifacts:
-    name: "react-project-dist"
-    expire_in: 30 days
-    paths:
-      - $CI_PROJECT_DIR/react-project/dist/*
+    - CI=false npm run build
+    
 
 user-service:
   stage: build
@@ -44,3 +40,52 @@ user-service:
     - chmod +x gradlew
     - ./gradlew clean bootJar
 
+deploy-job-react-project:docker_img_build:      # This job runs in the deploy stage.
+  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
+  needs: ["react-project"]
+  environment: production
+  only:
+    - develop
+  allow_failure: true
+  script:
+    - cd react-project
+    - echo -e "\033[32mDeploying application...\033[0m"
+    - echo -e "\033[32m'react project' will be starting...\033[0m"
+    - docker build -t react-project .
+
+deploy-job-react-project:preparing_for_replace:      # This job runs in the deploy stage.
+  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
+  environment: production
+  only:
+    - develop
+  needs: ["deploy-job-react-project:docker_img_build"]
+  allow_failure: true
+
+  script:
+    - docker container stop react-project && docker container rm react-project
+
+
+
+deploy-job-react-project:replace_docker_container:      # This job runs in the deploy stage.
+  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
+  environment: production
+  only:
+    - develop
+  needs: ["deploy-job-react-project:docker_img_build", "deploy-job-react-project:preparing_for_replace"]
+  allow_failure: true
+  script:
+    - docker run -p 3000:3000 --name react-project react-project
+
+# deploy-job-user-service:      # This job runs in the deploy stage.
+#   stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
+#   environment: production
+#   only:
+#     - develop
+#   allow_failure: true
+#   script:
+#     - echo -e "\033[32mDeploying application...\033[0m"
+#     - echo -e "\033[32m'user service' will be starting...\033[0m"
+#     - docker container stop user-service
+#     - docker container rm user-service
+#     - docker build -t user-service .
+#     - docker run -p 3000:3000 --name user-service user-service
