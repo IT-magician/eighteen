@@ -11,6 +11,7 @@ from sklearn.tree import DecisionTreeClassifier
 
 DATA_DIR = "../data"
 DATA_FILE = os.path.join(DATA_DIR, "results.json")
+DATA_FILE2 = os.path.join(DATA_DIR, "emotions.json")
 
 music_columns = (
     "id",
@@ -51,3 +52,8 @@ def kmeans_clustering(data_path=DATA_FILE):
     mood = kmeans.predict(new_mood_df_scaled)
 
     return mood
+
+
+def emotion_classification(data_path=DATA_FILE, data_path2=DATA_FILE2):
+    with open(data_path, encoding="utf-8") as f:
+        data = json.loads(f.read())
