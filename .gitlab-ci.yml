@@ -13,11 +13,11 @@ npm:
   cache:
     paths:
       - react-project/node_modules
-  allow_failure: true
+  # allow_failure: true
   script:
     - cd react-project
     - npm install
-    - exit 1
+    # - exit 1
 
 
 react-project:
