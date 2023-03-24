@@ -13,7 +13,6 @@ npm:
   cache:
     paths:
       - react-project/node_modules
-  allow_failure: true
   script:
     - cd react-project
     - npm install
@@ -35,6 +34,18 @@ react-project:
     - CI=false npm run build
     - docker build -t react-project .
 
+react-project2:
+  stage: build
+  only:
+    - develop
+  cache:
+    paths:
+      - react-project/build
+      - react-project/node_modules
+  needs: ["npm"]
+  when: on_failure
+  script:
+    - cd react-project
 
 deploy-job/react-project:preparing_for_replace:      # This job runs in the deploy stage.
   stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
