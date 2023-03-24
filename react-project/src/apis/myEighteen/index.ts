@@ -6,7 +6,7 @@ import { instance } from "..";
  * @param size 페이지크기
  */
 const getEighteenList = (page: number, size: number) => {
-  return instance.get(`/myEighteen`, {
+  return instance.get(`/my_eighteen`, {
     params: {
       page,
       size,
@@ -19,7 +19,7 @@ const getEighteenList = (page: number, size: number) => {
  * @param musicId 노래번호
  */
 const addEighteen = (musicId: number) => {
-  return instance.post(`/myEighteen`, { musicId });
+  return instance.post(`/my_eighteen`, { musicId });
 };
 
 /**
@@ -27,7 +27,7 @@ const addEighteen = (musicId: number) => {
  * @param musicId 노래번호
  */
 const removeEighteen = (musicId: number) => {
-  return instance.delete(`/myEighteen/${musicId}`);
+  return instance.delete(`/my_eighteen/${musicId}`);
 };
 
 export { getEighteenList, addEighteen, removeEighteen };
