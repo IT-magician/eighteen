@@ -44,7 +44,13 @@ deploy-job-react-project:      # This job runs in the deploy stage.
   environment: production
   only:
     - develop
-  allow_failure: true
+
+    # if the script exit code is 137 or 255 the job will allow to be failed and the pipeline will continue to run
+    # 'allow_failure'의 default는 boolean 값에 대해 대해서만 적용이 되어있음.
+  allow_failure:
+    exit_codes: # User defined exit code
+    - 1
+
   script:
     - docker container stop react-project
 
