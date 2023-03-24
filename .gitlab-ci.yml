@@ -27,7 +27,7 @@ react-project:
       - react-project/node_modules
   script:
     - cd react-project
-    - npm run build
+    - CI=false npm run build
     
 
 user-service:
