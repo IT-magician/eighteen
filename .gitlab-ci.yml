@@ -46,7 +46,7 @@ deploy-job-react-project:docker_img_build:      # This job runs in the deploy st
   environment: production
   only:
     - develop
-  allow_failure: true
+  # allow_failure: true
   script:
     - cd react-project
     - echo -e "\033[32mDeploying application...\033[0m"
