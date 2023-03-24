@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import SongFavoriteButton from "./SongFavoriteButton";
 
-interface Props {
+export interface Props {
   musicId: number;
   title: string;
   singer: string;
