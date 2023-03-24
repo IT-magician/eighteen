@@ -39,27 +39,39 @@ user-service:
     - chmod +x gradlew
     - ./gradlew clean bootJar
 
-deploy-job-react-project:      # This job runs in the deploy stage.
+deploy-job-react-project:docker_img_build:      # This job runs in the deploy stage.
   stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
   environment: production
   only:
     - develop
+  allow_failure: true
+  script:
+    - echo -e "\033[32mDeploying application...\033[0m"
+    - echo -e "\033[32m'react project' will be starting...\033[0m"
+    - docker build -t react-project .
 
-    # if the script exit code is 137 or 255 the job will allow to be failed and the pipeline will continue to run
-    # 'allow_failure'의 default는 boolean 값에 대해 대해서만 적용이 되어있음.
-  allow_failure:
-    exit_codes: # User defined exit code
-    - 1
+deploy-job-react-project:preparing_for_replace:      # This job runs in the deploy stage.
+  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
+  environment: production
+  only:
+    - develop
+  needs: ["deploy-job-react-project:docker_img_build"]
+  allow_failure: true
 
   script:
-    - docker container stop react-project
+    - docker container stop react-project && docker container rm react-project
 
-    # - echo -e "\033[32mDeploying application...\033[0m"
-    # - echo -e "\033[32m'react project' will be starting...\033[0m"
-    # - docker container stop react-project
-    # - docker container rm react-project
-    # - docker build -t react-project .
-    # - docker run -p 3000:3000 --name react-project react-project
+
+
+deploy-job-react-project:replace_docker_container:      # This job runs in the deploy stage.
+  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
+  environment: production
+  only:
+    - develop
+  needs: ["deploy-job-react-project:docker_img_build", "deploy-job-react-project:preparing_for_replace"]
+  allow_failure: true
+  script:
+    - docker run -p 3000:3000 --name react-project react-project
 
 # deploy-job-user-service:      # This job runs in the deploy stage.
 #   stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
