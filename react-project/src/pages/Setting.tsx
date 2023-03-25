@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import styled from "styled-components";
 import BackButton from "../components/common/button/BackButton";
 import SettingImg from "../components/setting/SettingImg";
 import IconButton from "../components/common/button/IconButton";
-import TextButton from "../components/common/button/TextButton";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { userState } from "../recoil/atom";
 import { Select } from "../components/common/select";
@@ -127,7 +128,6 @@ const StyledDiv = styled.div`
   & > div > div {
     display: flex;
     justify-content: space-between;
-    align-items: center;
     margin-bottom: 40px;
     padding: 0px 36px 0px;
   }
