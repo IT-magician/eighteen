@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import styled from "styled-components";
-import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
+import { Swiper, SwiperSlide } from "swiper/react";
 import { Song, SongItem } from "../SongItem";
 import "swiper/css";
 import "swiper/css/pagination";
@@ -11,7 +11,7 @@ interface Props {
   size?: number;
 }
 
-const SongSildeList = ({ songList, size = 5 }: Props): JSX.Element => {
+const SongSlideList = ({ songList, size = 5 }: Props): JSX.Element => {
   // 페이지 사이즈만큼 곡 목록을 그룹핑합니다
   const songPage = useMemo(() => {
     let page: Song[] = [];
@@ -93,4 +93,4 @@ const StyledDiv = styled.div<{ size: number }>`
   }
 `;
 
-export default SongSildeList;
+export default SongSlideList;
