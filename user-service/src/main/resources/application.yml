@@ -1,5 +1,7 @@
+api_gateway_url: localhost
+
 server:
-  port: 8080
+  port: 8081
 
 spring:
   application:
@@ -12,9 +14,12 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://j8b304.p.ssafy.io:3306/eighteen?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=true
+    url: jdbc:mysql://${api_gateway_url}:3306/eighteen?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=true
     username: root
     password: b304b304
+#    url: jdbc:mysql://localhost:3306/eighteen?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=true
+#    username: blur
+#    password: blur
     hikari:
       pool-name: jpa-hikari-pool
       maximum-pool-size: 5
@@ -29,7 +34,7 @@ spring:
   jpa:
     generate-ddl: false
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     show-sql: true
     database: mysql
     properties:

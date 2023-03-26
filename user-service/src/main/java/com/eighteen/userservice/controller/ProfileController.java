@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Map;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -33,8 +35,8 @@ public class ProfileController {
             @ApiResponse(code = 404, message = "Not found"),
             @ApiResponse(code = 500, message = "Internal server error")
     })
-    @GetMapping("/getProfile")
-    public ResponseEntity<ResponseProfileDto> getProfile(@ApiParam(value = "사용자의 ID", required = true) @RequestParam("userId") String userId) {
+    @GetMapping("")
+    public ResponseEntity<ResponseProfileDto> getProfile(@RequestHeader("x-for-warded-for-user-id") String userId) {
 
         ResponseProfileDto responseProfileDto = profileService.getProfile(userId);
         return ResponseEntity.status(HttpStatus.OK).body(responseProfileDto);
@@ -50,10 +52,9 @@ public class ProfileController {
             @ApiResponse(code = 500, message = "Internal server error")
     })
     @GetMapping("/checkNickname")
-    public ResponseEntity<String> checkNickname(@ApiParam(value = "사용자의 ID", required = true) @RequestParam("userId") String userId,
-                                                @ApiParam(value = "입력 닉네임", required = true) @RequestParam("nickname") String nickname) {
+    public ResponseEntity<String> checkNickname(@ApiParam(value = "입력 닉네임", required = true) @RequestParam("nickname") String nickname) {
 
-        String res = profileService.checkNickname(userId, nickname);
+        String res = profileService.checkNickname(nickname);
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
@@ -66,10 +67,11 @@ public class ProfileController {
             @ApiResponse(code = 404, message = "Not found"),
             @ApiResponse(code = 500, message = "Internal server error")
     })
-    @PatchMapping("/updateProfile")
-    public ResponseEntity<String> updateProfile(@ApiParam(value = "변경프로필정보", required = true) @RequestBody RequestUpdateProfileDto requestUpdateProfileDto) {
+    @PatchMapping("")
+    public ResponseEntity<String> updateProfile(@RequestHeader("x-for-warded-for-user-id") String userId,
+                                                @ApiParam(value = "변경프로필정보", required = true) @RequestBody RequestUpdateProfileDto requestUpdateProfileDto) {
 
-        String res = profileService.updateProfile(requestUpdateProfileDto);
+        String res = profileService.updateProfile(userId, requestUpdateProfileDto);
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
@@ -82,8 +84,8 @@ public class ProfileController {
             @ApiResponse(code = 404, message = "Not found"),
             @ApiResponse(code = 500, message = "Internal server error")
     })
-    @PostMapping("/updateImage")
-    public ResponseEntity<String> updateImage(@ApiParam(value = "사용자의 Id", required = true) @RequestParam("userId") String userId,
+    @PostMapping("/image")
+    public ResponseEntity<String> updateImage(@RequestHeader("x-for-warded-for-user-id") String userId,
                                               @ApiParam(value = "프로필 이미지", required = true) @RequestParam("profileImage") MultipartFile profileImage) throws IOException {
 
         String res = profileService.updateImage(userId, profileImage);

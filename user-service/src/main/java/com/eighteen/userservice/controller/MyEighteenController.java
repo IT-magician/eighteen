@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/myEighteen")
 @Api(value = "애창곡", description = "애창곡 관련 API")
@@ -27,10 +29,11 @@ public class MyEighteenController {
             @ApiResponse(code = 404, message = "Not found"),
             @ApiResponse(code = 500, message = "Internal server error")
     })
-    @GetMapping("/getEighteen")
-    public ResponseEntity<ResponseGetEighteenDto> getEighteen(@ApiParam(value = "애창곡 페이지", required = true) @RequestBody RequestGetEighteenDto requestGetEighteenDto) {
+    @GetMapping("")
+    public ResponseEntity<ResponseGetEighteenDto> getEighteen(@RequestHeader("x-for-warded-for-user-id") String userId,
+                                                              @ApiParam(value = "애창곡 페이지", required = true) @RequestBody RequestGetEighteenDto requestGetEighteenDto) {
 
-        ResponseGetEighteenDto responseGetEighteenDto = myEighteenService.getEighteen(requestGetEighteenDto);
+        ResponseGetEighteenDto responseGetEighteenDto = myEighteenService.getEighteen(userId, requestGetEighteenDto);
         return ResponseEntity.status(HttpStatus.OK).body(responseGetEighteenDto);
     }
 
@@ -43,10 +46,12 @@ public class MyEighteenController {
             @ApiResponse(code = 404, message = "Not found"),
             @ApiResponse(code = 500, message = "Internal server error")
     })
-    @PostMapping("/add")
-    public ResponseEntity<String> addEighteen(@ApiParam(value = "유저아이디, 음악", required = true) @RequestBody RequestEighteenDto requestEighteenDto) throws Exception {
+    @PostMapping("")
+    public ResponseEntity<String> addEighteen(@RequestHeader("x-for-warded-for-user-id") String userId,
+                                              @ApiParam(value = "유저아이디, 음악", required = true) @RequestBody RequestEighteenDto requestEighteenDto) throws Exception {
 
-        String title = myEighteenService.addEighteen(requestEighteenDto);
+
+        String title = myEighteenService.addEighteen(userId, requestEighteenDto);
         return ResponseEntity.status(HttpStatus.OK).body(title + "add");
     }
 
@@ -59,10 +64,11 @@ public class MyEighteenController {
             @ApiResponse(code = 404, message = "Not found"),
             @ApiResponse(code = 500, message = "Internal server error")
     })
-    @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteEighteen(@ApiParam(value = "유저아이디, 음악", required = true) @RequestBody RequestEighteenDto requestEighteenDto) throws Exception {
+    @DeleteMapping("")
+    public ResponseEntity<String> deleteEighteen(@RequestHeader("x-for-warded-for-user-id") String userId,
+                                                 @ApiParam(value = "유저아이디, 음악", required = true) @RequestBody RequestEighteenDto requestEighteenDto) throws Exception {
 
-        String title = myEighteenService.deleteEighteen(requestEighteenDto);
+        String title = myEighteenService.deleteEighteen(userId, requestEighteenDto);
         return ResponseEntity.status(HttpStatus.OK).body(title + "delete");
     }
 

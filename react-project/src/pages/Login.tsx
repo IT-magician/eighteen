@@ -28,18 +28,20 @@ const Login = (): JSX.Element => {
 
 const StyledDiv = styled.div`
   position: relative;
+
   & > p {
-    position: absolute;
-    left: 28px;
-    top: 160px;
-    margin: 0px;
+    box-sizing: border-box;
+    width: 100%;
+    margin: 160px 0px 0px 0px;
+    padding: 0px 0px 0px 28px;
     font-size: 32px;
   }
 
   & > div {
-    position: absolute;
-    left: 28px;
-    top: 235px;
+    box-sizing: border-box;
+    width: 100%;
+    margin: 40px 0px 0px 0px;
+    padding: 0px 0px 0px 28px;
 
     & > p {
       margin: 0px;
@@ -48,21 +50,12 @@ const StyledDiv = styled.div`
   }
 
   & .kakaoButton {
-    position: absolute;
-    left: 39px;
-    top: 714px;
   }
 
   & .googleButton {
-    position: absolute;
-    left: 39px;
-    top: 614px;
   }
 
   & .naverButton {
-    position: absolute;
-    left: 39px;
-    top: 514px;
   }
 `;
 export default Login;

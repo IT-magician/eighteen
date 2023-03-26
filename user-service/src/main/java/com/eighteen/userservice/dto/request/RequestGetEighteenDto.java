@@ -13,9 +13,6 @@ import lombok.*;
 @ApiModel(value = "RequestGetEighteenDto", description = "RequestGetEighteenDto")
 public class RequestGetEighteenDto {
 
-    @ApiModelProperty(value = "유저 id", required = true)
-    private String userId;
-
     @ApiModelProperty(value = "페이지", required = true)
     private Integer page;
 
