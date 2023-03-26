@@ -4,6 +4,7 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { RecommendType } from "..";
 import { Weather } from "../../../recoil/atom/weatherState";
+import { BackButton } from "../../common/button";
 
 interface Header {
   type: RecommendType;
@@ -41,6 +42,9 @@ const RecommendHeader = ({ weather }: Props): JSX.Element => {
 
   return (
     <StyledHeader>
+      <div className="back-button">
+        <BackButton />
+      </div>
       <img src={imgUrl} />
       <h1>노래 추천 화면</h1>
       <h2>
@@ -91,6 +95,10 @@ const StyledHeader = styled.header`
     opacity: 0.5;
     -webkit-mask-image: linear-gradient(to top, transparent 0.1%, black 100%);
     mask-image: linear-gradient(to top, transparent 0.1%, black 100%);
+  }
+  & > .back-button {
+    position: absolute;
+    top: 48px;
   }
 `;
 
