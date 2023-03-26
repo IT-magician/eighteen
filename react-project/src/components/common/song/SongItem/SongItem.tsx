@@ -44,7 +44,7 @@ const StyledLi = styled.li<{ title: string; singer: string }>`
   align-items: center;
   justify-content: space-between;
   list-style: none;
-  margin: 16px;
+  margin: 8px 0;
   border-radius: 16px;
   padding: 0 16px;
   height: 60px;
