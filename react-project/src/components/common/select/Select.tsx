@@ -97,7 +97,7 @@ const StyledDiv = styled.div`
   & > ul {
     margin: 0;
     padding: 0;
-    background-color: var(--black-opacity);
+    background-color: var(--black-600);
     // 스크롤 디자인 CSS
     &::-webkit-scrollbar {
       width: 4px;
