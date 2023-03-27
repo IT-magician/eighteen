@@ -3,19 +3,21 @@ import styled from "styled-components";
 
 const KakaoLoginButton = (): JSX.Element => {
   const socialSignIn = (socialType: string) => {
-    return `${process.env.REACT_APP_SERVER_URL}/oauth2/authorization/${socialType}}`;
+    return `http://j8b304.p.ssafy.io/oauth2/authorization/${socialType}`;
   };
 
   return (
-    <LoginButton
-      onClick={(e) => {
-        e.preventDefault();
-        window.location.href = socialSignIn("kakao");
-      }}
-    >
-      <div></div>
-      <p>카카오로 시작하기</p>
-    </LoginButton>
+    <div className="container">
+      <LoginButton
+        onClick={(e) => {
+          e.preventDefault();
+          window.location.href = socialSignIn("kakao");
+        }}
+      >
+        <Symbol></Symbol>
+        <Label>카카오로 시작하기</Label>
+      </LoginButton>
+    </div>
   );
 };
 
@@ -28,18 +30,17 @@ const LoginButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
 
-  & > div {
-  }
+const Symbol = styled.div``;
 
-  & > p {
-    height: 30%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    font-weight: bold;
-  }
+const Label = styled.div`
+  height: 30%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: bold;
 `;
 
 export default KakaoLoginButton;

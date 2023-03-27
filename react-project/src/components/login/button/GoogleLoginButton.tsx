@@ -1,9 +1,10 @@
 import React from "react";
 import styled from "styled-components";
+import { instance } from "../../../apis";
 
 const GoogleLoginButton = (): JSX.Element => {
   const socialSignIn = (socialType: string) => {
-    return `${process.env.REACT_APP_SERVER_URL}/oauth2/authorization/${socialType}}`;
+    return `http://192.168.31.73:8080/oauth2/authorization/${socialType}`;
   };
 
   return (
