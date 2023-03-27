@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const GoogleLoginButton = (): JSX.Element => {
   const socialSignIn = (socialType: string) => {
-    return `http://localhost:8080/oauth2/authorization/${socialType}}`;
+    return `${process.env.REACT_APP_SERVER_URL}/oauth2/authorization/${socialType}}`;
   };
 
   return (
