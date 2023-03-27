@@ -16,7 +16,7 @@ const RecommendList = ({ weather }: Props): JSX.Element => {
   return (
     <StyledDiv>
       <SongSlideList songList={SampleData.data} />
-      <RecommendSelector />
+      <RecommendSelector weather={weather} />
     </StyledDiv>
   );
 };

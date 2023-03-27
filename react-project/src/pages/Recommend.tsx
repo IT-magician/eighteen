@@ -16,12 +16,14 @@ const Recommend = (): JSX.Element => {
     if (!weather) getWeather().then((data) => setWeather(data));
   }, [weather]);
 
-  return (
-    <StyledMain>
-      <RecommendHeader weather={weather} />
-      <RecommendList weather={weather} />
-    </StyledMain>
-  );
+  if (weather)
+    return (
+      <StyledMain>
+        <RecommendHeader weather={weather} />
+        <RecommendList weather={weather} />
+      </StyledMain>
+    );
+  else return <StyledMain />;
 };
 
 const StyledMain = styled.main`
