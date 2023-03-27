@@ -49,15 +49,17 @@ const App = (): JSX.Element => {
 
 const StyledDiv = styled.div`
   height: 100vh;
-  max-width: 800px;
-  margin: auto;
 
   // 실제 페이지 정보가 담길 페이지 컴포넌트
   & > .Page {
     position: relative;
+    width: 100%;
     height: calc(100vh - 80px);
     box-sizing: border-box;
     overflow: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
     // 스크롤 디자인 CSS
     &::-webkit-scrollbar {
@@ -73,16 +75,17 @@ const StyledDiv = styled.div`
     }
     & > .logo {
       overflow: visible;
-      height: 0;
+      display: flex;
+      justify-content: flex-end;
       & > div {
-        margin-left: 50%;
         padding: 56px 32px;
-        transform: translateX(-50%);
-        justify-content: end;
-        width: 100%;
-        max-width: 1080px;
         box-sizing: border-box;
       }
+    }
+    & > * {
+      box-sizing: border-box;
+      width: 100%;
+      max-width: 800px;
     }
   }
 
