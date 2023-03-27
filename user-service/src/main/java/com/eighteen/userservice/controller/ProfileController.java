@@ -36,7 +36,7 @@ public class ProfileController {
             @ApiResponse(code = 500, message = "Internal server error")
     })
     @GetMapping("")
-    public ResponseEntity<ResponseProfileDto> getProfile(@RequestHeader("x-for-warded-for-user-id") String userId) {
+    public ResponseEntity<?> getProfile(@RequestHeader("x-forwarded-for-user-id") String userId) {
 
         ResponseProfileDto responseProfileDto = profileService.getProfile(userId);
         return ResponseEntity.status(HttpStatus.OK).body(responseProfileDto);
@@ -68,7 +68,7 @@ public class ProfileController {
             @ApiResponse(code = 500, message = "Internal server error")
     })
     @PatchMapping("")
-    public ResponseEntity<String> updateProfile(@RequestHeader("x-for-warded-for-user-id") String userId,
+    public ResponseEntity<String> updateProfile(@RequestHeader("x-forwarded-for-user-id") String userId,
                                                 @ApiParam(value = "변경프로필정보", required = true) @RequestBody RequestUpdateProfileDto requestUpdateProfileDto) {
 
         String res = profileService.updateProfile(userId, requestUpdateProfileDto);
@@ -85,7 +85,7 @@ public class ProfileController {
             @ApiResponse(code = 500, message = "Internal server error")
     })
     @PostMapping("/image")
-    public ResponseEntity<String> updateImage(@RequestHeader("x-for-warded-for-user-id") String userId,
+    public ResponseEntity<String> updateImage(@RequestHeader("x-forwarded-for-user-id") String userId,
                                               @ApiParam(value = "프로필 이미지", required = true) @RequestParam("profileImage") MultipartFile profileImage) throws IOException {
 
         String res = profileService.updateImage(userId, profileImage);
