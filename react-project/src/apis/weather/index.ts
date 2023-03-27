@@ -5,7 +5,7 @@ const OPEN_WEATHER_API_KEY = process.env.REACT_APP_OPEN_WEATHER_API_KEY;
 // open weather api weather type
 export type weather = "Thunderstorm" | "Drizzle" | "Rain" | "Snow" | "Atmosphere" | "Clear" | "Clouds";
 
-const getWeatherImg = (weather: weather) => {
+export const getWeatherImg = (weather: weather) => {
   switch (weather) {
     case "Clear":
       return `sunny`;
