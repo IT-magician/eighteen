@@ -44,9 +44,5 @@ public class Music {
     private MusicFeature musicFeature;
 
     @OneToMany(mappedBy = "music", cascade = CascadeType.ALL)
-    private List<YoutubeList> youtubeLists = new ArrayList<>();
-
-    @OneToMany(mappedBy = "music", cascade = CascadeType.ALL)
     private List<MyEighteen> myEighteens = new ArrayList<>();
-
 }
