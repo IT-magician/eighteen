@@ -5,7 +5,7 @@ import { Select } from "../../common/select";
 
 const RecommendRankingSelector = (): JSX.Element => {
   const [search, setSearch] = useSearchParams();
-  const [params, setParams] = useState({ age: search.get("age") || "0", gender: search.get("gender") || "0" });
+  const [params, setParams] = useState({ age: search.get("age") || "0", gender: search.get("gender") || "M" });
 
   useEffect(() => {
     setSearch(params, { replace: true });
@@ -28,8 +28,8 @@ const ageList = [
 ];
 
 const genderList = [
-  { text: "남성", value: "0" },
-  { text: "여성", value: "1" },
+  { text: "남성", value: "M" },
+  { text: "여성", value: "F" },
 ];
 
 const StyledDiv = styled.div`
@@ -37,6 +37,7 @@ const StyledDiv = styled.div`
   z-index: 1;
   top: 0;
   display: flex;
+  margin: 0 16px;
 
   & > * {
     margin-right: 16px;
