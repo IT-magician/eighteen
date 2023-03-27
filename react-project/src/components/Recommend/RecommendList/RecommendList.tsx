@@ -23,7 +23,7 @@ const RecommendList = ({ weather }: Props): JSX.Element => {
 
 const StyledDiv = styled.div`
   position: relative;
-  & > div {
+  & > div:first-child {
     margin-top: 96px;
   }
 `;
