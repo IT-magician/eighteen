@@ -148,7 +148,7 @@ search-engine:
   only:
     - develop
   script:
-    - cd search
+    - cd search-engine
     - chmod +x gradlew
     - ./gradlew clean bootJar
     - docker build -t search-engine .
