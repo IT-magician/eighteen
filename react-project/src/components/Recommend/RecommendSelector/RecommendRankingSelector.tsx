@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import { Select } from "../../common/select";
 
@@ -8,7 +8,7 @@ const RecommendRankingSelector = (): JSX.Element => {
   const [params, setParams] = useState({ age: search.get("age") || "0", gender: search.get("gender") || "0" });
 
   useEffect(() => {
-    setSearch(params);
+    setSearch(params, { replace: true });
   }, [params]);
 
   return (
