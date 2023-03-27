@@ -108,3 +108,37 @@ deploy-job/user-service:replace_docker_container:      # This job runs in the de
   when: on_success
   script:
     - docker run -p 9001:8080 --name user-service -d user-service
+
+
+
+search-engine:
+  stage: build
+  only:
+    - develop
+  script:
+    - cd search-engine
+    - chmod +x gradlew
+    - ./gradlew clean bootJar
+    - docker build -t search-engine .
+
+deploy-job/search-engine:preparing_for_replace:      # This job runs in the deploy stage.
+  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
+  environment: production
+  only:
+    - develop
+  needs: ["search-engine"]
+  allow_failure: true
+  when: on_success
+  script:
+    - docker container stop search-engine && docker container rm search-engine
+
+deploy-job/search-engine:replace_docker_container:      # This job runs in the deploy stage.
+  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
+  environment: production
+  only:
+    - develop
+  needs: ["deploy-job/search-engine:preparing_for_replace"]
+  # allow_failure: true
+  when: on_success
+  script:
+    - docker run -p 9001:8080 --name search-engine -d search-engine
