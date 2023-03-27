@@ -1,7 +1,7 @@
 import { atom } from "recoil";
 import { weather as WeatherType } from "../../apis/weather";
 
-interface Weather {
+export interface Weather {
   weather: WeatherType;
   temperature: number;
   text: string;

@@ -1,10 +1,10 @@
 import React from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { userState } from "../../../recoil/atom";
 
 const HomeHeader = (): JSX.Element => {
-  const [user, setUser] = useRecoilState(userState);
+  const user = useRecoilValue(userState);
 
   return (
     <StyledHeader>

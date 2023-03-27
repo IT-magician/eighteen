@@ -30,6 +30,8 @@ const StyledDiv = styled.div`
   display: flex;
   align-items: flex-end;
   letter-spacing: 0.1em;
+  position: absolute;
+  z-index: 1;
 
   & > p {
     margin: 2px 8px;

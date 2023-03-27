@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/myEighteen")
+@RequestMapping("/my_eighteen")
 @Api(value = "애창곡", description = "애창곡 관련 API")
 public class MyEighteenController {
 
@@ -30,7 +30,7 @@ public class MyEighteenController {
             @ApiResponse(code = 500, message = "Internal server error")
     })
     @GetMapping("")
-    public ResponseEntity<ResponseGetEighteenDto> getEighteen(@RequestHeader("x-for-warded-for-user-id") String userId,
+    public ResponseEntity<ResponseGetEighteenDto> getEighteen(@RequestHeader("x-forwarded-for-user-id") String userId,
                                                               @ApiParam(value = "애창곡 페이지", required = true) @RequestBody RequestGetEighteenDto requestGetEighteenDto) {
 
         ResponseGetEighteenDto responseGetEighteenDto = myEighteenService.getEighteen(userId, requestGetEighteenDto);
@@ -47,7 +47,7 @@ public class MyEighteenController {
             @ApiResponse(code = 500, message = "Internal server error")
     })
     @PostMapping("")
-    public ResponseEntity<String> addEighteen(@RequestHeader("x-for-warded-for-user-id") String userId,
+    public ResponseEntity<String> addEighteen(@RequestHeader("x-forwarded-for-user-id") String userId,
                                               @ApiParam(value = "유저아이디, 음악", required = true) @RequestBody RequestEighteenDto requestEighteenDto) throws Exception {
 
 
@@ -65,7 +65,7 @@ public class MyEighteenController {
             @ApiResponse(code = 500, message = "Internal server error")
     })
     @DeleteMapping("")
-    public ResponseEntity<String> deleteEighteen(@RequestHeader("x-for-warded-for-user-id") String userId,
+    public ResponseEntity<String> deleteEighteen(@RequestHeader("x-forwarded-for-user-id") String userId,
                                                  @ApiParam(value = "유저아이디, 음악", required = true) @RequestBody RequestEighteenDto requestEighteenDto) throws Exception {
 
         String title = myEighteenService.deleteEighteen(userId, requestEighteenDto);

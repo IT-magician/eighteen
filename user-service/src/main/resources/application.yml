@@ -1,4 +1,4 @@
-api_gateway_url: localhost
+api_gateway_url: j8b304.p.ssafy.io
 
 server:
   port: 8081
@@ -34,7 +34,7 @@ spring:
   jpa:
     generate-ddl: false
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     show-sql: true
     database: mysql
     properties:
