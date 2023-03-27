@@ -95,4 +95,14 @@ def favorite_song(data_path=DATA_FILE, data_path3=DATA_FILE3):
     tab = pd.crosstab(favorite_df['user_id'], favorite_df['title'])
     favorite_df_group = favorite_df.groupby(['user_id', 'title'])
     tab = favorite_df_group.sum().unstack()
+
+    reader = Reader(rating_scale=(0, 1))
+    data = Dataset.load_from_df(df=favorite_df, reader=reader)
+
+    train = data.build_full_trainset()
+    test = train.build_testset()
+
+    model = SVD(n_factors=100, n_epochs=20, random_state=123)
+    model.fit(train)
     
+    return
