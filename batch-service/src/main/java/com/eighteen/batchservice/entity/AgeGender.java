@@ -13,7 +13,6 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Table(name = "age_gender")
 public class AgeGender {
 

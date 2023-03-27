@@ -12,8 +12,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "ranking")
-public class Ranking {
+@Table(name = "temp_ranking")
+public class TempRanking {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
