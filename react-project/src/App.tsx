@@ -18,8 +18,9 @@ const App = (): JSX.Element => {
         birth: "1999-03-23",
         gender: 0,
         nickname: "봉명동퉁퉁이",
+        email: "test@gamil.com",
+        profileImage: `${process.env.public_url}/user/undefined.png`,
       });
-
       // TODO: 실패시 reflesh Token 재발급을 위한 로그인 페이지로 이동
     }
   }, [user]);

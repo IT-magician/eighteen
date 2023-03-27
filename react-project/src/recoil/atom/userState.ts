@@ -5,6 +5,8 @@ interface User {
   nickname: string;
   birth: string;
   gender: 0 | 1;
+  email: string;
+  profileImage: string;
 }
 
 /**
