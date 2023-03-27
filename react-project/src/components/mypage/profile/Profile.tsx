@@ -6,7 +6,7 @@ interface Props {
   age: number;
   gender: string;
   name: string;
-  id: string;
+  id: number;
 }
 
 const Profile = ({ name, age, gender, id }: Props): JSX.Element => {

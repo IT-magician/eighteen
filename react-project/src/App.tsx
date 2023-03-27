@@ -16,7 +16,7 @@ const App = (): JSX.Element => {
       setUser({
         userid: 0,
         birth: "1999-03-23",
-        gender: 0,
+        gender: "F",
         nickname: "봉명동퉁퉁이",
         email: "test@gamil.com",
         profileImage: `${process.env.public_url}/user/undefined.png`,

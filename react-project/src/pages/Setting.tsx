@@ -20,22 +20,11 @@ const Setting = (): JSX.Element => {
   const [value, setValue] = useState<number>(0);
   const [pass, setPass] = useState<boolean>(true);
 
-  useEffect(() => {
-    if (user) return;
-
-    // TODO : 사용자의 정보를 받아오는 과정 구현
-    setUser({
-      userid: 0,
-      birth: "1999-03-23",
-      gender: 0,
-      nickname: "봉명동퉁퉁이",
-      email: "test@gamil.com",
-      profileImage: `${process.env.public_url}/user/undefined.png`,
-    });
-  }, []);
-
   const setNicname = (value: string) => {
     if (user) setUser({ ...user, nickname: value });
+  };
+  const setBirth = (value: string) => {
+    if (user) setUser({ ...user, birth: value });
   };
 
   const clickTest = () => {
@@ -49,7 +38,7 @@ const Setting = (): JSX.Element => {
       </div>
       <p>프로필 설정</p>
       <div>
-        <div>
+        <div className="imageDiv">
           <SettingImg />
           <IconButton type="save" onClick={clickTest} />
         </div>
@@ -92,13 +81,17 @@ const StyledDiv = styled.div`
   }
 
   & > p {
-    margin: 136px 0px 40px 28px;
+    margin: 90px 0px 40px 28px;
     font-size: 32px;
   }
 
   & > div {
     width: 100%;
     box-sizing: border-box;
+  }
+
+  & .imageDiv {
+    align-items: center;
   }
 
   & > div > div {

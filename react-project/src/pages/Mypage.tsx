@@ -1,24 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { useRecoilValue } from "recoil";
+import { userState } from "../recoil/atom";
 import styled from "styled-components";
 import moment from "moment";
 import { Profile } from "../components/mypage/profile";
 import { SongHistory } from "../components/mypage/songHistory";
-
-interface IProfile {
-  birth: string;
-  gender: string;
-  email: string;
-  name: string;
-  userId: string;
-}
-
-const USERPROFILE: IProfile = {
-  birth: "1997-03-28",
-  gender: "남성",
-  email: "mokbee27@gamil.com",
-  name: "김태영",
-  userId: "1",
-};
 
 interface Music {
   isEighteen: boolean;
@@ -70,23 +56,23 @@ const MUSICLIST: Music[] = [
  * 마이페이지
  */
 const Mypage = (): JSX.Element => {
-  const [userState, setUser] = useState<IProfile>();
+  const [user, setUser] = useState(useRecoilValue(userState));
+  const [dummyGender, setDummy] = useState<string>("none");
 
   useEffect(() => {
-    async function userUpdate() {
-      const userProfile = USERPROFILE;
-      setUser(userProfile);
+    if (user.gender == "M") {
+      setDummy("남성");
+    } else if (user.gender == "F") {
+      setDummy("여성");
     }
-
-    userUpdate();
-  }, []);
+  }, [user]);
 
   let age = 0;
 
   /** 나이 계산*/
   if (userState) {
     const today = moment(new Date());
-    const birth = moment(`${userState.birth}`, "YYYY-MM-DD");
+    const birth = moment(`${user.birth}`, "YYYY-MM-DD");
     age = today.diff(birth, "years");
   }
 
@@ -94,12 +80,7 @@ const Mypage = (): JSX.Element => {
     <StyledDiv>
       <p>마이페이지</p>
       <div className="profileDiv">
-        <Profile
-          name={userState?.name || "none"}
-          age={age}
-          gender={userState?.gender || "none"}
-          id={userState?.userId || "none"}
-        />
+        <Profile name={user?.nickname || "none"} age={age} gender={dummyGender || "none"} id={user?.userid || 0} />
       </div>
       <div className="songHistoryDiv">
         <SongHistory musicList={MUSICLIST} />

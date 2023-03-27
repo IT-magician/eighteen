@@ -4,7 +4,7 @@ interface User {
   userid: number;
   nickname: string;
   birth: string;
-  gender: 0 | 1;
+  gender: "M" | "F";
   email: string;
   profileImage: string;
 }
@@ -14,5 +14,12 @@ interface User {
  */
 export const userState = atom<User>({
   key: "user",
-  default: undefined,
+  default: {
+    userid: 0,
+    nickname: "봉명동퉁퉁이",
+    birth: "1999-03-23",
+    gender: "F",
+    email: "test@gamil.com",
+    profileImage: `${process.env.public_url}/user/undefined.png`,
+  },
 });
