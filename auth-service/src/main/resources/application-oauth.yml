@@ -1,4 +1,4 @@
-api_gateway_url: localhost
+api_gateway_url: j8b304.p.ssafy.io
 
 spring:
   security:
