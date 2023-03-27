@@ -9,9 +9,14 @@ from pandas import json_normalize
 import numpy as np
 from sklearn.tree import DecisionTreeClassifier
 
+from surprise import SVD
+from surprise import Reader, Dataset
+
+
 DATA_DIR = "../data"
 DATA_FILE = os.path.join(DATA_DIR, "results.json")
 DATA_FILE2 = os.path.join(DATA_DIR, "emotions.json")
+DATA_FILE3 = os.path.join(DATA_DIR, "favorite_musics.json")
 
 music_columns = (
     "id",
@@ -53,11 +58,10 @@ def kmeans_clustering(data_path=DATA_FILE):
 
     return mood
 
-
 def emotion_classification(data_path=DATA_FILE, data_path2=DATA_FILE2):
     with open(data_path, encoding="utf-8") as f:
         data = json.loads(f.read())
-    
+
     music_df = pd.DataFrame(data)
     music_df = music_df.replace('', np.NaN)
     music_df = music_df.dropna(axis=0)
@@ -72,4 +76,23 @@ def emotion_classification(data_path=DATA_FILE, data_path2=DATA_FILE2):
     clf.fit(X, y)
 
     return
+
+def favorite_song(data_path=DATA_FILE, data_path3=DATA_FILE3):
+    with open(data_path, encoding="utf-8") as f:
+        data = json.loads(f.read())
+    
+    music_df = pd.DataFrame(data)
+    music_df = music_df.replace('', np.NaN)
+    music_df = music_df.dropna(axis=0)
+
+    with open(data_path3, encoding="utf-8") as f:
+        data2 = json.loads(f.read())
+
+    favorite_df = pd.DataFrame(data2)
+    favorite_df = favorite_df.dropna(axis=0)
+    favorite_df = favorite_df[['user_id', 'title', 'liked']]
+
+    tab = pd.crosstab(favorite_df['user_id'], favorite_df['title'])
+    favorite_df_group = favorite_df.groupby(['user_id', 'title'])
+    tab = favorite_df_group.sum().unstack()
     
