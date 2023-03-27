@@ -1,0 +1,86 @@
+/* NanumSquareNeo font */
+@font-face {
+  font-family: "NanumSquareNeo";
+  src: url("./fonts/NanumSquareNeoTTF-aLt.woff2") format("woff2");
+  font-weight: 100;
+  font-style: normal;
+}
+@font-face {
+  font-family: "NanumSquareNeo";
+  src: url("./fonts/NanumSquareNeoTTF-bRg.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "NanumSquareNeo";
+  src: url("./fonts/NanumSquareNeoTTF-cBd.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: "NanumSquareNeo";
+  src: url("./fonts/NanumSquareNeoTTF-dEb.woff2") format("woff2");
+  font-weight: 900;
+  font-style: normal;
+}
+
+:root {
+  --pink-50: #feecf0;
+  --pink-100: #fcc4d1;
+  --pink-200: #fba8bb;
+  --pink-300: #f9809d;
+  --pink-400: #f86789;
+  --pink-500: #f6416c;
+  --pink-600: #e03b62;
+  --pink-700: #af2e4d;
+  --pink-800: #87243b;
+  --pink-900: #671b2d;
+  --black-50: #e7e7e7;
+  --black-100: #b6b6b6;
+  --black-200: #929292;
+  --black-300: #606060;
+  --black-400: #414141;
+  --black-500: #242424;
+  --black-600: #101010;
+  --black-700: #0d0d0d;
+  --black-800: #0a0a0a;
+  --black-900: #080808;
+  --blue-50: #eaedff;
+  --blue-100: #bdc8ff;
+  --blue-200: #9dadff;
+  --blue-300: #7087ff;
+  --blue-400: #5570ff;
+  --blue-500: #2a4cff;
+  --blue-600: #2645e8;
+  --blue-700: #1e36b5;
+  --blue-800: #172a8c;
+  --blue-900: #12206b;
+  --gradation: conic-gradient(
+    from 180deg at 50% 50%,
+    #7211db -42deg,
+    #0056fe 57.37deg,
+    #d55af3 184.87deg,
+    #7211db 318deg,
+    #0056fe 417.37deg
+  );
+  --shadow: 0px 4px 16px rgba(0, 0, 0, 0.5);
+  --black-opacity: #24242480;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: "NanumSquareNeo", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--black-900);
+  color: var(--black-50);
+  letter-spacing: -0.1em;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
