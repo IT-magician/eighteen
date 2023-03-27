@@ -64,6 +64,7 @@ const HEADER_TEXT: Header[] = [
 ];
 
 const StyledHeader = styled.header`
+  padding: 16px 16px 0;
   & h1 {
     display: block;
     height: 0;
@@ -92,7 +93,7 @@ const StyledHeader = styled.header`
     height: 352px;
     background-position: center;
     object-fit: cover;
-    opacity: 0.5;
+    opacity: 1;
     -webkit-mask-image: linear-gradient(to top, transparent 0.1%, black 100%);
     mask-image: linear-gradient(to top, transparent 0.1%, black 100%);
   }
