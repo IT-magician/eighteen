@@ -1,14 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import DatePicker from "react-datepicker";
+import moment from "moment";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
+
+interface Props {
+  setValue(value: string): void;
+}
 
 /**
  * 수정 페이지에 삽입할 캘린터 컴포넌트입니다.
  */
-const SettingDatePicker = (): JSX.Element => {
-  const [birthtDate, setBirthDate] = useState<Date | null>(new Date());
+const SettingDatePicker = ({ setValue }: Props): JSX.Element => {
+  const [birthDate, setBirthDate] = useState<Date | null>(new Date());
+
+  useEffect(() => {
+    if (birthDate) {
+      const dummy = moment(birthDate).format("YYYY-MM-DD");
+      setValue(dummy);
+    }
+  }, [birthDate]);
 
   return (
     <StyledDiv>
@@ -18,7 +30,7 @@ const SettingDatePicker = (): JSX.Element => {
         dateFormat="yyyy-MM-dd"
         closeOnScroll={true}
         placeholderText="체크인 날짜 선택"
-        selected={birthtDate}
+        selected={birthDate}
         onChange={(date) => setBirthDate(date)}
       />
     </StyledDiv>

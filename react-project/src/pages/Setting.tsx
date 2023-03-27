@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import styled from "styled-components";
 import BackButton from "../components/common/button/BackButton";
 import SettingImg from "../components/setting/SettingImg";
@@ -8,6 +9,7 @@ import { userState } from "../recoil/atom";
 import { Select } from "../components/common/select";
 import { VerifyInput } from "../components/common/input/Verify";
 import { nicknameVerify } from "../utils/validation";
+import { modifyProfile } from "../apis/profile";
 import SettingDatePicker from "../components/setting/SettingDatePicker";
 
 type ProfileAttr = "nickname" | "birth" | "gender" | "email" | "profileImage";
@@ -16,19 +18,48 @@ type ProfileAttr = "nickname" | "birth" | "gender" | "email" | "profileImage";
  * 프로필 수정 화면
  */
 const Setting = (): JSX.Element => {
+  const [userInfo, setUserInfo] = useRecoilState(userState);
   const [user, setUser] = useState(useRecoilValue(userState));
   const [value, setValue] = useState<number>(0);
   const [pass, setPass] = useState<boolean>(true);
 
+  const navigate = useNavigate();
+
+  /*
+   *useState에 담긴 사용자 이름 수정
+   */
   const setNicname = (value: string) => {
-    if (user) setUser({ ...user, nickname: value });
-  };
-  const setBirth = (value: string) => {
-    if (user) setUser({ ...user, birth: value });
+    if (user) {
+      setUser({ ...user, nickname: value });
+    }
   };
 
-  const clickTest = () => {
-    console.log("save!");
+  /*
+   *useState에 담긴 사용자 나이 수정
+   */
+  const setBirth = (value: string) => {
+    if (user) {
+      setUser({ ...user, birth: value });
+    }
+  };
+
+  /*
+   * useState에 담긴 사용자 성별 수정
+   */
+  const setGender = (value: "M" | "F") => {
+    if (user) {
+      setUser({ ...user, gender: value });
+    }
+  };
+
+  /*
+   * 사용자 정보 수정 로직
+   */
+  const onHandleModifyProfile = () => {
+    const newProfile = { nickname: user.nickname, gender: user.gender, birth: user.birth };
+    setUserInfo(user);
+    modifyProfile(newProfile);
+    navigate("/mypage");
   };
 
   return (
@@ -40,26 +71,26 @@ const Setting = (): JSX.Element => {
       <div>
         <div className="imageDiv">
           <SettingImg />
-          <IconButton type="save" onClick={clickTest} />
+          <IconButton type="save" onClick={onHandleModifyProfile} />
         </div>
         <div className="birthSelectDiv">
-          <SettingDatePicker />
+          <SettingDatePicker setValue={setBirth} />
         </div>
         <div>
           {user && (
             <VerifyInput value={user.nickname} setValue={setNicname} setPass={setPass} verify={nicknameVerify} />
           )}
-          <Select<number>
+          <Select<string>
             options={[
-              { text: "남자", value: 0 },
-              { text: "여자", value: 1 },
+              { text: "남자", value: "M" },
+              { text: "여자", value: "F" },
             ]}
             defaultIdx={value}
-            setValue={setValue}
+            setValue={setGender}
           />
         </div>
         <div className="exitButton">
-          <button onClick={clickTest}>계정탈퇴</button>
+          <button>계정탈퇴</button>
         </div>
       </div>
     </StyledDiv>
