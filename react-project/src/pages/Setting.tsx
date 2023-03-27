@@ -9,10 +9,22 @@ import { userState } from "../recoil/atom";
 import { Select } from "../components/common/select";
 import { VerifyInput } from "../components/common/input/Verify";
 import { nicknameVerify } from "../utils/validation";
-import { modifyProfile } from "../apis/profile";
+import { modifyProfile, deleteAccount } from "../apis/profile";
 import SettingDatePicker from "../components/setting/SettingDatePicker";
 
 type ProfileAttr = "nickname" | "birth" | "gender" | "email" | "profileImage";
+
+/**
+ * recoil에서 받아오는 사용자 정보 형식
+ * user: {
+    userid: 0,
+    nickname: "봉명동퉁퉁이",
+    birth: "1999-03-23",
+    gender: "F",
+    email: "test@gamil.com",
+    profileImage: `${process.env.public_url}/user/undefined.png`,
+  }
+ */
 
 /**
  * 프로필 수정 화면
@@ -62,6 +74,11 @@ const Setting = (): JSX.Element => {
     navigate("/mypage");
   };
 
+  const onHandleDeleteAccount = () => {
+    deleteAccount();
+    navigate("/");
+  };
+
   return (
     <StyledDiv>
       <div className="backButtonDiv">
@@ -90,7 +107,7 @@ const Setting = (): JSX.Element => {
           />
         </div>
         <div className="exitButton">
-          <button>계정탈퇴</button>
+          <button onClick={onHandleDeleteAccount}>계정탈퇴</button>
         </div>
       </div>
     </StyledDiv>
