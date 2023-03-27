@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const NaverLoginButton = (): JSX.Element => {
   const socialSignIn = (socialType: string) => {
-    return `${process.env.REACT_APP_SERVER_URL}/oauth2/authorization/${socialType}}`;
+    return `http://j8b304.p.ssafy.io/oauth2/authorization/${socialType}}`;
   };
 
   return (

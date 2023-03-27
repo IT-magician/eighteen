@@ -4,7 +4,7 @@ import { instance } from "../../../apis";
 
 const GoogleLoginButton = (): JSX.Element => {
   const socialSignIn = (socialType: string) => {
-    return `http://192.168.31.73:8080/oauth2/authorization/${socialType}`;
+    return `http://j8b304.p.ssafy.io/oauth2/authorization/${socialType}`;
   };
 
   return (
