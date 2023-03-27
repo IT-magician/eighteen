@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { TbChevronDown } from "react-icons/tb";
 import styled from "styled-components";
 

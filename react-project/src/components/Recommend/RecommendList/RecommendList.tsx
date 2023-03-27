@@ -1,5 +1,4 @@
 import React from "react";
-import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Weather } from "../../../recoil/atom/weatherState";
 import SampleData from "../../../utils/sample/song.json";
@@ -11,8 +10,6 @@ interface Props {
 }
 
 const RecommendList = ({ weather }: Props): JSX.Element => {
-  const { type } = useParams();
-
   return (
     <StyledDiv>
       <SongSlideList songList={SampleData.data} />

@@ -1,6 +1,5 @@
 import React, { useMemo } from "react";
 import { useParams } from "react-router-dom";
-import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { RecommendType } from "..";
 import { Weather } from "../../../recoil/atom/weatherState";
