@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import styled from "styled-components";
 import BackButton from "../components/common/button/BackButton";
 import SettingImg from "../components/setting/SettingImg";
@@ -10,6 +8,7 @@ import { userState } from "../recoil/atom";
 import { Select } from "../components/common/select";
 import { VerifyInput } from "../components/common/input/Verify";
 import { nicknameVerify } from "../utils/validation";
+import SettingDatePicker from "../components/setting/SettingDatePicker";
 
 type ProfileAttr = "nickname" | "birth" | "gender" | "email" | "profileImage";
 
@@ -55,30 +54,7 @@ const Setting = (): JSX.Element => {
           <IconButton type="save" onClick={clickTest} />
         </div>
         <div className="birthSelectDiv">
-          <Select<number>
-            options={[
-              { text: "남자", value: 0 },
-              { text: "여자", value: 1 },
-            ]}
-            defaultIdx={value}
-            setValue={setValue}
-          />
-          <Select<number>
-            options={[
-              { text: "남자", value: 0 },
-              { text: "여자", value: 1 },
-            ]}
-            defaultIdx={value}
-            setValue={setValue}
-          />
-          <Select<number>
-            options={[
-              { text: "남자", value: 0 },
-              { text: "여자", value: 1 },
-            ]}
-            defaultIdx={value}
-            setValue={setValue}
-          />
+          <SettingDatePicker />
         </div>
         <div>
           {user && (
