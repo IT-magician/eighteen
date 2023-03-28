@@ -105,10 +105,13 @@ const StyledDiv = styled.div`
 
   & .profileDiv {
     box-sizing: border-box;
+    margin: 40px 0px 0px;
     padding: 0px 8px 0px;
   }
 
   & .songHistoryDiv {
+    box-sizing: border-box;
+    margin-top: 40px;
   }
 `;
 
