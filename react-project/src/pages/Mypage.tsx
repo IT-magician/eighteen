@@ -57,13 +57,13 @@ const MUSICLIST: Music[] = [
  */
 const Mypage = (): JSX.Element => {
   const [user, setUser] = useState(useRecoilValue(userState));
-  const [dummyGender, setDummy] = useState<string>("none");
+  const [dummyGender, setDummyGender] = useState<string>("none");
 
   useEffect(() => {
     if (user.gender == "M") {
-      setDummy("남성");
+      setDummyGender("남성");
     } else if (user.gender == "F") {
-      setDummy("여성");
+      setDummyGender("여성");
     }
   }, [user]);
 
