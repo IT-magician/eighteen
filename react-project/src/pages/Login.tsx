@@ -1,44 +1,67 @@
 import React from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+import { Pagination } from "swiper";
+import { FirstLoginPage, SecondLoginPage, ThirdLoginPage, FinalLoginPage } from "../components/login/page";
 import styled from "styled-components";
-import { KakaoLoginButton, GoogleLoginButton } from "../components/login/button";
 
 /**
  * 로그인 화면
  */
 const Login = (): JSX.Element => {
   return (
-    <Container>
-      <TitleText>너도 몰랐던 너의 에이틴</TitleText>
-      <SubtitleDiv>
-        <SubtitleText>에이틴과 함께</SubtitleText>
-        <SubtitleText>신나는 노래방 라이프를 즐기러 가볼까요?</SubtitleText>
-      </SubtitleDiv>
-      <KakaoLoginButton></KakaoLoginButton>
-      <GoogleLoginButton></GoogleLoginButton>
-    </Container>
+    <StyledDiv>
+      <Swiper pagination={true} modules={[Pagination]} className="mySwiper">
+        <SwiperSlide>
+          <FirstLoginPage />
+        </SwiperSlide>
+        <SwiperSlide>
+          <SecondLoginPage />
+        </SwiperSlide>
+        <SwiperSlide>
+          <ThirdLoginPage />
+        </SwiperSlide>
+        <SwiperSlide>
+          <FinalLoginPage />
+        </SwiperSlide>
+      </Swiper>
+    </StyledDiv>
   );
 };
 
-const Container = styled.div`
+const StyledDiv = styled.div`
   position: relative;
-`;
 
-const TitleText = styled.p`
-  position: absolute;
-  left: 28px;
-  top: 160px;
-  margin: 0px;
-  font-size: 32px;
-`;
+  & .swiper {
+    width: 100%;
+    height: 100%;
 
-const SubtitleDiv = styled.div`
-  position: absolute;
-  left: 28px;
-  top: 235px;
-`;
+    & .swiper-slide {
+      width: 100%;
+      min-height: 750px;
+    }
+  }
+  .swiper-pagination {
+    /* position: relative; */
+    margin-top: 16px;
+    height: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-const SubtitleText = styled.p`
-  margin: 0px;
-  font-size: 24px;
+  .swiper-pagination-bullet {
+    background-color: var(--black-50);
+    opacity: 1;
+    width: 12px;
+    height: 12px;
+    transition: all 0.3s;
+  }
+  .swiper-pagination-bullet-active {
+    background-color: var(--blue-500);
+    width: 16px;
+    height: 16px;
+  }
 `;
 export default Login;
