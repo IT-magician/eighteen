@@ -9,7 +9,7 @@ interface Search {
 const initialState: Search = {
   keyword: "",
   type: "title",
-  loading: true,
+  loading: false,
 };
 
 export const searchState = atom({
