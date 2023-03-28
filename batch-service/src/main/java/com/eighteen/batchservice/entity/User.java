@@ -26,6 +26,6 @@ public class User {
     @Column(name = "birth")
     private String birth;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
     private List<MyEighteen> myEighteens = new ArrayList<>();
 }

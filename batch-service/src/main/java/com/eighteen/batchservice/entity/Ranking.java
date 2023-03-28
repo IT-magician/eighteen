@@ -18,11 +18,12 @@ public class Ranking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer Id;
+    private Integer id;
 
     @ManyToOne
     private AgeGender ageGender;
 
     @ManyToOne
     private Music music;
+
 }

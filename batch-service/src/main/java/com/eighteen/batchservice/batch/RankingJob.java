@@ -16,6 +16,7 @@ import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilde
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import java.time.LocalDate;
 import java.time.Period;
@@ -40,6 +41,8 @@ public class RankingJob {
     private final StepBuilderFactory stepBuilderFactory;
 
     private final EntityManagerFactory entityManagerFactory;
+
+    private final EntityManager entityManager;
 
     private int chunkSize;
 
@@ -82,26 +85,6 @@ public class RankingJob {
         this.F6 = new HashMap<>();
     }
 
-    public class JpaItemListWriter<T> extends JpaItemWriter<List<T>> {
-        private JpaItemWriter<T> jpaItemWriter;
-
-        public JpaItemListWriter(JpaItemWriter<T> jpaItemWriter) {
-            this.jpaItemWriter = jpaItemWriter;
-        }
-
-        @Override
-        public void write(List<? extends List<T>> items) {
-            List<T> totalList = new ArrayList<>();
-
-            for(List<T> list : items) {
-                totalList.addAll(list);
-            }
-
-            jpaItemWriter.write(totalList);
-        }
-
-    }
-
     @Bean
     public Job rankingJob_batchBuild() {
 
@@ -122,6 +105,7 @@ public class RankingJob {
                 .writer(jpaPageJob1_rankingItemWriter())
                 .build();
     }
+
 
     @Bean
     public JpaPagingItemReader<User> jpaPageJob1_dbItemReader() {
@@ -173,12 +157,31 @@ public class RankingJob {
         JpaItemWriter<TempRanking> writer = new JpaItemWriter<>();
         writer.setEntityManagerFactory(entityManagerFactory);
 
-        return new JpaItemListWriter<>(writer);
+        JpaItemListWriter<TempRanking> jpaItemListWriter = new JpaItemListWriter<>(writer);
+        jpaItemListWriter.setEntityManagerFactory(entityManagerFactory);
+        return jpaItemListWriter;
     }
 
+    public class JpaItemListWriter<T> extends JpaItemWriter<List<T>> {
 
+        private JpaItemWriter<T> jpaItemWriter;
 
-    @Bean
+        public JpaItemListWriter(JpaItemWriter<T> jpaItemWriter) {
+            this.jpaItemWriter = jpaItemWriter;
+        }
+
+        @Override
+        public void write(List<? extends List<T>> items) {
+            List<T> totalList = new ArrayList<>();
+
+            for (List<T> list: items) {
+                totalList.addAll(list);
+            }
+
+            jpaItemWriter.write(totalList);
+        }
+    }
+
     public Step rankingJob_step2() {
 
         Chunk(2);
@@ -187,7 +190,7 @@ public class RankingJob {
                 .<TempRanking, TempRanking>chunk(chunkSize)
                 .reader(jpaPageJob2_dbItemReader())
                 .processor(userToRankingProcessor2())
-                .writer(jpaPageJob2_rankingItemWriter())
+                .writer(jpaPageJob2_rankingItemWriter(entityManager))
                 .build();
     }
 
@@ -237,7 +240,7 @@ public class RankingJob {
     }
 
     @Bean
-    public ItemWriter<TempRanking> jpaPageJob2_rankingItemWriter() {
+    public ItemWriter<TempRanking> jpaPageJob2_rankingItemWriter(EntityManager entityManager) {
 
         return list -> {
             rankingRepository.deleteAll();
@@ -288,6 +291,7 @@ public class RankingJob {
                 }
                 Music music = entry.getKey();
                 AgeGender ageGender = ageGenderRepository.findByAgId("M2");
+                String id = ageGender.getAgId() + music.getMusicId();
                 Ranking ranking = Ranking.builder()
                         .ageGender(ageGender)
                         .music(music)
@@ -302,6 +306,7 @@ public class RankingJob {
                 }
                 Music music = entry.getKey();
                 AgeGender ageGender = ageGenderRepository.findByAgId("F2");
+                String id = ageGender.getAgId() + music.getMusicId();
                 Ranking ranking = Ranking.builder()
                         .ageGender(ageGender)
                         .music(music)
@@ -316,6 +321,7 @@ public class RankingJob {
                 }
                 Music music = entry.getKey();
                 AgeGender ageGender = ageGenderRepository.findByAgId("M3");
+                String id = ageGender.getAgId() + music.getMusicId();
                 Ranking ranking = Ranking.builder()
                         .ageGender(ageGender)
                         .music(music)
@@ -330,6 +336,7 @@ public class RankingJob {
                 }
                 Music music = entry.getKey();
                 AgeGender ageGender = ageGenderRepository.findByAgId("F3");
+                String id = ageGender.getAgId() + music.getMusicId();
                 Ranking ranking = Ranking.builder()
                         .ageGender(ageGender)
                         .music(music)
@@ -344,6 +351,7 @@ public class RankingJob {
                 }
                 Music music = entry.getKey();
                 AgeGender ageGender = ageGenderRepository.findByAgId("M4");
+                String id = ageGender.getAgId() + music.getMusicId();
                 Ranking ranking = Ranking.builder()
                         .ageGender(ageGender)
                         .music(music)
@@ -358,6 +366,7 @@ public class RankingJob {
                 }
                 Music music = entry.getKey();
                 AgeGender ageGender = ageGenderRepository.findByAgId("F4");
+                String id = ageGender.getAgId() + music.getMusicId();
                 Ranking ranking = Ranking.builder()
                         .ageGender(ageGender)
                         .music(music)
@@ -372,6 +381,7 @@ public class RankingJob {
                 }
                 Music music = entry.getKey();
                 AgeGender ageGender = ageGenderRepository.findByAgId("M5");
+                String id = ageGender.getAgId() + music.getMusicId();
                 Ranking ranking = Ranking.builder()
                         .ageGender(ageGender)
                         .music(music)
@@ -386,6 +396,7 @@ public class RankingJob {
                 }
                 Music music = entry.getKey();
                 AgeGender ageGender = ageGenderRepository.findByAgId("F5");
+                String id = ageGender.getAgId() + music.getMusicId();
                 Ranking ranking = Ranking.builder()
                         .ageGender(ageGender)
                         .music(music)
@@ -400,6 +411,7 @@ public class RankingJob {
                 }
                 Music music = entry.getKey();
                 AgeGender ageGender = ageGenderRepository.findByAgId("M6");
+                String id = ageGender.getAgId() + music.getMusicId();
                 Ranking ranking = Ranking.builder()
                         .ageGender(ageGender)
                         .music(music)
@@ -414,6 +426,7 @@ public class RankingJob {
                 }
                 Music music = entry.getKey();
                 AgeGender ageGender = ageGenderRepository.findByAgId("F6");
+                String id = ageGender.getAgId() + music.getMusicId();
                 Ranking ranking = Ranking.builder()
                         .ageGender(ageGender)
                         .music(music)
@@ -422,6 +435,7 @@ public class RankingJob {
                 rankingRepository.save(ranking);
             }
             tempRankingRepository.deleteAll();
+            entityManager.flush();
         };
     }
 
@@ -434,4 +448,7 @@ public class RankingJob {
         }
         return result;
     }
+
+
+
 }
