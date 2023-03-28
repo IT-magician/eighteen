@@ -37,14 +37,17 @@ const StyledDiv = styled.div`
     animation: jello-vertical 1.2s ease-in-out 0s infinite;
 
     &:nth-child(2) {
+      -webkit-animation-delay: 0.2s;
       animation-delay: 0.2s;
       /* background-color: #7211db; */
     }
     &:nth-child(3) {
+      -webkit-animation-delay: 0.4s;
       animation-delay: 0.4s;
       /* background-color: #c75ee4; */
     }
     &:nth-child(4) {
+      -webkit-animation-delay: 0.4s;
       animation-delay: 0.6s;
       /* background-color: #0056fe; */
     }
