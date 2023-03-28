@@ -78,7 +78,7 @@ const Mypage = (): JSX.Element => {
 
   return (
     <StyledDiv>
-      <p>마이페이지</p>
+      <h1>마이페이지</h1>
       <div className="profileDiv">
         <Profile name={user?.nickname || "none"} age={age} gender={dummyGender || "none"} id={user?.userid || 0} />
       </div>
@@ -90,40 +90,25 @@ const Mypage = (): JSX.Element => {
 };
 
 const StyledDiv = styled.div`
-  margin: 0px auto 0px;
-  max-width: 430px;
+  box-sizing: border-box;
+  padding: 96px 16px 80px;
   position: relative;
 
   ::-webkit-scrollbar {
     display: none;
   }
 
-  & > p {
-    position: absolute;
-    max-width: 374px;
-    width: 100%;
-    left: 28px;
-    top: 184px;
-    margin: 0px 0px 40px;
+  & > h1 {
+    font-weight: 400;
     font-size: 32px;
   }
 
   & .profileDiv {
-    position: absolute;
-    max-width: 374px;
-    width: 100%;
-    left: 28px;
-    top: 260px;
     box-sizing: border-box;
     padding: 0px 8px 0px;
   }
 
   & .songHistoryDiv {
-    position: absolute;
-    max-width: 374px;
-    width: 100%;
-    left: 28px;
-    top: 408px;
   }
 `;
 
