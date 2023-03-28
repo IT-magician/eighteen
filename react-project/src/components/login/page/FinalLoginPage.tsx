@@ -13,14 +13,16 @@ const Login = (): JSX.Element => {
         <p>에이틴과 함께</p>
         <p>신나는 노래방 라이프를 즐기러 가볼까요?</p>
       </div>
-      <div className="kakaoButton">
-        <KakaoLoginButton />
-      </div>
-      <div className="googleButton">
-        <GoogleLoginButton />
-      </div>
-      <div className="naverButton">
-        <NaverLoginButton />
+      <div className="buttonDiv">
+        <div>
+          <KakaoLoginButton />
+        </div>
+        <div>
+          <GoogleLoginButton />
+        </div>
+        <div>
+          <NaverLoginButton />
+        </div>
       </div>
     </StyledDiv>
   );
@@ -47,15 +49,19 @@ const StyledDiv = styled.div`
       margin: 0px;
       font-size: 24px;
     }
+
+    & > div {
+      margin: 0px 0px 20px;
+    }
   }
 
-  & .kakaoButton {
-  }
-
-  & .googleButton {
-  }
-
-  & .naverButton {
+  & .buttonDiv {
+    margin-top: 200px;
+    padding: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
   }
 `;
 export default Login;

@@ -1,6 +1,10 @@
 import React from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+import { Pagination } from "swiper";
+import { FirstLoginPage, SecondLoginPage, ThirdLoginPage, FinalLoginPage } from "../components/login/page";
 import styled from "styled-components";
-import { KakaoLoginButton, GoogleLoginButton, NaverLoginButton } from "../components/login/button";
 
 /**
  * 로그인 화면
@@ -8,20 +12,20 @@ import { KakaoLoginButton, GoogleLoginButton, NaverLoginButton } from "../compon
 const Login = (): JSX.Element => {
   return (
     <StyledDiv>
-      <p>너도 몰랐던 너의 에이틴</p>
-      <div>
-        <p>에이틴과 함께</p>
-        <p>신나는 노래방 라이프를 즐기러 가볼까요?</p>
-      </div>
-      <div className="kakaoButton">
-        <KakaoLoginButton />
-      </div>
-      <div className="googleButton">
-        <GoogleLoginButton />
-      </div>
-      <div className="naverButton">
-        <NaverLoginButton />
-      </div>
+      <Swiper pagination={true} modules={[Pagination]} className="mySwiper">
+        <SwiperSlide>
+          <FirstLoginPage />
+        </SwiperSlide>
+        <SwiperSlide>
+          <SecondLoginPage />
+        </SwiperSlide>
+        <SwiperSlide>
+          <ThirdLoginPage />
+        </SwiperSlide>
+        <SwiperSlide>
+          <FinalLoginPage />
+        </SwiperSlide>
+      </Swiper>
     </StyledDiv>
   );
 };
@@ -29,33 +33,35 @@ const Login = (): JSX.Element => {
 const StyledDiv = styled.div`
   position: relative;
 
-  & > p {
-    box-sizing: border-box;
+  & .swiper {
     width: 100%;
-    margin: 160px 0px 0px 0px;
-    padding: 0px 0px 0px 28px;
-    font-size: 32px;
-  }
+    height: 100%;
 
-  & > div {
-    box-sizing: border-box;
-    width: 100%;
-    margin: 40px 0px 0px 0px;
-    padding: 0px 0px 0px 28px;
-
-    & > p {
-      margin: 0px;
-      font-size: 24px;
+    & .swiper-slide {
+      width: 100%;
+      min-height: 750px;
     }
   }
-
-  & .kakaoButton {
+  .swiper-pagination {
+    /* position: relative; */
+    margin-top: 16px;
+    height: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
-  & .googleButton {
+  .swiper-pagination-bullet {
+    background-color: var(--black-50);
+    opacity: 1;
+    width: 12px;
+    height: 12px;
+    transition: all 0.3s;
   }
-
-  & .naverButton {
+  .swiper-pagination-bullet-active {
+    background-color: var(--blue-500);
+    width: 16px;
+    height: 16px;
   }
 `;
 export default Login;
