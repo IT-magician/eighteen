@@ -1,11 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { TbMusic, TbSearch, TbUser } from "react-icons/tb";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { searchState } from "../../../recoil/atom/searchState";
 
-const SongSearchInput = (): JSX.Element => {
+interface Props {
+  addHistory(keyword: string, type: string): void;
+}
+
+const SongSearchInput = ({ addHistory }: Props): JSX.Element => {
   const [search, setSearch] = useRecoilState(searchState);
+
+  useEffect(() => {
+    setSearch({ ...search, keyword: "", type: "title" });
+  }, []);
 
   const { keyword, type } = search;
 
@@ -17,8 +25,13 @@ const SongSearchInput = (): JSX.Element => {
     setSearch({ ...search, type: e.currentTarget.value });
   };
 
+  const onBlur = () => {
+    if (!keyword) return;
+    addHistory(keyword, type);
+  };
+
   return (
-    <StyledDiv>
+    <StyledDiv tabIndex={1} onBlur={onBlur}>
       <TbSearch />
       <input value={keyword} onChange={onChangeKeyword} placeholder={"노래를 검색해보세요"} />
       <div className="type-button">
