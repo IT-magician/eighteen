@@ -27,7 +27,7 @@ const App = (): JSX.Element => {
 
   return (
     <StyledDiv className="App">
-      <div className="Page">
+      <div className="Page" id="Page">
         <div className="logo">
           <Logo />
         </div>
