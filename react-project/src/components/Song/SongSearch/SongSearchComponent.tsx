@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { TbX } from "react-icons/tb";
-import { useRecoilCallback, useRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { searchState } from "../../../recoil/atom/searchState";
 import SongSearchInput from "./SongSearchInput";
