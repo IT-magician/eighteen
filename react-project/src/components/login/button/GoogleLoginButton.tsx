@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { instance } from "../../../apis";
 
 const GoogleLoginButton = (): JSX.Element => {
   const socialSignIn = (socialType: string) => {
