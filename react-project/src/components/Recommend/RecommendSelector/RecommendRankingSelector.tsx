@@ -25,6 +25,7 @@ const ageList = [
   { text: "30대", value: "3" },
   { text: "40대", value: "4" },
   { text: "50대", value: "5" },
+  { text: "60대 +", value: "6" },
 ];
 
 const genderList = [

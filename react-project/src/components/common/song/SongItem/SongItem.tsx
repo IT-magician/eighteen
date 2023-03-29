@@ -7,6 +7,7 @@ export interface Props {
   musicId: number;
   title: string;
   singer: string;
+  thumbnailUrl: string;
   isEighteen: boolean;
 }
 
