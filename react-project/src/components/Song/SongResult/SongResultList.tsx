@@ -19,7 +19,14 @@ const SongResultList = (): JSX.Element => {
       {search.loading || Boolean(list.length) || (Boolean(search.keyword) && <SongResultEmpty />)}
       <ul>
         {list.map((item, index) => (
-          <SongItem key={index} musicId={item.musicId} title={item.title} singer={item.singer} isEighteen={false} />
+          <SongItem
+            key={index}
+            musicId={item.musicId}
+            title={item.title}
+            singer={item.singer}
+            isEighteen={item.isEighteen}
+            thumbnailUrl={item.thumbnailUrl}
+          />
         ))}
       </ul>
     </StyledDiv>
