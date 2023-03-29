@@ -22,8 +22,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ProfileService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
@@ -48,16 +47,17 @@ public class ProfileService {
         return res;
     }
 
-    public String updateProfile(String userId, RequestUpdateProfileDto requestUpdateProfileDto) throws IOException{
+    public String updateProfile(String userId, RequestUpdateProfileDto requestUpdateProfileDto, MultipartFile profileImage) throws IOException{
 
         User user = userRepository.findByUserId(userId);
-        MultipartFile profileImage = requestUpdateProfileDto.getProfileImage();
-        String s3FileName = UUID.randomUUID() + "-" + profileImage.getOriginalFilename();
-        ObjectMetadata objMeta = new ObjectMetadata();
-        objMeta.setContentLength(profileImage.getInputStream().available());
-        amazonS3.putObject(bucket, s3FileName, profileImage.getInputStream(), objMeta);
-        amazonS3.setObjectAcl(bucket, s3FileName, CannedAccessControlList.PublicRead);
-        user.updateImage(amazonS3.getUrl(bucket, s3FileName).toString());
+        if (profileImage != null) {
+            String s3FileName = UUID.randomUUID() + "-" + profileImage.getOriginalFilename();
+            ObjectMetadata objMeta = new ObjectMetadata();
+            objMeta.setContentLength(profileImage.getInputStream().available());
+            amazonS3.putObject(bucket, s3FileName, profileImage.getInputStream(), objMeta);
+            amazonS3.setObjectAcl(bucket, s3FileName, CannedAccessControlList.PublicRead);
+            user.updateImage(amazonS3.getUrl(bucket, s3FileName).toString());
+        }
         user.updateProfile(requestUpdateProfileDto);
         userRepository.save(user);
         return "ok";

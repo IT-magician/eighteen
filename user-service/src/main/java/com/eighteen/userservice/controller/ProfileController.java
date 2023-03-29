@@ -3,6 +3,7 @@ package com.eighteen.userservice.controller;
 import com.eighteen.userservice.dto.request.RequestUpdateProfileDto;
 import com.eighteen.userservice.dto.response.ResponseProfileDto;
 import com.eighteen.userservice.service.ProfileService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,12 +20,13 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/profile")
 @Api(value = "프로필", description = "프로필 관련 API")
 public class ProfileController {
 
-    @Autowired
-    private ProfileService profileService;
+
+    private final ProfileService profileService;
 
     @ApiOperation(value = "프로필 가져오기", response = ResponseProfileDto.class)
     @ApiResponses(value = {
@@ -69,9 +71,10 @@ public class ProfileController {
     })
     @PatchMapping("")
     public ResponseEntity<String> updateProfile(@RequestHeader("x-forwarded-for-user-id") String userId,
-                                                @ApiParam(value = "변경프로필정보", required = true) @RequestBody RequestUpdateProfileDto requestUpdateProfileDto) throws IOException{
+                                                @ApiParam(value = "변경프로필정보", required = true) @RequestPart("profileInfo") RequestUpdateProfileDto requestUpdateProfileDto,
+                                                @ApiParam(value = "이미지", required = true) @RequestParam("profileImage") MultipartFile profileImage) throws IOException{
 
-        String res = profileService.updateProfile(userId, requestUpdateProfileDto);
+        String res = profileService.updateProfile(userId, requestUpdateProfileDto, profileImage);
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 

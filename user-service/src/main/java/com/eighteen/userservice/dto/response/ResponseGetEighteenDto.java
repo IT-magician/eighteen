@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Builder
 @Setter
@@ -19,12 +20,4 @@ public class ResponseGetEighteenDto {
     @ApiModelProperty(value = "애창곡 페이지", required = true)
     private Page<MusicDto> musicPage;
 
-    @ApiModelProperty(value = "빠른선곡 목록", required = true)
-    private List<MusicDto> quicks;
-
-    public ResponseGetEighteenDto(Page<MusicDto> musicDtoPage, List<MusicDto> quicks) {
-
-        this.musicPage = musicDtoPage;
-        this.quicks = quicks;
-    }
 }

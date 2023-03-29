@@ -23,6 +23,4 @@ public class RequestUpdateProfileDto {
     @ApiModelProperty(value = "유저 성별", required = true)
     private String gender;
 
-    @ApiModelProperty(value = "프로필 이미지", required = true)
-    private MultipartFile profileImage;
 }
