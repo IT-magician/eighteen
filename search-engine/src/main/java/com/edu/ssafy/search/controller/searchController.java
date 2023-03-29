@@ -61,11 +61,15 @@ public class searchController {
 
     @GetMapping("/title/pagination/{title}")
     ResponseEntity searchBytitle(@PathVariable String title, String user_id, Long pagination_idx, Long pagination_size) throws UnsupportedEncodingException {
+        if (user_id == null || user_id.isEmpty()) return new ResponseEntity(HttpStatus.BAD_REQUEST);
+
         return new ResponseEntity(userIdxService.searchBytitleAndPagination(user_id, title, pagination_idx, pagination_size), HttpStatus.OK);
     }
 
     @GetMapping("/singer/pagination/{singer}")
     ResponseEntity searchBysinger(@PathVariable String singer, String user_id, Long pagination_idx, Long pagination_size) {
+        if (user_id == null || user_id.isEmpty()) return new ResponseEntity(HttpStatus.BAD_REQUEST);
+
         return new ResponseEntity(userIdxService.searchBysingerAndPagination(user_id, singer, pagination_idx, pagination_size), HttpStatus.OK);
 
     }
