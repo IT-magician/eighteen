@@ -33,14 +33,7 @@ const SongSlideList = ({ songList, size = 5 }: Props): JSX.Element => {
 
   return (
     <StyledDiv size={size}>
-      <Swiper
-        modules={[Pagination]}
-        spaceBetween={50}
-        slidesPerView={1}
-        pagination={{ clickable: true }}
-        onSlideChange={() => console.log("slide change")}
-        onSwiper={(swiper) => console.log(swiper)}
-      >
+      <Swiper modules={[Pagination]} spaceBetween={50} slidesPerView={1} pagination={{ clickable: true }}>
         {songPage.map((page, index) => (
           <SwiperSlide key={`page-${index}`} className="swiper-slide">
             <ul>

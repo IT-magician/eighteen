@@ -9,6 +9,8 @@ export interface Props {
   singer: string;
   thumbnailUrl: string;
   isEighteen: boolean;
+  onCustomClick?(): void;
+  onFavoriteBtnClick?(): void;
 }
 
 /**
@@ -16,17 +18,23 @@ export interface Props {
  * 좌측 버튼 클릭 시 좋아요 여부를 토글할 수 있으며
  * 컴포넌트 클릭 시 해당 노래 상세페이지로 이동합니다.
  */
-const SongItem = ({ musicId, title, singer, isEighteen }: Props): JSX.Element => {
+const SongItem = ({ musicId, title, singer, isEighteen, onCustomClick, onFavoriteBtnClick }: Props): JSX.Element => {
   const navigate = useNavigate();
   const [eighteen, setEighteen] = useState<boolean>(isEighteen);
 
   const onClick = () => {
-    navigate(`/song/${musicId}`);
+    if (onCustomClick) onCustomClick();
+    else navigate(`/song/${musicId}`);
   };
 
   return (
     <StyledLi title={title} singer={singer} onClick={onClick}>
-      <SongFavoriteButton isEighteen={eighteen} musicId={musicId} setEighteen={setEighteen} />
+      <SongFavoriteButton
+        isEighteen={eighteen}
+        musicId={musicId}
+        setEighteen={setEighteen}
+        onCustomClick={onFavoriteBtnClick}
+      />
       <div className="number">
         <span>{musicId}</span>
       </div>
