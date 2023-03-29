@@ -22,6 +22,8 @@ public class userController {
 
     @PostMapping("/regist/{user_id}")
     ResponseEntity regist(@PathVariable String user_id) {
+        if (user_id == null || user_id.isEmpty()) return new ResponseEntity(HttpStatus.BAD_REQUEST);
+
         userIdxService.regist(user_id);
         return new ResponseEntity(HttpStatus.OK);
     }

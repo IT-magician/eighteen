@@ -137,10 +137,9 @@ public class UserIdxService {
 
         for (SongDTO song : songs) {
             sb.append("{\"index\":{\"_id\":\"" + song.getId() + "\",\"_index\":\""+ "favorite_song_list@" + user_id  + "\"}}\n" +
-                    "{\"id\":\"" + song.getId() + "\",\"title\":\"" + song.getTitle() + "\",\"singer\":\"" + song.getSinger() + "\",\"youtube_url\":\"" + song.getYoutube_url() + "\"}");
+                    "{\"id\":\"" + song.getId() + "\",\"title\":\"" + song.getTitle() + "\",\"singer\":\"" + song.getSinger() + "\",\"youtube_url\":\"" + song.getYoutube_url() + "\"}\n");
         }
 
-        sb.append("\n");
 
 //        webClient.method(HttpMethod.POST)         // POST method
 //                .uri("/_bulk")    // baseUrl 이후 uri
@@ -167,6 +166,7 @@ public class UserIdxService {
         stream.write(out);
 
         System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
+        if (http.getResponseCode()/100 != 2) System.out.println(new String(http.getErrorStream().readAllBytes()));
         http.disconnect();
     }
 
@@ -193,10 +193,14 @@ public class UserIdxService {
         stream.write(out);
 
         System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
+        if (http.getResponseCode()/100 != 2) System.out.println(new String(http.getErrorStream().readAllBytes()));
         http.disconnect();
     }
 
     public Set<Integer> getUserFavoriteSongWithId(String user_id) {
+        System.out.println("/favorite_song_list@" + user_id + "/_search?filter_path=hits.hits.*,aggregations.*");
+
+
         String responseBody = webClient.method(HttpMethod.POST)         // POST method
                 .uri("/favorite_song_list@" + user_id + "/_search?filter_path=hits.hits.*,aggregations.*")    // baseUrl 이후 uri
                 .headers(headers -> headers.setBasicAuth(username, password)) // basic auth
@@ -209,9 +213,11 @@ public class UserIdxService {
                 .bodyToMono(String.class)  // body type : EmpInfo
                 .block();                   // await
 
+        System.out.println("response body : " + responseBody);
         Map<String, Map<String, List<Map<String, Map<String, Object>>>>> map = gson.fromJson(responseBody, Map.class);
         Set<Integer> list = new HashSet<>();
 
+        if (map.isEmpty() || !map.get("hits").containsKey("hits")) return list;
 
         for (int i = 0;i < map.get("hits").get("hits").size();i++) {
             int id = Integer.parseInt((String) map.get("hits").get("hits").get(i).get("_source").get("id"));
@@ -250,7 +256,6 @@ public class UserIdxService {
     public Map<String, Object> searchBysingerAndPagination(String user_id, String singer, long pagination_idx, long pagination_size) {
         List<SongDTO> songs = searchService.searchBysinger(singer);
 
-//        if (true) return null;
 
         Set<Integer> user_favorite_songs = getUserFavoriteSongWithId(user_id);
 
