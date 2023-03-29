@@ -42,6 +42,8 @@ const StyledDiv = styled.div`
     line-height: 24px;
     & img {
       width: 40%;
+      -webkit-animation: jello-horizontal 0.9s both;
+      animation: jello-horizontal 0.9s both;
       transform: rotate(60deg);
     }
     & p {
