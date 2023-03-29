@@ -65,10 +65,25 @@ const Setting = (): JSX.Element => {
   };
 
   /*
+   * userState에 담긴 사용자 이미지 수정
+   */
+  const setImage = (value: string) => {
+    if (user) {
+      setUser({ ...user, profileImage: value });
+    }
+  };
+
+  /*
    * 사용자 정보 수정 로직
    */
   const onHandleModifyProfile = () => {
-    const newProfile = { nickname: user.nickname, gender: user.gender, birth: user.birth };
+    const newProfile = {
+      nickname: user.nickname,
+      gender: user.gender,
+      birth: user.birth,
+      email: user.email,
+      profileImage: user.profileImage,
+    };
     setUserInfo(user);
     modifyProfile(newProfile);
     navigate("/mypage");
@@ -84,10 +99,10 @@ const Setting = (): JSX.Element => {
       <div className="backButtonDiv">
         <BackButton />
       </div>
-      <p>프로필 설정</p>
+      <h1>프로필 설정</h1>
       <div>
         <div className="imageDiv">
-          <SettingImg />
+          <SettingImg setValue={setImage} />
           <IconButton type="save" onClick={onHandleModifyProfile} />
         </div>
         <div className="birthSelectDiv">
@@ -115,8 +130,8 @@ const Setting = (): JSX.Element => {
 };
 
 const StyledDiv = styled.div`
-  margin: 0px auto 0px;
-  position: relative;
+  box-sizing: border-box;
+  padding: 48px 16px 80px;
   overflow-x: hidden;
 
   ::-webkit-scrollbar {
@@ -124,12 +139,12 @@ const StyledDiv = styled.div`
   }
 
   & .backButtonDiv {
-    margin-top: 48px;
-    margin-left: 28px;
+    margin-bottom: 23.44px;
   }
 
-  & > p {
-    margin: 90px 0px 40px 28px;
+  & > h1 {
+    margin-bottom: 40px;
+    font-weight: 400;
     font-size: 32px;
   }
 
@@ -146,7 +161,7 @@ const StyledDiv = styled.div`
     display: flex;
     justify-content: space-between;
     margin-bottom: 40px;
-    padding: 0px 36px 0px;
+    padding: 0px 8px 0px;
   }
 
   & .birthSelectDiv {

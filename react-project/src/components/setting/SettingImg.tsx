@@ -1,20 +1,56 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import IconButton from "../common/button/IconButton";
+
+interface Props {
+  setValue(value: string): void;
+}
 
 /**
  * 프로필 이미지 수정 컴포넌트
  */
-const SettingImgComponent = (): JSX.Element => {
-  const clickTest = () => {
-    console.log("setting!");
+const SettingImgComponent = ({ setValue }: Props): JSX.Element => {
+  const [imgFile, setImgFile] = useState<string>("");
+  const imgRef = useRef<HTMLInputElement>(null);
+
+  const saveImgFile = () => {
+    if (imgRef.current && imgRef.current.files != null) {
+      const file = imgRef.current.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        if (typeof reader.result === "string") {
+          setImgFile(reader.result);
+          setValue(reader.result);
+        }
+      };
+    }
+  };
+
+  /**
+   * input태그 핸들링 함수
+   */
+  const onHandleImgInput = () => {
+    const uploadImgFile = document.getElementById("profileImg");
+    if (uploadImgFile) uploadImgFile.click();
   };
 
   return (
     <StyledDiv>
-      <img src="" alt=""></img>
+      <img src={imgFile ? imgFile : ""} alt="프로필 이미지"></img>
+      <form>
+        <label className="signup-profileImg-label" htmlFor="profileImg" />
+        <input
+          className="signup-profileImg-input"
+          type="file"
+          accept="image/*"
+          id="profileImg"
+          onChange={saveImgFile}
+          ref={imgRef}
+        />
+      </form>
       <div>
-        <IconButton type="setting" onClick={clickTest} />
+        <IconButton type="setting" onClick={onHandleImgInput} />
       </div>
     </StyledDiv>
   );
@@ -26,10 +62,18 @@ const StyledDiv = styled.div`
   height: 80px;
 
   & > img {
-    width: 100%;
     height: 100%;
+    aspect-ratio: 1/1;
     border-radius: 50%;
     background: white;
+  }
+
+  & > form > label {
+    display: none;
+  }
+
+  & > form > input {
+    display: none;
   }
 
   & > div {

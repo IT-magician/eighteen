@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { userState } from "../recoil/atom";
 import styled from "styled-components";
 import moment from "moment";
+import { getProfile, getSongHistory } from "../apis/profile";
 import { Profile } from "../components/mypage/profile";
 import { SongHistory } from "../components/mypage/songHistory";
 
@@ -58,13 +59,32 @@ const MUSICLIST: Music[] = [
 const Mypage = (): JSX.Element => {
   const [user, setUser] = useState(useRecoilValue(userState));
   const [dummyGender, setDummyGender] = useState<string>("none");
+  const setAtomUserState = useSetRecoilState(userState);
+
+  /**
+   * get요청 promise.data값
+   * birth: "1977-03-01"
+   * email: "mokbee@naver.com"
+   * gender: "F"
+   * nickname: "김태영"
+   * profileImage: null
+   */
 
   useEffect(() => {
+    async function getUser() {
+      const { data } = await getProfile();
+      console.log(data);
+      setAtomUserState(data);
+      setUser(useRecoilValue(userState));
+    }
+
     if (user.gender == "M") {
       setDummyGender("남성");
     } else if (user.gender == "F") {
       setDummyGender("여성");
     }
+
+    getUser();
   }, [user]);
 
   let age = 0;
