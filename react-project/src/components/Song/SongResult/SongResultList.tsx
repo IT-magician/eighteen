@@ -8,7 +8,7 @@ import SongResultEmpty from "./SongResultEmpty";
 import SongResultLoading from "./SongResultLoading";
 
 const SongResultList = (): JSX.Element => {
-  const [list, setList] = useState<Song[]>([]);
+  const [list] = useState<Song[]>([]);
   const search = useRecoilValue(searchState);
 
   return (
