@@ -3,7 +3,7 @@ import styled from "styled-components";
 import IconButton from "../common/button/IconButton";
 
 interface Props {
-  setValue(value: string): void;
+  setValue(value: File): void;
 }
 
 /**
@@ -18,10 +18,10 @@ const SettingImgComponent = ({ setValue }: Props): JSX.Element => {
       const file = imgRef.current.files[0];
       const reader = new FileReader();
       reader.readAsDataURL(file);
-      reader.onload = () => {
+      reader.onloadend = () => {
         if (typeof reader.result === "string") {
           setImgFile(reader.result);
-          setValue(reader.result);
+          setValue(file);
         }
       };
     }
@@ -37,7 +37,7 @@ const SettingImgComponent = ({ setValue }: Props): JSX.Element => {
 
   return (
     <StyledDiv>
-      <img src={imgFile ? imgFile : ""} alt="프로필 이미지"></img>
+      <img src={imgFile ? imgFile : `${process.env.PUBLIC_URL}/eighteen-logo.png`} alt="프로필 이미지"></img>
       <form>
         <label className="signup-profileImg-label" htmlFor="profileImg" />
         <input

@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
 import BackButton from "../components/common/button/BackButton";
 import SettingImg from "../components/setting/SettingImg";
 import IconButton from "../components/common/button/IconButton";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { userState } from "../recoil/atom";
 import { Select } from "../components/common/select";
 import { VerifyInput } from "../components/common/input/Verify";
@@ -12,7 +12,7 @@ import { nicknameVerify } from "../utils/validation";
 import { modifyProfile, deleteAccount } from "../apis/profile";
 import SettingDatePicker from "../components/setting/SettingDatePicker";
 
-type ProfileAttr = "nickname" | "birth" | "gender" | "email" | "profileImage";
+// type ProfileAttr = "nickname" | "birth" | "gender" | "email" | "profileImage";
 
 /**
  * recoil에서 받아오는 사용자 정보 형식
@@ -30,10 +30,9 @@ type ProfileAttr = "nickname" | "birth" | "gender" | "email" | "profileImage";
  * 프로필 수정 화면
  */
 const Setting = (): JSX.Element => {
-  const [userInfo, setUserInfo] = useRecoilState(userState);
-  const [user, setUser] = useState(useRecoilValue(userState));
-  const [value, setValue] = useState<number>(0);
+  const [user, setUser] = useRecoilState(userState);
   const [pass, setPass] = useState<boolean>(true);
+  const file = useRef<File>();
 
   const navigate = useNavigate();
 
@@ -67,26 +66,31 @@ const Setting = (): JSX.Element => {
   /*
    * userState에 담긴 사용자 이미지 수정
    */
-  const setImage = (value: string) => {
+  const setImage = (value: File) => {
     if (user) {
-      setUser({ ...user, profileImage: value });
+      file.current = value;
+      console.log(value);
     }
   };
 
   /*
    * 사용자 정보 수정 로직
    */
-  const onHandleModifyProfile = () => {
-    const newProfile = {
+  const onHandleModifyProfile = async () => {
+    const formData = new FormData();
+    const newProfile = JSON.stringify({
       nickname: user.nickname,
       gender: user.gender,
       birth: user.birth,
-      email: user.email,
-      profileImage: user.profileImage,
-    };
-    setUserInfo(user);
-    modifyProfile(newProfile);
-    navigate("/mypage");
+    });
+    formData.append("profileInfo", new Blob([newProfile], { type: "application/json" }));
+    if (file.current instanceof File) formData.append("profileImage", file.current);
+
+    const res = await modifyProfile(formData);
+    if (res.data == "ok") {
+      console.log("patch 성공");
+      navigate("/mypage");
+    }
   };
 
   const onHandleDeleteAccount = () => {
@@ -117,7 +121,7 @@ const Setting = (): JSX.Element => {
               { text: "남자", value: "M" },
               { text: "여자", value: "F" },
             ]}
-            defaultIdx={value}
+            defaultIdx={0}
             setValue={setGender}
           />
         </div>
