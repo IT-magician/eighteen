@@ -20,8 +20,8 @@ const recommendSong = (recommend: RecommendType, id?: number) => {
  * @param ageId 연령 ID
  * @param genderId 성별 ID
  */
-const getEighteenRanking = (ageId: number, genderId: number) => {
-  return instance.get(`/recommend/ranking`, { params: { ageId, genderId } });
+const getEighteenRanking = (age: number, gender: string) => {
+  return instance.get(`/ranking`, { params: { age, gender } });
 };
 
 export { recommendSong, getEighteenRanking };

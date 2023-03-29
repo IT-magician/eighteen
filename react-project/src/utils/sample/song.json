@@ -4,30 +4,35 @@
       "musicId": 10000,
       "title": "테스트노래0",
       "singer": "봉봉봉",
+      "thumbnailUrl": "https://picsum.photos/200",
       "isEighteen": true
     },
     {
       "musicId": 10001,
       "title": "테스트노래1",
       "singer": "봉봉봉",
+      "thumbnailUrl": "https://picsum.photos/200",
       "isEighteen": true
     },
     {
       "musicId": 10002,
       "title": "테스트노래2",
       "singer": "봉봉봉",
+      "thumbnailUrl": "https://picsum.photos/200",
       "isEighteen": true
     },
     {
       "musicId": 10003,
       "title": "테스트노래3",
       "singer": "봉봉봉",
+      "thumbnailUrl": "https://picsum.photos/200",
       "isEighteen": true
     },
     {
       "musicId": 10004,
       "title": "테스트노래4",
       "singer": "봉봉봉",
+      "thumbnailUrl": "https://picsum.photos/200",
       "isEighteen": true
     }
   ]

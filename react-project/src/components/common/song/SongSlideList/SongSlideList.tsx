@@ -51,6 +51,7 @@ const SongSlideList = ({ songList, size = 5 }: Props): JSX.Element => {
                   title={song.title}
                   singer={song.singer}
                   isEighteen={song.isEighteen}
+                  thumbnailUrl={song.thumbnailUrl}
                 />
               ))}
             </ul>
