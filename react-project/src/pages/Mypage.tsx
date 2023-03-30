@@ -51,6 +51,41 @@ const MUSICLIST: Music[] = [
     thumbnailUrl: "string",
     title: "조깅",
   },
+  {
+    isEighteen: true,
+    musicId: 6,
+    singer: "윤하",
+    thumbnailUrl: "string",
+    title: "사건의 지평선",
+  },
+  {
+    isEighteen: false,
+    musicId: 7,
+    singer: "윤하",
+    thumbnailUrl: "string",
+    title: "오르트구름",
+  },
+  {
+    isEighteen: true,
+    musicId: 8,
+    singer: "윤하",
+    thumbnailUrl: "string",
+    title: "꿈 속에서",
+  },
+  {
+    isEighteen: false,
+    musicId: 9,
+    singer: "뉴진스",
+    thumbnailUrl: "string",
+    title: "하입보이",
+  },
+  {
+    isEighteen: false,
+    musicId: 10,
+    singer: "루시",
+    thumbnailUrl: "string",
+    title: "조깅",
+  },
 ];
 
 /**
