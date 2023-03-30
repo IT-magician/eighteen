@@ -1,5 +1,4 @@
 import { instance } from "..";
-import { Profile } from "./type";
 
 /**
  * [GET]프로필 조회
