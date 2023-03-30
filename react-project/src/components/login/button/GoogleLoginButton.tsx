@@ -1,16 +1,13 @@
 import React from "react";
 import styled from "styled-components";
+import { login } from "../../../apis/oauth";
 
 const GoogleLoginButton = (): JSX.Element => {
-  const socialSignIn = (socialType: string) => {
-    return `${process.env.REACT_APP_SERVER_URL}/oauth2/authorization/${socialType}`;
-  };
-
   return (
     <LoginButton
       onClick={(e) => {
         e.preventDefault();
-        window.location.href = socialSignIn("google");
+        login("google");
       }}
     >
       <div className="imgDiv">

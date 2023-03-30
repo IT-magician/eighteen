@@ -1,17 +1,14 @@
 import React from "react";
 import styled from "styled-components";
+import { login } from "../../../apis/oauth";
 
 const KakaoLoginButton = (): JSX.Element => {
-  const socialSignIn = (socialType: string) => {
-    return `${process.env.REACT_APP_SERVER_URL}:8080/oauth2/authorization/${socialType}`;
-  };
-
   return (
     <div className="container">
       <LoginButton
         onClick={(e) => {
           e.preventDefault();
-          window.location.href = socialSignIn("kakao");
+          login("kakao");
         }}
       >
         <div className="imgDiv">
