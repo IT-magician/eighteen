@@ -34,6 +34,7 @@ const SongHistory = ({ musicList }: Props): JSX.Element => {
             title={music.title}
             singer={music.singer}
             isEighteen={music.isEighteen}
+            thumbnailUrl={""}
           />
         ))}
       </ul>

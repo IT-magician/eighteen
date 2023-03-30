@@ -4,7 +4,7 @@ import styled from "styled-components";
 import BackButton from "../components/common/button/BackButton";
 import SettingImg from "../components/setting/SettingImg";
 import IconButton from "../components/common/button/IconButton";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { userState } from "../recoil/atom";
 import { Select } from "../components/common/select";
 import { VerifyInput } from "../components/common/input/Verify";
@@ -30,7 +30,7 @@ import SettingDatePicker from "../components/setting/SettingDatePicker";
  * 프로필 수정 화면
  */
 const Setting = (): JSX.Element => {
-  const [user, setUser] = useRecoilState(userState);
+  const [user, setUser] = useState(useRecoilValue(userState));
   const [pass, setPass] = useState<boolean>(true);
   const file = useRef<File>();
 
@@ -69,7 +69,6 @@ const Setting = (): JSX.Element => {
   const setImage = (value: File) => {
     if (user) {
       file.current = value;
-      console.log(value);
     }
   };
 

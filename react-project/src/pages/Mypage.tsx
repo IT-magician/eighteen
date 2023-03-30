@@ -74,8 +74,8 @@ const Mypage = (): JSX.Element => {
     async function getUser() {
       const { data } = await getProfile();
       console.log(data);
-      setAtomUserState(data);
-      setUser(useRecoilValue(userState));
+      // setAtomUserState(data);
+      // setUser(useRecoilValue(userState));
     }
 
     if (user.gender == "M") {
