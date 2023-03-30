@@ -4,10 +4,10 @@ import { Route, Routes } from "react-router";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { getMainData } from "./apis/main";
-import checkUser from "./apis/oauth";
+import { checkUser } from "./apis/oauth";
 import { Logo } from "./components/common/logo";
 import { NavBar } from "./components/common/nav";
-import { Favorite, Home, Login, Mypage, Recommend, Song, SongDetail } from "./pages";
+import { Favorite, Home, Login, Mypage, Recommend, Song, SongDetail, Setting } from "./pages";
 import { userState } from "./recoil/atom";
 
 const App = (): JSX.Element => {
@@ -65,11 +65,6 @@ const App = (): JSX.Element => {
     };
 
     getAccessToken();
-
-    if (!user) {
-      // TODO: access Token 요청 실행
-      // TODO: 실패시 reflesh Token 재발급을 위한 로그인 페이지로 이동
-    }
   }, []);
 
   if (!user) {
@@ -83,27 +78,28 @@ const App = (): JSX.Element => {
         </div>
       </StyledDiv>
     );
-  }
-
-  return (
-    <StyledDiv className="App">
-      <div className="Page" id="Page">
-        <div className="logo">
-          <Logo />
+  } else {
+    return (
+      <StyledDiv className="App">
+        <div className="Page" id="Page">
+          <div className="logo">
+            <Logo />
+          </div>
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/recommend/:type" element={<Recommend />} />
+            <Route path="/song" element={<Song />} />
+            <Route path="/song/:songid" element={<SongDetail />} />
+            <Route path="/favorite" element={<Favorite />} />
+            <Route path="/mypage" element={<Mypage />} />
+            <Route path="/setting" element={<Setting />} />
+          </Routes>
         </div>
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/recommend/:type" element={<Recommend />} />
-          <Route path="/song" element={<Song />} />
-          <Route path="/song/:songid" element={<SongDetail />} />
-          <Route path="/favorite" element={<Favorite />} />
-          <Route path="/mypage" element={<Mypage />} />
-        </Routes>
-      </div>
-      <NavBar />
-    </StyledDiv>
-  );
+        <NavBar />
+      </StyledDiv>
+    );
+  }
 };
 
 const StyledDiv = styled.div`

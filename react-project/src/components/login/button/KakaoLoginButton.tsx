@@ -4,24 +4,23 @@ import { login } from "../../../apis/oauth";
 
 const KakaoLoginButton = (): JSX.Element => {
   return (
-    <div className="container">
-      <LoginButton
-        onClick={(e) => {
-          e.preventDefault();
-          login("kakao");
-        }}
-      >
-        <div className="imgDiv">
-          <img src={`${process.env.PUBLIC_URL}/kakao_logo.png`} alt="로고" className="logo"></img>
-        </div>
-        <div className="labelDiv">카카오로 시작하기</div>
-      </LoginButton>
-    </div>
+    <LoginButton
+      onClick={(e) => {
+        e.preventDefault();
+        login("kakao");
+      }}
+    >
+      <div className="imgDiv">
+        <img src={`${process.env.PUBLIC_URL}/kakao_logo.png`} alt="로고" className="logo"></img>
+      </div>
+      <div className="labelDiv">카카오로 시작하기</div>
+    </LoginButton>
   );
 };
 
 const LoginButton = styled.button`
   box-sizing: border-box;
+  margin-bottom: 20px;
   padding: 0px 8px 0px;
   width: 240px;
   height: 50px;

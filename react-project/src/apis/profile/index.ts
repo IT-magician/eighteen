@@ -1,5 +1,4 @@
 import { instance } from "..";
-import { Profile } from "./type";
 
 /**
  * [GET]프로필 조회
@@ -20,8 +19,8 @@ const uploadProfileImage = (data: FormData) => {
  * [PATCH]프로필 정보 업데이트
  * @param data 사용자의 성별,연령,닉네임 데이터
  */
-const modifyProfile = (data: Profile) => {
-  return instance.patch(`/profile`, data);
+const modifyProfile = (data: FormData) => {
+  return instance.patch(`/profile`, data, { headers: { "Content-Type": "multipart/form-data" } });
 };
 
 /**
