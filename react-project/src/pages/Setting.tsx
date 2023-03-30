@@ -34,8 +34,16 @@ const Setting = (): JSX.Element => {
   const [user, setUser] = useState(globalUser);
   const [pass, setPass] = useState<boolean>(true);
   const file = useRef<File>();
-
   const navigate = useNavigate();
+
+  /**select에 할당할 genderIdx 설정 */
+  let genderIdx;
+
+  if (globalUser.gender == "M") {
+    genderIdx = 0;
+  } else {
+    genderIdx = 1;
+  }
 
   /*
    *useState에 담긴 사용자 이름 수정
@@ -70,6 +78,7 @@ const Setting = (): JSX.Element => {
   const setImage = (value: File) => {
     if (user) {
       file.current = value;
+      console.log(value);
     }
   };
 
@@ -110,7 +119,7 @@ const Setting = (): JSX.Element => {
           <IconButton type="save" onClick={onHandleModifyProfile} />
         </div>
         <div className="birthSelectDiv">
-          <SettingDatePicker setValue={setBirth} />
+          <SettingDatePicker setValue={setBirth} birth={globalUser.birth} />
         </div>
         <div>
           {user && (
@@ -121,7 +130,7 @@ const Setting = (): JSX.Element => {
               { text: "남자", value: "M" },
               { text: "여자", value: "F" },
             ]}
-            defaultIdx={0}
+            defaultIdx={genderIdx}
             setValue={setGender}
           />
         </div>

@@ -6,14 +6,15 @@ import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
 
 interface Props {
+  birth: string;
   setValue(value: string): void;
 }
 
 /**
  * 수정 페이지에 삽입할 캘린터 컴포넌트입니다.
  */
-const SettingDatePicker = ({ setValue }: Props): JSX.Element => {
-  const [birthDate, setBirthDate] = useState<Date | null>(new Date());
+const SettingDatePicker = ({ birth, setValue }: Props): JSX.Element => {
+  const [birthDate, setBirthDate] = useState<Date | null>(new Date(birth));
 
   useEffect(() => {
     if (birthDate) {
