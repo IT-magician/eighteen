@@ -7,7 +7,7 @@ import { getMainData } from "./apis/main";
 import { checkUser } from "./apis/oauth";
 import { Logo } from "./components/common/logo";
 import { NavBar } from "./components/common/nav";
-import { Favorite, Home, Login, Mypage, Recommend, Song, SongDetail, Setting } from "./pages";
+import { Favorite, Home, Login, Mypage, Recommend, Song, SongDetail, Setting, Register } from "./pages";
 import { userState } from "./recoil/atom";
 
 const App = (): JSX.Element => {
@@ -74,7 +74,10 @@ const App = (): JSX.Element => {
           <div className="logo">
             <Logo />
           </div>
-          <Login />
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Routes>
         </div>
       </StyledDiv>
     );
