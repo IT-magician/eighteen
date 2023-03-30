@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { userState } from "../recoil/atom";
 import styled from "styled-components";
 import moment from "moment";
@@ -57,42 +57,33 @@ const MUSICLIST: Music[] = [
  * 마이페이지
  */
 const Mypage = (): JSX.Element => {
-  const [user, setUser] = useState(useRecoilValue(userState));
+  const [user, setUser] = useRecoilState(userState);
   const [dummyGender, setDummyGender] = useState<string>("none");
-  const setAtomUserState = useSetRecoilState(userState);
-
-  /**
-   * get요청 promise.data값
-   * birth: "1977-03-01"
-   * email: "mokbee@naver.com"
-   * gender: "F"
-   * nickname: "김태영"
-   * profileImage: null
-   */
 
   useEffect(() => {
     async function getUser() {
       const { data } = await getProfile();
       console.log(data);
-      // setAtomUserState(data);
-      // setUser(useRecoilValue(userState));
+      setUser(data);
     }
 
-    if (user.gender == "M") {
+    if (user?.gender == "M") {
       setDummyGender("남성");
-    } else if (user.gender == "F") {
+    } else if (user?.gender == "F") {
       setDummyGender("여성");
     }
 
     getUser();
-  }, [user]);
+  }, []);
 
   let age = 0;
 
-  /** 나이 계산*/
+  /*
+   *나이 계산
+   */
   if (userState) {
     const today = moment(new Date());
-    const birth = moment(`${user.birth}`, "YYYY-MM-DD");
+    const birth = moment(`${user?.birth}`, "YYYY-MM-DD");
     age = today.diff(birth, "years");
   }
 
@@ -100,7 +91,12 @@ const Mypage = (): JSX.Element => {
     <StyledDiv>
       <h1>마이페이지</h1>
       <div className="profileDiv">
-        <Profile name={user?.nickname || "none"} age={age} gender={dummyGender || "none"} id={user?.userid || 0} />
+        <Profile
+          name={user?.nickname || "none"}
+          age={age}
+          gender={dummyGender || "none"}
+          image={user?.profileImage || "none"}
+        />
       </div>
       <div className="songHistoryDiv">
         <SongHistory musicList={MUSICLIST} />

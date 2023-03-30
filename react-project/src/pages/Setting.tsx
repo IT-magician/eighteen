@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
 import BackButton from "../components/common/button/BackButton";
@@ -30,7 +30,8 @@ import SettingDatePicker from "../components/setting/SettingDatePicker";
  * 프로필 수정 화면
  */
 const Setting = (): JSX.Element => {
-  const [user, setUser] = useState(useRecoilValue(userState));
+  const globalUser = useRecoilValue(userState);
+  const [user, setUser] = useState(globalUser);
   const [pass, setPass] = useState<boolean>(true);
   const file = useRef<File>();
 
@@ -105,7 +106,7 @@ const Setting = (): JSX.Element => {
       <h1>프로필 설정</h1>
       <div>
         <div className="imageDiv">
-          <SettingImg setValue={setImage} />
+          <SettingImg image={globalUser.profileImage} setValue={setImage} />
           <IconButton type="save" onClick={onHandleModifyProfile} />
         </div>
         <div className="birthSelectDiv">
