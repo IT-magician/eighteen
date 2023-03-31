@@ -28,13 +28,11 @@ const Mypage = (): JSX.Element => {
   useEffect(() => {
     async function getUser() {
       const { data } = await getProfile();
-      console.log(data);
       setUser(data);
     }
 
     async function getHistory() {
       const { data } = await getSongHistory(musics);
-      console.log(data);
       setMusicList(data);
     }
 

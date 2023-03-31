@@ -4,7 +4,7 @@ import styled from "styled-components";
 import BackButton from "../components/common/button/BackButton";
 import SettingImg from "../components/setting/SettingImg";
 import IconButton from "../components/common/button/IconButton";
-import { useRecoilValue, useRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { userState } from "../recoil/atom";
 import { Select } from "../components/common/select";
 import { VerifyInput } from "../components/common/input/Verify";
@@ -31,7 +31,7 @@ import SettingDatePicker from "../components/setting/SettingDatePicker";
  */
 const Setting = (): JSX.Element => {
   const [globalUser, setGlobalUser] = useRecoilState(userState);
-  const [user, setUser] = useState(useRecoilValue(userState));
+  const [user, setUser] = useState({ ...globalUser });
   const [pass, setPass] = useState<boolean>(true);
   const file = useRef<File>();
   const navigate = useNavigate();
@@ -78,7 +78,6 @@ const Setting = (): JSX.Element => {
   const setImage = (value: File) => {
     if (user) {
       file.current = value;
-      console.log(value);
     }
   };
 
@@ -97,7 +96,6 @@ const Setting = (): JSX.Element => {
 
     const res = await modifyProfile(formData);
     if (res.data == "ok") {
-      console.log("patch 성공");
       navigate("/mypage");
     }
   };
