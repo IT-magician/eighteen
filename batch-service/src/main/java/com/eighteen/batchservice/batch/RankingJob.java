@@ -182,9 +182,20 @@ public class RankingJob {
         }
     }
 
+    @Bean
     public Step rankingJob_step2() {
 
         Chunk(2);
+        System.out.println("---------------------------------------");
+        System.out.println(chunkSize);
+        System.out.println(chunkSize);
+        System.out.println(chunkSize);
+        System.out.println(chunkSize);
+        System.out.println(chunkSize);
+        System.out.println(chunkSize);
+        System.out.println(chunkSize);
+        System.out.println(chunkSize);
+        System.out.println("---------------------------------------");
         Refresh();
         return stepBuilderFactory.get("TempToRank")
                 .<TempRanking, TempRanking>chunk(chunkSize)
@@ -291,7 +302,6 @@ public class RankingJob {
                 }
                 Music music = entry.getKey();
                 AgeGender ageGender = ageGenderRepository.findByAgId("M2");
-                String id = ageGender.getAgId() + music.getMusicId();
                 Ranking ranking = Ranking.builder()
                         .ageGender(ageGender)
                         .music(music)
@@ -306,7 +316,6 @@ public class RankingJob {
                 }
                 Music music = entry.getKey();
                 AgeGender ageGender = ageGenderRepository.findByAgId("F2");
-                String id = ageGender.getAgId() + music.getMusicId();
                 Ranking ranking = Ranking.builder()
                         .ageGender(ageGender)
                         .music(music)
@@ -321,7 +330,6 @@ public class RankingJob {
                 }
                 Music music = entry.getKey();
                 AgeGender ageGender = ageGenderRepository.findByAgId("M3");
-                String id = ageGender.getAgId() + music.getMusicId();
                 Ranking ranking = Ranking.builder()
                         .ageGender(ageGender)
                         .music(music)
@@ -336,7 +344,6 @@ public class RankingJob {
                 }
                 Music music = entry.getKey();
                 AgeGender ageGender = ageGenderRepository.findByAgId("F3");
-                String id = ageGender.getAgId() + music.getMusicId();
                 Ranking ranking = Ranking.builder()
                         .ageGender(ageGender)
                         .music(music)
@@ -351,7 +358,6 @@ public class RankingJob {
                 }
                 Music music = entry.getKey();
                 AgeGender ageGender = ageGenderRepository.findByAgId("M4");
-                String id = ageGender.getAgId() + music.getMusicId();
                 Ranking ranking = Ranking.builder()
                         .ageGender(ageGender)
                         .music(music)
@@ -366,7 +372,6 @@ public class RankingJob {
                 }
                 Music music = entry.getKey();
                 AgeGender ageGender = ageGenderRepository.findByAgId("F4");
-                String id = ageGender.getAgId() + music.getMusicId();
                 Ranking ranking = Ranking.builder()
                         .ageGender(ageGender)
                         .music(music)
@@ -381,7 +386,6 @@ public class RankingJob {
                 }
                 Music music = entry.getKey();
                 AgeGender ageGender = ageGenderRepository.findByAgId("M5");
-                String id = ageGender.getAgId() + music.getMusicId();
                 Ranking ranking = Ranking.builder()
                         .ageGender(ageGender)
                         .music(music)
@@ -396,7 +400,6 @@ public class RankingJob {
                 }
                 Music music = entry.getKey();
                 AgeGender ageGender = ageGenderRepository.findByAgId("F5");
-                String id = ageGender.getAgId() + music.getMusicId();
                 Ranking ranking = Ranking.builder()
                         .ageGender(ageGender)
                         .music(music)
@@ -411,7 +414,6 @@ public class RankingJob {
                 }
                 Music music = entry.getKey();
                 AgeGender ageGender = ageGenderRepository.findByAgId("M6");
-                String id = ageGender.getAgId() + music.getMusicId();
                 Ranking ranking = Ranking.builder()
                         .ageGender(ageGender)
                         .music(music)
@@ -426,7 +428,6 @@ public class RankingJob {
                 }
                 Music music = entry.getKey();
                 AgeGender ageGender = ageGenderRepository.findByAgId("F6");
-                String id = ageGender.getAgId() + music.getMusicId();
                 Ranking ranking = Ranking.builder()
                         .ageGender(ageGender)
                         .music(music)
@@ -434,6 +435,7 @@ public class RankingJob {
                 System.out.println(ranking);
                 rankingRepository.save(ranking);
             }
+            Refresh();
             tempRankingRepository.deleteAll();
             entityManager.flush();
         };
