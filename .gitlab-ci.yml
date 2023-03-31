@@ -22,6 +22,7 @@ npm:
 
 react-project:
   stage: build
+  environment: react-framework-build
   only:
     - develop
   cache:
