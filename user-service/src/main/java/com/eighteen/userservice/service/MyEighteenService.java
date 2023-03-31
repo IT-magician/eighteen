@@ -1,6 +1,7 @@
 package com.eighteen.userservice.service;
 
 import com.eighteen.userservice.dto.MusicDto;
+import com.eighteen.userservice.dto.SearchDto;
 import com.eighteen.userservice.dto.request.RequestEighteenDto;
 import com.eighteen.userservice.dto.response.ResponseGetEighteenDto;
 import com.eighteen.userservice.dto.response.ResponseRandomDto;
@@ -12,15 +13,20 @@ import com.eighteen.userservice.repository.MyEighteenRepository;
 import com.eighteen.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -30,7 +36,14 @@ public class MyEighteenService {
     private final MyEighteenRepository myEighteenRepository;
 
     private final UserRepository userRepository;
+
     private final MusicRepository musicRepository;
+
+    private final RestTemplate restTemplate;
+
+    private final Environment env;
+
+
 
     public ResponseGetEighteenDto getEighteen(String userId, Integer page, Integer size) {
 
@@ -49,9 +62,7 @@ public class MyEighteenService {
         int start = (int)pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), musicDtos.size());
         Page<MusicDto> musicDtoPage = new PageImpl<>(musicDtos.subList(start, end), pageable, musicDtos.size());
-
         ResponseGetEighteenDto responseGetEighteenDto = new ResponseGetEighteenDto(musicDtoPage);
-
         return responseGetEighteenDto;
     }
 
@@ -92,17 +103,26 @@ public class MyEighteenService {
                 .user(user)
                 .music(music)
                 .build();
+        String addDataUrl = String.format(env.getProperty("search-engine.url")) + "/data/" + userId;
+        SearchDto searchDto = new SearchDto(myEighteen.getMusic());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<SearchDto> requestEntity = new HttpEntity<>(searchDto, headers);
+//        restTemplate.put(addDataUrl, requestEntity);
         myEighteenRepository.save(myEighteen);
         return music.getTitle();
     }
 
-    public String deleteEighteen(String userId, Integer musicId) {
+    public void deleteEighteen(String userId, List<Integer> musics) {
 
         User user = userRepository.findByUserId(userId);
-        Music music = musicRepository.findByMusicId(musicId);
-        MyEighteen myEighteen = myEighteenRepository.findByUserAndMusic(user, music);
-        myEighteenRepository.delete(myEighteen);
-        return music.getTitle();
+        for (Integer musicId : musics) {
+            Music music = musicRepository.findByMusicId(musicId);
+            MyEighteen myEighteen = myEighteenRepository.findByUserAndMusic(user, music);
+            myEighteenRepository.delete(myEighteen);
+        }
+//        SearchDto searchDto = new SearchDto(myEighteen.getMusic());
+//        String deleteDataUrl = String.format(env.getProperty("search-engine.url")) + "/data/" + userId;
     }
 
 }

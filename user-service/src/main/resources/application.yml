@@ -67,3 +67,8 @@ cloud:
       auto: false
 
 
+search-engine:
+  url: https://j8b304.p.ssafy.io/elastic_search
+
+
+

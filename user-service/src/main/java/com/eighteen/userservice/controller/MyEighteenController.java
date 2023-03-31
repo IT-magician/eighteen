@@ -11,6 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Optional;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/my_eighteen")
@@ -63,7 +66,7 @@ public class MyEighteenController {
     })
     @PostMapping("")
     public ResponseEntity<String> addEighteen(@RequestHeader("x-forwarded-for-user-id") String userId,
-                                              @ApiParam(value = "유저아이디, 음악", required = true) @RequestBody RequestEighteenDto requestEighteenDto) throws Exception {
+                                              @ApiParam(value = "음악", required = true)@RequestBody RequestEighteenDto requestEighteenDto) throws Exception {
 
         String title = myEighteenService.addEighteen(userId, requestEighteenDto);
         return ResponseEntity.status(HttpStatus.OK).body(title + "add");
@@ -78,12 +81,12 @@ public class MyEighteenController {
             @ApiResponse(code = 404, message = "Not found"),
             @ApiResponse(code = 500, message = "Internal server error")
     })
-    @DeleteMapping("/{musicId}")
-    public ResponseEntity<String> deleteEighteen(@RequestHeader("x-forwarded-for-user-id") String userId,
-                                                 @ApiParam(value = "유저아이디, 음악", required = true) @PathVariable("musicId") Integer musicId) throws Exception {
+    @DeleteMapping("")
+    public ResponseEntity<?> deleteEighteen(@RequestHeader("x-forwarded-for-user-id") String userId,
+                                            @ApiParam(value = "음악리스트", required = true)@RequestParam("musics") List<Integer> musics) throws Exception {
 
-        String title = myEighteenService.deleteEighteen(userId, musicId);
-        return ResponseEntity.status(HttpStatus.OK).body(title + "delete");
+        myEighteenService.deleteEighteen(userId, musics);
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
 }
