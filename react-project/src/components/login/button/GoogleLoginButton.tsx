@@ -21,9 +21,9 @@ const GoogleLoginButton = (): JSX.Element => {
 // css
 const LoginButton = styled.button`
   box-sizing: border-box;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   padding: 0px 8px 0px;
-  width: 240px;
+  width: 100%;
   height: 50px;
   border-radius: 12px;
   border: 0px;
