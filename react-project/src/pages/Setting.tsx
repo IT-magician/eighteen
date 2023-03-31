@@ -102,8 +102,9 @@ const Setting = (): JSX.Element => {
     }
   };
 
-  const onHandleDeleteAccount = () => {
-    deleteAccount();
+  const onHandleDeleteAccount = async () => {
+    const res = await deleteAccount();
+    console.log(res);
     navigate("/");
   };
 

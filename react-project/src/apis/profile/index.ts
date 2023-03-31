@@ -43,17 +43,10 @@ const deleteAccount = () => {
  * @param musics 음악번호 리스트
  */
 const getSongHistory = (musics: number[]) => {
-  return instance.get(`/propfile/history`, {
+  return instance.get(`/profile/history`, {
     params: { musics },
     paramsSerializer: {
-      encode(paramObj) {
-        const params = new URLSearchParams();
-        for (const key in paramObj) {
-          params.append(key, paramObj[key]);
-        }
-
-        return params.toString();
-      },
+      indexes: null,
     },
   });
 };
