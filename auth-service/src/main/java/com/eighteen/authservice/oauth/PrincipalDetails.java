@@ -16,13 +16,10 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
 
     private Map<String, Object> attributes;
 
-    private String check;
-
     //소셜 로그인
-    public PrincipalDetails(User user, Map<String, Object> attributes, String check) {
+    public PrincipalDetails(User user, Map<String, Object> attributes) {
         this.user = user;
         this.attributes = attributes;
-        this.check = check;
     }
 
     @Override

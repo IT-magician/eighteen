@@ -1,12 +1,12 @@
 package com.eighteen.authservice.oauth;
 
 import java.io.IOException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.eighteen.authservice.jwt.AuthToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -24,7 +24,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                                         Authentication authentication) throws IOException {
 
         PrincipalDetails principalDetails = (PrincipalDetails)authentication.getPrincipal();
-        String url = makeRedirectUrl(principalDetails.getCheck());
+        String url = makeRedirectUrl();
         if (authentication != null){
             new SecurityContextLogoutHandler().logout(request, response, authentication);
         }
@@ -35,17 +35,24 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         System.out.println("url: " + url);
         String refreshToken = authToken.createRefreshToken(principalDetails.getUsername());
         System.out.println(principalDetails.getAttributes());
-        Cookie cookie = new Cookie("refreshToken", refreshToken);
-        cookie.setHttpOnly(true);
-        cookie.setMaxAge(24 * 60 * 60); // 1일
-        cookie.setPath("/");
-        response.addCookie(cookie);
-
+        addCookie(response, refreshToken);
         getRedirectStrategy().sendRedirect(request, response, url);
     }
 
-    private String makeRedirectUrl(String check) {
-        return UriComponentsBuilder.fromUriString("http://j8b304.p.ssafy.io/" + check)
+    private String makeRedirectUrl() {
+        return UriComponentsBuilder.fromUriString("http://192.168.31.176:3000")
                 .build().toUriString();
     }
+
+    public static void addCookie(HttpServletResponse response, String refreshToken) {
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
+                .path("/")
+//                .sameSite("Lax")
+                .httpOnly(true)
+                .maxAge(24 * 60 * 60)
+                .build();
+        System.out.println(cookie.getSameSite());
+        response.addHeader("Set-Cookie", cookie.toString());
+    }
 }
+
