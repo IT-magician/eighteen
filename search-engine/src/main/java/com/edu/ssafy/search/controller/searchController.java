@@ -1,7 +1,6 @@
 package com.edu.ssafy.search.controller;
 
-import com.edu.ssafy.search.dto.SongDTO;
-import com.edu.ssafy.search.dto.SongWithPreferableDTO;
+import com.edu.ssafy.search.dto.SongInfoDTO;
 import com.edu.ssafy.search.service.SearchService;
 import com.edu.ssafy.search.service.UserIdxService;
 import org.springframework.http.HttpStatus;
@@ -32,9 +31,9 @@ public class searchController {
 
 
     @GetMapping("/title/{title}")
-    List<SongDTO> searchBytitle(@PathVariable String title) throws UnsupportedEncodingException {
+    List<SongInfoDTO> searchBytitle(@PathVariable String title) throws UnsupportedEncodingException {
         title = URLDecoder.decode(title, "UTF-8");
-        List<SongDTO> list = new LinkedList<>();
+        List<SongInfoDTO> list = new LinkedList<>();
 
         try {
             list = searchService.searchBytitle(title);
@@ -46,9 +45,9 @@ public class searchController {
     }
 
     @GetMapping("/singer/{singer}")
-    List<SongDTO> searchBysinger(@PathVariable String singer) throws UnsupportedEncodingException {
+    List<SongInfoDTO> searchBysinger(@PathVariable String singer) throws UnsupportedEncodingException {
         singer = URLDecoder.decode(singer, "UTF-8");
-        List<SongDTO> list = new LinkedList<>();
+        List<SongInfoDTO> list = new LinkedList<>();
 
         try {
             list = searchService.searchBysinger(singer);

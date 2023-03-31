@@ -1,6 +1,6 @@
 package com.edu.ssafy.search.service;
 
-import com.edu.ssafy.search.dto.SongDTO;
+import com.edu.ssafy.search.dto.SongInfoDTO;
 import com.edu.ssafy.search.dto.SongWithPreferableDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
@@ -132,10 +132,10 @@ public class UserIdxService {
                 .block();                   // await
     }
 
-    public void addData(String user_id, List<SongDTO> songs) throws IOException {
+    public void addData(String user_id, List<SongInfoDTO> songs) throws IOException {
         StringBuilder sb = new StringBuilder();
 
-        for (SongDTO song : songs) {
+        for (SongInfoDTO song : songs) {
             sb.append("{\"index\":{\"_id\":\"" + song.getId() + "\",\"_index\":\""+ "favorite_song_list@" + user_id  + "\"}}\n" +
                     "{\"id\":\"" + song.getId() + "\",\"title\":\"" + song.getTitle() + "\",\"singer\":\"" + song.getSinger() + "\",\"youtube_url\":\"" + song.getYoutube_url() + "\"}\n");
         }
@@ -170,10 +170,10 @@ public class UserIdxService {
         http.disconnect();
     }
 
-    public void deleteData(String user_id,List<SongDTO> songs) throws IOException {
+    public void deleteData(String user_id,List<SongInfoDTO> songs) throws IOException {
         StringBuilder sb = new StringBuilder();
 
-        for (SongDTO song : songs) {
+        for (SongInfoDTO song : songs) {
             sb.append(String.format("{ \"delete\" : { \"_index\" : \"favorite_song_list@%s\", \"_id\" : \"%s\" } }\n", user_id, song.getId()));
         }
 
@@ -232,7 +232,7 @@ public class UserIdxService {
 
 
     public Map<String, Object> searchBytitleAndPagination(String user_id, String title, long pagination_idx, long pagination_size) {
-        List<SongDTO> songs = searchService.searchBytitle(title);
+        List<SongInfoDTO> songs = searchService.searchBytitle(title);
 
 
         Set<Integer> user_favorite_songs = getUserFavoriteSongWithId(user_id);
@@ -254,7 +254,7 @@ public class UserIdxService {
     }
 
     public Map<String, Object> searchBysingerAndPagination(String user_id, String singer, long pagination_idx, long pagination_size) {
-        List<SongDTO> songs = searchService.searchBysinger(singer);
+        List<SongInfoDTO> songs = searchService.searchBysinger(singer);
 
 
         Set<Integer> user_favorite_songs = getUserFavoriteSongWithId(user_id);

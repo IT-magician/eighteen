@@ -1,18 +1,19 @@
 package com.edu.ssafy.search.service;
 
-import com.edu.ssafy.search.dto.SongDTO;
+import com.edu.ssafy.search.dto.SongInfoDTO;
+import com.edu.ssafy.search.util.WordShapeSimilarityAnalyzer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.nio.DoubleBuffer;
 import java.nio.charset.Charset;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class SearchService {
@@ -27,6 +28,10 @@ public class SearchService {
 
     private final Gson gson;
 
+    private LevenshteinDistance ld = new LevenshteinDistance();
+
+    private WordShapeSimilarityAnalyzer analyzer = new WordShapeSimilarityAnalyzer();
+
     private WebClient webClient = WebClient.builder()
             .baseUrl("http://j8b304.p.ssafy.io:9200")
             .build();
@@ -35,7 +40,7 @@ public class SearchService {
         this.gson = new Gson();
     }
 
-    public List<SongDTO> searchBytitle(String title) {
+    public List<SongInfoDTO> searchBytitle(String title) {
 
         System.out.println("size : " + getTotalSongCount("tj_song_list_idx"));
         System.out.println(
@@ -75,7 +80,10 @@ public class SearchService {
 
 
         Map<String, Map<String, List<Map<String, Map<String, Object>>>>> map = gson.fromJson(responseBody, Map.class);
-        List<SongDTO> list = new LinkedList<>();
+        List<SongInfoDTO> list = new LinkedList<>();
+
+        Map<String, Double[]> levenshteinDistance_dict = new HashMap<>();
+
 
         for (int i = 0;i < map.get("hits").get("hits").size();i++) {
             int id = Integer.parseInt((String) map.get("hits").get("hits").get(i).get("_source").get("id"));
@@ -84,18 +92,33 @@ public class SearchService {
             String youtube_url = (String) map.get("hits").get("hits").get(i).get("_source").get("youtube_url");
 
             list.add(
-                    SongDTO.builder()
+                    SongInfoDTO.builder()
                             .id(id)
                             .title(_title)
                             .singer(singer)
                             .youtube_url(youtube_url)
                             .build());
+
+            int maxLen = _title.length() > _title.length() ? _title.length() : title.length();
+            double temp = ld.apply(_title, title);
+            double result = (maxLen - temp) / maxLen;
+            levenshteinDistance_dict.put(_title, new Double[]{result, analyzer.setBase(_title, title).analyze()});
         }
+
+
 
         list.sort(
                 (lhs, rhs) -> {
-                    if (lhs.getTitle().length() == rhs.getTitle().length()) return lhs.getTitle().compareTo(rhs.getTitle());
-                    return lhs.getTitle().length() - rhs.getTitle().length();
+//                    if (lhs.getTitle().length() == rhs.getTitle().length()) return lhs.getTitle().compareTo(rhs.getTitle());
+//                    return lhs.getTitle().length() - rhs.getTitle().length();
+                    String lhs_title = lhs.getTitle(), rhs_title = rhs.getTitle();
+
+                    if (levenshteinDistance_dict.get(rhs_title)[0] == levenshteinDistance_dict.get(lhs_title)[0]) {
+                        if (levenshteinDistance_dict.get(rhs_title)[1] == levenshteinDistance_dict.get(lhs_title)[1]) return lhs_title.compareTo(rhs_title);
+                        return levenshteinDistance_dict.get(rhs_title)[1].compareTo(levenshteinDistance_dict.get(lhs_title)[1]);
+                    }
+
+                    return levenshteinDistance_dict.get(rhs_title)[0].compareTo(levenshteinDistance_dict.get(lhs_title)[0]);
                 }
         );
 
@@ -103,7 +126,7 @@ public class SearchService {
         return list;
     }
 
-    public List<SongDTO> searchBysinger(String singer) {
+    public List<SongInfoDTO> searchBysinger(String singer) {
         String responseBody = webClient.method(HttpMethod.GET)         // POST method
                 .uri("/tj_song_list_idx/_search?filter_path=hits.hits.*,aggregations.*")    // baseUrl 이후 uri
                 .headers(headers -> headers.setBasicAuth(username, password)) // basic auth
@@ -127,7 +150,7 @@ public class SearchService {
 
 
         Map<String, Map<String, List<Map<String, Map<String, Object>>>>> map = gson.fromJson(responseBody, Map.class);
-        List<SongDTO> list = new LinkedList<>();
+        List<SongInfoDTO> list = new LinkedList<>();
 
         for (int i = 0;i < map.get("hits").get("hits").size();i++) {
             int id = Integer.parseInt((String) map.get("hits").get("hits").get(i).get("_source").get("id"));
@@ -136,7 +159,7 @@ public class SearchService {
             String youtube_url = (String) map.get("hits").get("hits").get(i).get("_source").get("youtube_url");
 
             list.add(
-                    SongDTO.builder()
+                    SongInfoDTO.builder()
                             .id(id)
                             .title(title)
                             .singer(_singer)
@@ -146,7 +169,9 @@ public class SearchService {
 
         list.sort(
                 (lhs, rhs) -> {
-                    if (lhs.getSinger().length() == rhs.getSinger().length()) return lhs.getSinger().compareTo(rhs.getSinger());
+                    if (lhs.getSinger().length() == rhs.getSinger().length()) {
+                        return lhs.getSinger().compareTo(rhs.getSinger());
+                    }
                     return lhs.getSinger().length() - rhs.getSinger().length();
                 }
         );

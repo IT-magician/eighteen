@@ -1,15 +1,12 @@
 package com.edu.ssafy.search.dto;
 
 import lombok.*;
-import lombok.AccessLevel;
-
-import java.sql.Driver;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class SongWithPreferableDTO extends SongDTO{
+public class SongWithPreferableDTO extends SongInfoDTO {
     boolean isPreferable;
 
 
