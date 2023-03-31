@@ -7,16 +7,23 @@ interface Props {
   musicId: number;
   isEighteen: boolean;
   setEighteen(bool: boolean): void;
+  onCustomClick?(): void;
 }
 
 /**
  * 음악 애창곡 등록 버튼 컴포넌트
  */
-const SongFavoriteButton = ({ musicId, isEighteen, setEighteen }: Props): JSX.Element => {
+const SongFavoriteButton = ({ musicId, isEighteen, setEighteen, onCustomClick }: Props): JSX.Element => {
   const loading = useRef<boolean>(false);
 
-  const onClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const onToggle = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
+
+    // 사용자 지정 클릭 이벤트가 있는 경우 요청 대신 이를 수행합니다
+    if (onCustomClick) {
+      onCustomClick();
+      return;
+    }
 
     if (loading.current) return;
     loading.current = true;
@@ -36,7 +43,7 @@ const SongFavoriteButton = ({ musicId, isEighteen, setEighteen }: Props): JSX.El
   };
 
   return (
-    <StyledButton onClick={onClick}>
+    <StyledButton onClick={onToggle}>
       {!isEighteen || <div className="gradation-bg" />}
       <TbMusic />
     </StyledButton>
