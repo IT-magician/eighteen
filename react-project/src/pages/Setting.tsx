@@ -39,7 +39,7 @@ const Setting = (): JSX.Element => {
   /**select에 할당할 genderIdx 설정 */
   let genderIdx;
 
-  if (globalUser.gender == "M") {
+  if (globalUser?.gender == "M") {
     genderIdx = 0;
   } else {
     genderIdx = 1;
@@ -87,9 +87,9 @@ const Setting = (): JSX.Element => {
   const onHandleModifyProfile = async () => {
     const formData = new FormData();
     const newProfile = JSON.stringify({
-      nickname: user.nickname,
-      gender: user.gender,
-      birth: user.birth,
+      nickname: user?.nickname,
+      gender: user?.gender,
+      birth: user?.birth,
     });
     formData.append("profileInfo", new Blob([newProfile], { type: "application/json" }));
     if (file.current instanceof File) formData.append("profileImage", file.current);
@@ -106,6 +106,8 @@ const Setting = (): JSX.Element => {
       setGlobalUser(null);
     }
   };
+
+  if (!globalUser) return <></>;
 
   return (
     <StyledDiv>

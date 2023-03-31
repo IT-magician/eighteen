@@ -7,6 +7,11 @@ spring:
   application:
     name: user-service
 
+  http:
+    multipart:
+      maxFileSize: 50MB
+      maxRequestSize: 50MB
+
   #??? ??
   mvc:
     pathmatch:
@@ -17,9 +22,6 @@ spring:
     url: jdbc:mysql://${api_gateway_url}:3306/eighteen?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=true
     username: root
     password: b304b304
-#    url: jdbc:mysql://localhost:3306/eighteen?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=true
-#    username: blur
-#    password: blur
     hikari:
       pool-name: jpa-hikari-pool
       maximum-pool-size: 5
@@ -55,10 +57,15 @@ cloud:
       secretKey: tSEfYVO70M/kfnrWWRMuAZnrI8K+FCaVUt54G6Wt   # AWS IAM SecretKey 적기
     s3:
       bucket: eighteen-project    # ex) marryting-gyunny
-      dir: /profileImage # ex) /gyunny
+      dir: /profileImage/ # ex) /gyunny
     region:
       static: ap-northeast-2
     stack:
       auto: false
+
+
+search-engine:
+  url: https://j8b304.p.ssafy.io/elastic_search
+
 
 

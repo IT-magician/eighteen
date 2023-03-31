@@ -1,16 +1,13 @@
 import React from "react";
 import styled from "styled-components";
+import { login } from "../../../apis/oauth";
 
 const NaverLoginButton = (): JSX.Element => {
-  const socialSignIn = (socialType: string) => {
-    return `${process.env.REACT_APP_SERVER_URL}/oauth2/authorization/${socialType}}`;
-  };
-
   return (
     <LoginButton
       onClick={(e) => {
         e.preventDefault();
-        window.location.href = socialSignIn("naver");
+        login("naver");
       }}
     >
       <img src={`${process.env.PUBLIC_URL}/naver_logo.png`} alt="로고" className="logo"></img>
@@ -22,8 +19,9 @@ const NaverLoginButton = (): JSX.Element => {
 // css
 const LoginButton = styled.button`
   box-sizing: border-box;
+  margin-bottom: 16px;
   padding: 0px 8px 0px;
-  width: 240px;
+  width: 100%;
   height: 50px;
   border-radius: 12px;
   border: 0px;

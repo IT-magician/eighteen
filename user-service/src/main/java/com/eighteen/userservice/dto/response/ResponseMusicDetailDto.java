@@ -22,9 +22,13 @@ public class ResponseMusicDetailDto {
 
     private String singer;
 
-    private String music_highPitch;
+    private String thumbnailUrl;
 
-    private String music_lowPitch;
+    private String youtubeUrl;
+
+    private String highPitch;
+
+    private String lowPitch;
 
     private Integer key;
 
@@ -36,8 +40,10 @@ public class ResponseMusicDetailDto {
         this.musicId = music.getMusicId();
         this.title = music.getTitle();
         this.singer = music.getSinger();
-        this.music_highPitch = musicFeature.getHighPitch();
-        this.music_lowPitch = musicFeature.getLowPitch();
+        this.thumbnailUrl = music.getThumbnailUrl();
+        this.youtubeUrl = music.getYoutubeUrl();
+        this.highPitch = musicFeature.getHighPitch();
+        this.lowPitch = musicFeature.getLowPitch();
         this.key = musicFeature.getKey();
         this.user_highPitch = user.getHighPitch();
         this.user_lowPitch = user.getLowPitch();
