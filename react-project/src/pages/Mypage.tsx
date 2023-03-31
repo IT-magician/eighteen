@@ -15,7 +15,7 @@ interface Music {
   title: string;
 }
 
-const musics: number[] = [9769, 9770, 79053, 79054, 79055, 79061, 82781, 82793, 82794, 82795];
+const musics: number[] = JSON.parse(localStorage.getItem("song-history") || "[]");
 
 /*
  * 마이페이지

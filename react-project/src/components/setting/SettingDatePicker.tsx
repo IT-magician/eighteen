@@ -30,7 +30,7 @@ const SettingDatePicker = ({ birth, setValue }: Props): JSX.Element => {
         locale={ko}
         dateFormat="yyyy-MM-dd"
         closeOnScroll={true}
-        placeholderText="체크인 날짜 선택"
+        placeholderText=""
         selected={birthDate}
         onChange={(date) => setBirthDate(date)}
       />
