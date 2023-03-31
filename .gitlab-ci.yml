@@ -31,6 +31,7 @@ react-project:
   needs: ["npm"]
   when: on_success
   script:
+    - echo "REACT_APP_OPEN_WEATHER_API_KEY - $REACT_APP_OPEN_WEATHER_API_KEY"
     - cd react-project
     - CI=false npm run build
     - docker build -t react-project .
