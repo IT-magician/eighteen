@@ -9,7 +9,7 @@ import { SongDetailInfo } from "../components/SongDetail";
 const SongDetail = (): JSX.Element => {
   return (
     <StyledDiv>
-      <div>
+      <div className="back-button">
         <BackButton />
       </div>
       <SongDetailInfo />
@@ -17,6 +17,15 @@ const SongDetail = (): JSX.Element => {
   );
 };
 
-const StyledDiv = styled.div``;
+const StyledDiv = styled.div`
+  position: relative;
+  padding: 32px;
+
+  & > .back-button {
+    position: absolute;
+    top: 48px;
+    left: 32px;
+  }
+`;
 
 export default SongDetail;
