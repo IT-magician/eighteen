@@ -1,97 +1,128 @@
 package com.eighteen.userservice.service;
 
 import com.eighteen.userservice.dto.MusicDto;
+import com.eighteen.userservice.dto.SearchDto;
 import com.eighteen.userservice.dto.request.RequestEighteenDto;
-import com.eighteen.userservice.dto.request.RequestGetEighteenDto;
 import com.eighteen.userservice.dto.response.ResponseGetEighteenDto;
+import com.eighteen.userservice.dto.response.ResponseRandomDto;
 import com.eighteen.userservice.entity.Music;
 import com.eighteen.userservice.entity.MyEighteen;
 import com.eighteen.userservice.entity.User;
+import com.eighteen.userservice.repository.MusicRepository;
 import com.eighteen.userservice.repository.MyEighteenRepository;
 import com.eighteen.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
 public class MyEighteenService {
 
-    @Autowired
-    private MyEighteenRepository myEighteenRepository;
+    private final MyEighteenRepository myEighteenRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    public ResponseGetEighteenDto getEighteen(String userId, RequestGetEighteenDto requestGetEighteenDto) {
+    private final MusicRepository musicRepository;
+
+    private final RestTemplate restTemplate;
+
+    private final Environment env;
+
+
+
+    public ResponseGetEighteenDto getEighteen(String userId, Integer page, Integer size) {
 
         User user = userRepository.findByUserId(userId);
         List<MyEighteen> myEighteens = myEighteenRepository.findByUser(user);
-
+        if (myEighteens.size() < size) {
+            size = myEighteens.size();
+        }
         List<MusicDto> musicDtos = new ArrayList<>();
         for (MyEighteen myEighteen : myEighteens) {
-            MusicDto musicDto = new ModelMapper().map(myEighteen, MusicDto.class);
+            MusicDto musicDto = new ModelMapper().map(myEighteen.getMusic(), MusicDto.class);
             musicDto.setIsEighteen(Boolean.TRUE);
             musicDtos.add(musicDto);
         }
-
-        Random random = new Random();
-        List<MusicDto> quicks = new ArrayList<>();
-        Pageable pageable = PageRequest.of(requestGetEighteenDto.getPage(), requestGetEighteenDto.getSize());
+        Pageable pageable = PageRequest.of(page, size);
         int start = (int)pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), musicDtos.size());
         Page<MusicDto> musicDtoPage = new PageImpl<>(musicDtos.subList(start, end), pageable, musicDtos.size());
+        ResponseGetEighteenDto responseGetEighteenDto = new ResponseGetEighteenDto(musicDtoPage);
+        return responseGetEighteenDto;
+    }
+
+    public ResponseRandomDto getRandom(String userId) {
+
+        User user = userRepository.findByUserId(userId);
+
+        List<MyEighteen> myEighteens = myEighteenRepository.findByUser(user);
+        Random random = new Random();
+        List<MusicDto> randoms = new ArrayList<>();
+
         if (myEighteens.size() > 5) {
             for (int i = 0; i < 5; i++) {
-
                 int randomIndex = random.nextInt(myEighteens.size());
                 MyEighteen randomElement = myEighteens.get(randomIndex);
-                MusicDto quick = new ModelMapper().map(randomElement, MusicDto.class);
-                quick.setIsEighteen(Boolean.TRUE);
-                quicks.add(quick);
+                MusicDto randomMusic = new ModelMapper().map(randomElement, MusicDto.class);
+                randomMusic.setIsEighteen(Boolean.TRUE);
+                randoms.add(randomMusic);
             }
         }
         else {
             for (MyEighteen myEighteen : myEighteens) {
-                MusicDto quick = new ModelMapper().map(myEighteen, MusicDto.class);
-                quick.setIsEighteen(Boolean.TRUE);
-                quicks.add(quick);
+                MusicDto randomMusic = new ModelMapper().map(myEighteen, MusicDto.class);
+                randomMusic.setIsEighteen(Boolean.TRUE);
+                randoms.add(randomMusic);
             }
         }
 
-        ResponseGetEighteenDto responseGetEighteenDto = new ResponseGetEighteenDto(musicDtoPage, quicks);
-
-        return responseGetEighteenDto;
+        ResponseRandomDto responseRandomDto = new ResponseRandomDto(randoms);
+        return responseRandomDto;
     }
 
     public String addEighteen(String userId, RequestEighteenDto requestEighteenDto) {
 
         User user = userRepository.findByUserId(userId);
-        Music music = requestEighteenDto.getMusic();
+        Music music = musicRepository.findByMusicId(requestEighteenDto.getMusicId());
         MyEighteen myEighteen = MyEighteen.builder()
                 .user(user)
                 .music(music)
                 .build();
+        String addDataUrl = String.format(env.getProperty("search-engine.url")) + "/data/" + userId;
+        SearchDto searchDto = new SearchDto(myEighteen.getMusic());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<SearchDto> requestEntity = new HttpEntity<>(searchDto, headers);
+//        restTemplate.put(addDataUrl, requestEntity);
         myEighteenRepository.save(myEighteen);
         return music.getTitle();
     }
 
-    public String deleteEighteen(String userId, RequestEighteenDto requestEighteenDto) {
+    public void deleteEighteen(String userId, List<Integer> musics) {
 
         User user = userRepository.findByUserId(userId);
-        Music music = requestEighteenDto.getMusic();
-        MyEighteen myEighteen = myEighteenRepository.findByUserAndMusic(user, music);
-        myEighteenRepository.delete(myEighteen);
-        return music.getTitle();
+        for (Integer musicId : musics) {
+            Music music = musicRepository.findByMusicId(musicId);
+            MyEighteen myEighteen = myEighteenRepository.findByUserAndMusic(user, music);
+            myEighteenRepository.delete(myEighteen);
+        }
+//        SearchDto searchDto = new SearchDto(myEighteen.getMusic());
+//        String deleteDataUrl = String.format(env.getProperty("search-engine.url")) + "/data/" + userId;
     }
 
 }

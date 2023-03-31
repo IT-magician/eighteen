@@ -2,7 +2,9 @@ package com.eighteen.userservice.dto.request;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiParam;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,4 +22,5 @@ public class RequestUpdateProfileDto {
 
     @ApiModelProperty(value = "유저 성별", required = true)
     private String gender;
+
 }

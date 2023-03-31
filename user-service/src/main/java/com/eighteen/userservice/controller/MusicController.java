@@ -4,18 +4,19 @@ import com.eighteen.userservice.dto.response.ResponseGetEighteenDto;
 import com.eighteen.userservice.dto.response.ResponseMusicDetailDto;
 import com.eighteen.userservice.service.MusicService;
 import io.swagger.annotations.*;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/music/{musicId}")
 @Api(value = "음악", description = "음악 관련 API")
 public class MusicController {
 
-    @Autowired
-    private MusicService musicService;
+    private final MusicService musicService;
 
     @ApiOperation(value = "음악 세부정보", response = ResponseMusicDetailDto.class)
     @ApiResponses(value = {

@@ -17,5 +17,5 @@ import java.util.List;
 public class RequestEighteenDto {
 
     @ApiModelProperty(value = "노래", required = true)
-    private Music music;
+    private Integer musicId;
 }

@@ -15,14 +15,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class MusicService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private  MusicRepository musicRepository;
+    private  final MusicRepository musicRepository;
 
-    @Autowired
-    private MusicFeatureRepository musicFeatureRepository;
+    private final MusicFeatureRepository musicFeatureRepository;
 
     public ResponseMusicDetailDto getMusicDetail(Integer musicId, String userId) {
 
