@@ -125,7 +125,7 @@ const Setting = (): JSX.Element => {
         </div>
         <div className="NameGenderDiv">
           {user && (
-            <VerifyInput value={user.nickname} setValue={setNicname} setPass={setPass} verify={nicknameVerify} />
+            <VerifyInput value={globalUser.nickname} setValue={setNicname} setPass={setPass} verify={nicknameVerify} />
           )}
           <Select<string>
             options={[
