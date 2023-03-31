@@ -8,11 +8,11 @@ import { KakaoLoginButton, GoogleLoginButton, NaverLoginButton } from "../button
 const Login = (): JSX.Element => {
   return (
     <StyledDiv>
-      <p>너도 몰랐던 너의 에이틴</p>
-      <div>
-        <p>에이틴과 함께</p>
-        <p>신나는 노래방 라이프를 즐기러 가볼까요?</p>
-      </div>
+      <h1>너도 몰랐던 너의 에이틴</h1>
+      <p>
+        <span>에이틴과 함께</span>
+        <span>신나는 노래방 라이프를 즐기러 가볼까요?</span>
+      </p>
       <div className="buttonDiv">
         <KakaoLoginButton />
         <GoogleLoginButton />
@@ -23,38 +23,20 @@ const Login = (): JSX.Element => {
 };
 
 const StyledDiv = styled.div`
-  position: relative;
-
-  & > p {
-    box-sizing: border-box;
+  .buttonDiv {
+    animation-delay: 1s;
     width: 100%;
-    margin: 160px 0px 0px 0px;
-    padding: 0px 0px 0px 28px;
-    font-size: 32px;
-  }
-
-  & > div {
-    box-sizing: border-box;
-    width: 100%;
-    margin: 40px 0px 0px 0px;
-    padding: 0px 0px 0px 28px;
-
-    & > p {
-      margin: 0px;
-      font-size: 24px;
-    }
-
-    & > div {
-      margin: 0px 0px 20px;
-    }
-  }
-
-  & .buttonDiv {
-    margin-top: 200px;
-    padding: 0px;
+    position: absolute;
+    left: 0;
+    bottom: 12vh;
+    padding: 32px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    & > * {
+      max-width: 400px;
+    }
   }
 `;
 export default Login;

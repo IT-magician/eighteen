@@ -1,54 +1,116 @@
+import axios from "axios";
 import React, { useEffect } from "react";
 import { Route, Routes } from "react-router";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import { getMainData } from "./apis/main";
+import { checkUser } from "./apis/oauth";
 import { Logo } from "./components/common/logo";
 import { NavBar } from "./components/common/nav";
-import { Favorite, Home, Login, Mypage, Recommend, Song, SongDetail, Setting } from "./pages";
+import { Favorite, Home, Login, Mypage, Recommend, Song, SongDetail, Setting, Register } from "./pages";
 import { userState } from "./recoil/atom";
 
 const App = (): JSX.Element => {
   const [user, setUser] = useRecoilState(userState);
   useEffect(() => {
-    // 유저 정보가 없는 경우 로그인을 통해 해당 정보를 가져옵니다
-    if (!user) {
-      // TODO: access Token 요청 실행
-      setUser({
-        userid: 0,
-        birth: "1999-03-23",
-        gender: "F",
-        nickname: "봉명동퉁퉁이",
-        email: "test@gamil.com",
-        profileImage: `${process.env.public_url}/user/undefined.png`,
-      });
-      // TODO: 실패시 reflesh Token 재발급을 위한 로그인 페이지로 이동
-    }
-  }, [user]);
+    // 최초 접근 시 main 요청을 통해 사용자 정보를 가져옵니다.
+    const getAccessToken = async () => {
+      try {
+        // 최초 접근 시 ACCESS TOKEN 발급을 위해 요청을 보냅니다
+        await checkUser();
+        // CASE 1-1 : 200 ACCEPTED
+        // 이 경우 발급받은 ACCESS TOKEN을 활용한 요청을 위해 callback 함수를 호출합니다
+        enterService();
+      } catch (e) {
+        // 요청 실패
+        if (axios.isAxiosError(e)) {
+          if (e.response?.status === 401) {
+            // CASE 1-2 : 401 UNAUTHORIZED
+            // 이 경우 재 로그인이 필요하므로 로그인 화면으로 이동합니다
+            setUser(null);
+          }
+        }
+      }
+    };
 
-  return (
-    <StyledDiv className="App">
-      <div className="Page" id="Page">
-        <div className="logo">
-          <Logo />
+    const enterService = async () => {
+      try {
+        const response = await getMainData();
+        if (response.status === 204) {
+          // CASE 2 : 204 NO_CONTENT
+          // 이 경우 등록된 회원이나 정상적인 회원가입을 거치지 않은 유저입니다
+          // 따라서 회원가입 화면으로 이동합니다
+          setUser({
+            nickname: "",
+            birth: "",
+            gender: "M",
+            profileImage: "",
+          });
+        } else if (response.status === 200) {
+          // CASE 3 : 200 ACCEPTED
+          // 이 경우 정상적으로 등록된 유저이으로 서비스 화면으로 이동합니다
+          // TODO: response data를 토대로 user update
+          setUser(response.data);
+        }
+      } catch (e) {
+        if (axios.isAxiosError(e)) {
+          if (e.response?.status === 401) {
+            // CASE 1 : 401 UNAUTHORIZED
+            // 이 경우 토큰이 만료되었거나, 로그인하지 않은 유저입니다
+            // 최초의 경우 REFLESH TOKEN을 토대로 다시 한 번 ACCESS TOKEN을 발급합니다
+            getAccessToken();
+          }
+        }
+      }
+    };
+
+    getAccessToken();
+  }, []);
+
+  if (!user) {
+    return (
+      <StyledDiv className="App">
+        <div className="Page max-height" id="Page">
+          <div className="logo">
+            <Logo />
+          </div>
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Routes>
         </div>
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/recommend/:type" element={<Recommend />} />
-          <Route path="/song" element={<Song />} />
-          <Route path="/song/:songid" element={<SongDetail />} />
-          <Route path="/favorite" element={<Favorite />} />
-          <Route path="/mypage" element={<Mypage />} />
-          <Route path="/setting" element={<Setting />} />
-        </Routes>
-      </div>
-      <NavBar />
-    </StyledDiv>
-  );
+      </StyledDiv>
+    );
+  } else {
+    return (
+      <StyledDiv className="App">
+        <div className="Page" id="Page">
+          <div className="logo">
+            <Logo />
+          </div>
+          <Routes>
+            <Route path="/home" element={<Home />} />
+            <Route path="/recommend/:type" element={<Recommend />} />
+            <Route path="/song" element={<Song />} />
+            <Route path="/song/:songid" element={<SongDetail />} />
+            <Route path="/favorite" element={<Favorite />} />
+            <Route path="/mypage" element={<Mypage />} />
+            <Route path="/setting" element={<Setting />} />
+          </Routes>
+        </div>
+        <NavBar />
+      </StyledDiv>
+    );
+  }
 };
 
 const StyledDiv = styled.div`
   height: 100vh;
+
+  .max-height {
+    height: 100vh !important;
+    overflow: hidden !important;
+  }
 
   // 실제 페이지 정보가 담길 페이지 컴포넌트
   & > .Page {
