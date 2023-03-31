@@ -4,7 +4,7 @@ import styled from "styled-components";
 import BackButton from "../components/common/button/BackButton";
 import SettingImg from "../components/setting/SettingImg";
 import IconButton from "../components/common/button/IconButton";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { userState } from "../recoil/atom";
 import { Select } from "../components/common/select";
 import { VerifyInput } from "../components/common/input/Verify";
@@ -30,8 +30,8 @@ import SettingDatePicker from "../components/setting/SettingDatePicker";
  * 프로필 수정 화면
  */
 const Setting = (): JSX.Element => {
-  const globalUser = useRecoilValue(userState);
-  const [user, setUser] = useState(globalUser);
+  const [globalUser, setGlobalUser] = useRecoilState(userState);
+  const [user, setUser] = useState({ ...globalUser });
   const [pass, setPass] = useState<boolean>(true);
   const file = useRef<File>();
   const navigate = useNavigate();
@@ -78,7 +78,6 @@ const Setting = (): JSX.Element => {
   const setImage = (value: File) => {
     if (user) {
       file.current = value;
-      console.log(value);
     }
   };
 
@@ -97,14 +96,15 @@ const Setting = (): JSX.Element => {
 
     const res = await modifyProfile(formData);
     if (res.data == "ok") {
-      console.log("patch 성공");
       navigate("/mypage");
     }
   };
 
-  const onHandleDeleteAccount = () => {
-    deleteAccount();
-    navigate("/");
+  const onHandleDeleteAccount = async () => {
+    const res = await deleteAccount();
+    if (res) {
+      setGlobalUser(null);
+    }
   };
 
   if (!globalUser) return <></>;
@@ -123,7 +123,7 @@ const Setting = (): JSX.Element => {
         <div className="birthSelectDiv">
           <SettingDatePicker setValue={setBirth} birth={globalUser.birth} />
         </div>
-        <div>
+        <div className="NameGenderDiv">
           {user && (
             <VerifyInput value={user.nickname} setValue={setNicname} setPass={setPass} verify={nicknameVerify} />
           )}
@@ -183,8 +183,12 @@ const StyledDiv = styled.div`
     justify-content: start;
   }
 
+  & .NameGenderDiv {
+    height: 100px;
+  }
+
   & .exitButton {
-    margin: 100px 0px 0px;
+    margin: 180px 0px 0px;
     justify-content: end;
 
     & > button {

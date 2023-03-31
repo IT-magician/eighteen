@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { SongItem } from "../../common/song";
+import { SongSlideList } from "../../common/song";
 
 interface Music {
   isEighteen: boolean;
@@ -26,18 +26,7 @@ const SongHistory = ({ musicList }: Props): JSX.Element => {
   return (
     <StyledDiv>
       <p>최근 본 노래</p>
-      <ul>
-        {musicList.map((music) => (
-          <SongItem
-            key={music.musicId}
-            musicId={music.musicId}
-            title={music.title}
-            singer={music.singer}
-            isEighteen={music.isEighteen}
-            thumbnailUrl={""}
-          />
-        ))}
-      </ul>
+      <SongSlideList songList={musicList} />
     </StyledDiv>
   );
 };

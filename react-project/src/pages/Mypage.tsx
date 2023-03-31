@@ -15,56 +15,25 @@ interface Music {
   title: string;
 }
 
-const MUSICLIST: Music[] = [
-  {
-    isEighteen: true,
-    musicId: 1,
-    singer: "윤하",
-    thumbnailUrl: "string",
-    title: "사건의 지평선",
-  },
-  {
-    isEighteen: false,
-    musicId: 2,
-    singer: "윤하",
-    thumbnailUrl: "string",
-    title: "오르트구름",
-  },
-  {
-    isEighteen: true,
-    musicId: 3,
-    singer: "윤하",
-    thumbnailUrl: "string",
-    title: "꿈 속에서",
-  },
-  {
-    isEighteen: false,
-    musicId: 4,
-    singer: "뉴진스",
-    thumbnailUrl: "string",
-    title: "하입보이",
-  },
-  {
-    isEighteen: false,
-    musicId: 5,
-    singer: "루시",
-    thumbnailUrl: "string",
-    title: "조깅",
-  },
-];
+const musics: number[] = JSON.parse(localStorage.getItem("song-history") || "[]");
 
-/**
+/*
  * 마이페이지
  */
 const Mypage = (): JSX.Element => {
   const [user, setUser] = useRecoilState(userState);
+  const [musicList, setMusicList] = useState<Music[]>([]);
   const [dummyGender, setDummyGender] = useState<string>("none");
 
   useEffect(() => {
     async function getUser() {
       const { data } = await getProfile();
-      console.log(data);
       setUser(data);
+    }
+
+    async function getHistory() {
+      const { data } = await getSongHistory(musics);
+      setMusicList(data);
     }
 
     if (user?.gender == "M") {
@@ -74,6 +43,7 @@ const Mypage = (): JSX.Element => {
     }
 
     getUser();
+    getHistory();
   }, []);
 
   let age = 0;
@@ -99,7 +69,7 @@ const Mypage = (): JSX.Element => {
         />
       </div>
       <div className="songHistoryDiv">
-        <SongHistory musicList={MUSICLIST} />
+        <SongHistory musicList={musicList} />
       </div>
     </StyledDiv>
   );
