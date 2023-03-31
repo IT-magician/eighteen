@@ -15,6 +15,13 @@ const getEighteenList = (page: number, size: number) => {
 };
 
 /**
+ * [GET]애창곡 랜덤 조회
+ */
+const getEighteenRandom = () => {
+  return instance.get(`/my_eighteen/random`);
+};
+
+/**
  * [POST]애창곡 추가
  * @param musicId 노래번호
  */
@@ -30,4 +37,4 @@ const removeEighteen = (musicId: number) => {
   return instance.delete(`/my_eighteen/${musicId}`);
 };
 
-export { getEighteenList, addEighteen, removeEighteen };
+export { getEighteenList, addEighteen, removeEighteen, getEighteenRandom };
