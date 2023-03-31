@@ -1,0 +1,176 @@
+stages:          # List of stages for jobs, and their order of execution
+  - libs
+  - build
+  - deploy
+
+
+npm:
+  stage: libs
+  only:
+    - develop
+  # only:
+  #   - dev
+  cache:
+    paths:
+      - react-project/node_modules
+  # allow_failure: true
+  script:
+    - cd react-project
+    - npm install
+    # - exit 1
+
+
+react-project:
+  stage: build
+  only:
+    - develop
+  cache:
+    paths:
+      - react-project/build
+      - react-project/node_modules
+  needs: ["npm"]
+  when: on_success
+  script:
+    - cd react-project
+    - CI=false npm run build
+    - docker build -t react-project .
+
+react-project:on_failure:
+  stage: build
+  only:
+    - develop
+  cache:
+    paths:
+      - react-project/build
+      - react-project/node_modules
+  needs: ["npm"]
+  when: on_failure
+  script:
+    - echo "react project libs failed"
+
+deploy-job/react-project:preparing_for_replace:      # This job runs in the deploy stage.
+  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
+  environment: production
+  only:
+    - develop
+  needs: ["react-project"]
+  allow_failure: true
+  when: on_success
+  script:
+    - docker container stop react-project && docker container rm react-project
+
+
+
+deploy-job/react-project:replace_docker_container:      # This job runs in the deploy stage.
+  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
+  environment: production
+  only:
+    - develop
+  needs: ["deploy-job/react-project:preparing_for_replace"]
+  # allow_failure: true
+  when: on_success
+  script:
+    - docker run -e REACT_APP_OPEN_WEATHER_API_KEY=24ac81e70443c61f8b708b4be3716bea -e REACT_APP_SERVER_URL=http://j8b304.p.ssafy.io -p 3000:80 --name react-project -d react-project
+
+
+
+
+
+
+user-service:
+  stage: build
+  only:
+    - develop
+  script:
+    - cd user-service
+    - chmod +x gradlew
+    - ./gradlew clean bootJar
+    - docker build -t user-service .
+
+deploy-job/user-service:preparing_for_replace:      # This job runs in the deploy stage.
+  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
+  environment: production
+  only:
+    - develop
+  needs: ["user-service"]
+  allow_failure: true
+  when: on_success
+  script:
+    - docker container stop user-service && docker container rm user-service
+
+deploy-job/user-service:replace_docker_container:      # This job runs in the deploy stage.
+  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
+  environment: production
+  only:
+    - develop
+  needs: ["deploy-job/user-service:preparing_for_replace"]
+  # allow_failure: true
+  when: on_success
+  script:
+    - docker run -p 9001:8080 --name user-service -d user-service
+
+
+search-engine:
+  stage: build
+  only:
+    - develop
+  script:
+    - cd search-engine
+    - chmod +x gradlew
+    - ./gradlew clean bootJar
+    - docker build -t search-engine .
+
+deploy-job/search-engine:preparing_for_replace:      # This job runs in the deploy stage.
+  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
+  environment: production
+  only:
+    - develop
+  needs: ["search-engine"]
+  allow_failure: true
+  when: on_success
+  script:
+    - docker container stop search-engine && docker container rm search-engine
+
+deploy-job/search-engine:replace_docker_container:      # This job runs in the deploy stage.
+  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
+  environment: production
+  only:
+    - develop
+  needs: ["deploy-job/search-engine:preparing_for_replace"]
+  # allow_failure: true
+  when: on_success
+  script:
+    - docker run -p 9002:8080 --name search-engine -d search-engine
+
+auth-service:
+  stage: build
+  only:
+    - develop
+  script:
+    - cd auth-service
+    - chmod +x gradlew
+    - ./gradlew clean bootJar
+    - docker build -t auth-service .
+
+deploy-job/auth-service:preparing_for_replace:      # This job runs in the deploy stage.
+  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
+  environment: production
+  only:
+    - develop
+  needs: ["auth-service"]
+  allow_failure: true
+  when: on_success
+  script:
+    - docker container stop auth-service && docker container rm auth-service
+
+deploy-job/auth-service:replace_docker_container:      # This job runs in the deploy stage.
+  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
+  environment: production
+  only:
+    - develop
+  needs: ["deploy-job/auth-service:preparing_for_replace"]
+  # allow_failure: true
+  when: on_success
+  script:
+    - docker run -p 9003:8080 --name auth-service -d auth-service
+
