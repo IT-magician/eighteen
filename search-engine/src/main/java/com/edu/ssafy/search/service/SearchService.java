@@ -152,6 +152,8 @@ public class SearchService {
         Map<String, Map<String, List<Map<String, Map<String, Object>>>>> map = gson.fromJson(responseBody, Map.class);
         List<SongInfoDTO> list = new LinkedList<>();
 
+        Map<String, Double[]> levenshteinDistance_dict = new HashMap<>();
+
         for (int i = 0;i < map.get("hits").get("hits").size();i++) {
             int id = Integer.parseInt((String) map.get("hits").get("hits").get(i).get("_source").get("id"));
             String title = (String) map.get("hits").get("hits").get(i).get("_source").get("title");
@@ -165,14 +167,25 @@ public class SearchService {
                             .singer(_singer)
                             .youtube_url(youtube_url)
                             .build());
+
+            int maxLen = _singer.length() > _singer.length() ? _singer.length() : singer.length();
+            double temp = ld.apply(_singer, singer);
+            double result = (maxLen - temp) / maxLen;
+            levenshteinDistance_dict.put(_singer, new Double[]{result, analyzer.setBase(_singer, singer).analyze()});
         }
 
         list.sort(
                 (lhs, rhs) -> {
-                    if (lhs.getSinger().length() == rhs.getSinger().length()) {
-                        return lhs.getSinger().compareTo(rhs.getSinger());
+//                    if (lhs.getTitle().length() == rhs.getTitle().length()) return lhs.getTitle().compareTo(rhs.getTitle());
+//                    return lhs.getTitle().length() - rhs.getTitle().length();
+                    String lhs_singer = lhs.getSinger(), rhs_singer = rhs.getSinger();
+
+                    if (levenshteinDistance_dict.get(rhs_singer)[0] == levenshteinDistance_dict.get(lhs_singer)[0]) {
+                        if (levenshteinDistance_dict.get(rhs_singer)[1] == levenshteinDistance_dict.get(lhs_singer)[1]) return lhs_singer.compareTo(rhs_singer);
+                        return levenshteinDistance_dict.get(rhs_singer)[1].compareTo(levenshteinDistance_dict.get(lhs_singer)[1]);
                     }
-                    return lhs.getSinger().length() - rhs.getSinger().length();
+
+                    return levenshteinDistance_dict.get(rhs_singer)[0].compareTo(levenshteinDistance_dict.get(lhs_singer)[0]);
                 }
         );
 
