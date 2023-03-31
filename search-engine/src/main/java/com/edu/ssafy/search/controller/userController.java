@@ -1,6 +1,6 @@
 package com.edu.ssafy.search.controller;
 
-import com.edu.ssafy.search.dto.SongDTO;
+import com.edu.ssafy.search.dto.SongInfoDTO;
 import com.edu.ssafy.search.service.UserIdxService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,13 +29,13 @@ public class userController {
     }
 
     @PutMapping("/data/{user_id}")
-    ResponseEntity addData(@PathVariable String user_id, @RequestBody List<SongDTO> songs) throws IOException {
+    ResponseEntity addData(@PathVariable String user_id, @RequestBody List<SongInfoDTO> songs) throws IOException {
         userIdxService.addData(user_id, songs);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @DeleteMapping("/data/{user_id}")
-    ResponseEntity deleteData(@PathVariable String user_id, @RequestBody List<SongDTO> songs) throws IOException {
+    ResponseEntity deleteData(@PathVariable String user_id, @RequestBody List<SongInfoDTO> songs) throws IOException {
         userIdxService.deleteData(user_id, songs);
         return new ResponseEntity(HttpStatus.OK);
     }
