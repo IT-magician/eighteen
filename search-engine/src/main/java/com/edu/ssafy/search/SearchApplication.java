@@ -27,16 +27,16 @@ public class SearchApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        String lhs = "따뜻한";
-        String rhs = "따뜻운";
-        int maxLen = lhs.length() > lhs.length() ? lhs.length() : rhs.length();
-
-        LevenshteinDistance ld = new LevenshteinDistance();
-
-        double result = 0;
-        double temp = ld.apply(lhs, rhs);
-        result = (maxLen - temp) / maxLen;
-
-        System.out.println(result);
+//        String lhs = "따뜻한";
+//        String rhs = "따뜻운";
+//        int maxLen = lhs.length() > lhs.length() ? lhs.length() : rhs.length();
+//
+//        LevenshteinDistance ld = new LevenshteinDistance();
+//
+//        double result = 0;
+//        double temp = ld.apply(lhs, rhs);
+//        result = (maxLen - temp) / maxLen;
+//
+//        System.out.println(result);
     }
 }

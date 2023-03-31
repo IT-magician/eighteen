@@ -42,18 +42,6 @@ public class SearchService {
 
     public List<SongInfoDTO> searchBytitle(String title) {
 
-        System.out.println("size : " + getTotalSongCount("tj_song_list_idx"));
-        System.out.println(
-                String.format(
-                        "{\n" +
-                                "  \"size\": " + max_data_size + ",\n" +
-                                "  \"query\": {\n" +
-                                "    \"match\": {\n" +
-                                "      \"title\" : \"%s\"\n" +
-                                "    }\n" +
-                                "  }\n" +
-                                "}", title
-                ));
 
         String responseBody = webClient.method(HttpMethod.GET)         // POST method
                 .uri("/tj_song_list_idx/_search?filter_path=hits.hits.*,aggregations.*")    // baseUrl 이후 uri

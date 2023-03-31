@@ -198,7 +198,7 @@ public class UserIdxService {
     }
 
     public Set<Integer> getUserFavoriteSongWithId(String user_id) {
-        System.out.println("/favorite_song_list@" + user_id + "/_search?filter_path=hits.hits.*,aggregations.*");
+//        System.out.println("/favorite_song_list@" + user_id + "/_search?filter_path=hits.hits.*,aggregations.*");
 
 
         String responseBody = webClient.method(HttpMethod.POST)         // POST method
@@ -213,7 +213,7 @@ public class UserIdxService {
                 .bodyToMono(String.class)  // body type : EmpInfo
                 .block();                   // await
 
-        System.out.println("response body : " + responseBody);
+//        System.out.println("response body : " + responseBody);
         Map<String, Map<String, List<Map<String, Map<String, Object>>>>> map = gson.fromJson(responseBody, Map.class);
         Set<Integer> list = new HashSet<>();
 
@@ -237,8 +237,8 @@ public class UserIdxService {
 
         Set<Integer> user_favorite_songs = getUserFavoriteSongWithId(user_id);
 
-        System.out.println("size : " + songs.size());
-        System.out.println("start : " + pagination_idx*pagination_size + ", " + (pagination_idx+1)*pagination_size);
+//        System.out.println("size : " + songs.size());
+//        System.out.println("start : " + pagination_idx*pagination_size + ", " + (pagination_idx+1)*pagination_size);
 
         List<SongWithPreferableDTO> list = new LinkedList<>();
         for (int i = (int) (pagination_idx*pagination_size); i < Math.min((pagination_idx+1)*pagination_size, songs.size()); i++) {
@@ -259,8 +259,8 @@ public class UserIdxService {
 
         Set<Integer> user_favorite_songs = getUserFavoriteSongWithId(user_id);
 
-        System.out.println("size : " + songs.size());
-        System.out.println("start : " + pagination_idx*pagination_size + ", " + (pagination_idx+1)*pagination_size);
+//        System.out.println("size : " + songs.size());
+//        System.out.println("start : " + pagination_idx*pagination_size + ", " + (pagination_idx+1)*pagination_size);
 
         List<SongWithPreferableDTO> list = new LinkedList<>();
         for (int i = (int) (pagination_idx*pagination_size); i < Math.min((pagination_idx+1)*pagination_size, songs.size()); i++) {
