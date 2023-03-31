@@ -70,7 +70,7 @@ const App = (): JSX.Element => {
   if (!user) {
     return (
       <StyledDiv className="App">
-        <div className="Page" id="Page">
+        <div className="Page max-height" id="Page">
           <div className="logo">
             <Logo />
           </div>
@@ -89,7 +89,6 @@ const App = (): JSX.Element => {
             <Logo />
           </div>
           <Routes>
-            <Route path="/" element={<Login />} />
             <Route path="/home" element={<Home />} />
             <Route path="/recommend/:type" element={<Recommend />} />
             <Route path="/song" element={<Song />} />
@@ -107,6 +106,10 @@ const App = (): JSX.Element => {
 
 const StyledDiv = styled.div`
   height: 100vh;
+
+  .max-height {
+    height: 100vh !important;
+  }
 
   // 실제 페이지 정보가 담길 페이지 컴포넌트
   & > .Page {
