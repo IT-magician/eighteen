@@ -4,7 +4,7 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { Logo } from "./components/common/logo";
 import { NavBar } from "./components/common/nav";
-import { Favorite, Home, Login, Mypage, Recommend, Song, SongDetail } from "./pages";
+import { Favorite, Home, Login, Mypage, Recommend, Song, SongDetail, Setting } from "./pages";
 import { userState } from "./recoil/atom";
 
 const App = (): JSX.Element => {
@@ -16,10 +16,11 @@ const App = (): JSX.Element => {
       setUser({
         userid: 0,
         birth: "1999-03-23",
-        gender: 0,
+        gender: "F",
         nickname: "봉명동퉁퉁이",
+        email: "test@gamil.com",
+        profileImage: `${process.env.public_url}/user/undefined.png`,
       });
-
       // TODO: 실패시 reflesh Token 재발급을 위한 로그인 페이지로 이동
     }
   }, [user]);
@@ -38,6 +39,7 @@ const App = (): JSX.Element => {
           <Route path="/song/:songid" element={<SongDetail />} />
           <Route path="/favorite" element={<Favorite />} />
           <Route path="/mypage" element={<Mypage />} />
+          <Route path="/setting" element={<Setting />} />
         </Routes>
       </div>
       <NavBar />

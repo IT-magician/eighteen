@@ -14,15 +14,9 @@ const Login = (): JSX.Element => {
         <p>신나는 노래방 라이프를 즐기러 가볼까요?</p>
       </div>
       <div className="buttonDiv">
-        <div>
-          <KakaoLoginButton />
-        </div>
-        <div>
-          <GoogleLoginButton />
-        </div>
-        <div>
-          <NaverLoginButton />
-        </div>
+        <KakaoLoginButton />
+        <GoogleLoginButton />
+        <NaverLoginButton />
       </div>
     </StyledDiv>
   );
@@ -60,7 +54,6 @@ const StyledDiv = styled.div`
     padding: 0px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     align-items: center;
   }
 `;

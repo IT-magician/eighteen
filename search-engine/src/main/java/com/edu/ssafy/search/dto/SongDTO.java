@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class HitSong {
+public class SongDTO {
     int id;
     String title;
     String singer;

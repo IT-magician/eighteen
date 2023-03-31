@@ -70,7 +70,7 @@ deploy-job/react-project:replace_docker_container:      # This job runs in the d
   # allow_failure: true
   when: on_success
   script:
-    - docker run -p 3000:80 --name react-project -d react-project
+    - docker run -e REACT_APP_OPEN_WEATHER_API_KEY=24ac81e70443c61f8b708b4be3716bea -e REACT_APP_SERVER_URL=http://j8b304.p.ssafy.io -p 3000:80 --name react-project -d react-project
 
 
 
