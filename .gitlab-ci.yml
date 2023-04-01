@@ -36,9 +36,9 @@ react-project:
     - CI=false npm run build
     - docker build -t react-project .
     - ls $CI_PROJECT_DIR
-#   artifacts:
-#     paths:
-#       - $CI_PROJECT_DIR/target/[project name]
+  artifacts:
+    paths:
+      - $CI_PROJECT_DIR/react-project/build
 
 react-project:on_failure:
   stage: build
