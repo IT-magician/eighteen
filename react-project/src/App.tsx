@@ -106,6 +106,7 @@ const App = (): JSX.Element => {
 
 const StyledDiv = styled.div`
   height: 100vh;
+  display: flex;
 
   .max-height {
     height: 100vh !important;
@@ -116,7 +117,7 @@ const StyledDiv = styled.div`
   & > .Page {
     position: relative;
     width: 100%;
-    height: calc(100vh - 80px);
+    margin-bottom: 80px;
     box-sizing: border-box;
     overflow: auto;
     display: flex;
@@ -167,7 +168,8 @@ const StyledDiv = styled.div`
 
   // navbar
   & > *:last-child {
-    position: fixed;
+    z-index: 1;
+    display: sticky;
   }
 `;
 

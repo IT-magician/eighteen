@@ -35,6 +35,7 @@ const FavoriteRandomChoice = () => {
 };
 
 const StyledDiv = styled.div`
+  margin-bottom: 64px;
   & > h2 {
     font-weight: 400;
     margin: 32px 0;
