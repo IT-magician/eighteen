@@ -64,7 +64,13 @@ const App = (): JSX.Element => {
       }
     };
 
-    getAccessToken();
+    //getAccessToken();
+    setUser({
+      nickname: "",
+      birth: "",
+      gender: "M",
+      profileImage: "",
+    });
   }, []);
 
   if (!user) {
@@ -170,6 +176,7 @@ const StyledDiv = styled.div`
   & > *:last-child {
     z-index: 1;
     display: sticky;
+    bottom: 0;
   }
 `;
 
