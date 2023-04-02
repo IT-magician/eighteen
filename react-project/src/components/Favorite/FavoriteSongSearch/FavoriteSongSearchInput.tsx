@@ -60,6 +60,7 @@ const StyledDiv = styled.div`
 
   & > input {
     margin: auto 8px;
+    width: 0;
     flex: 1 1 0;
     background: none;
     border: 0;

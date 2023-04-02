@@ -59,6 +59,7 @@ const StyledDiv = styled.div`
   border-radius: 16px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 8px;
   box-shadow: var(--shadow);
 
@@ -69,6 +70,7 @@ const StyledDiv = styled.div`
 
   & > input {
     margin: auto 8px;
+    width: 0;
     flex: 1 1 0;
     background: none;
     border: 0;

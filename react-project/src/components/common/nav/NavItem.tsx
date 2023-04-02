@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { TbHome, TbMusic, TbSearch, TbUser } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 
-export type LinkType = "home" | "favorite" | "song" | "mypage";
+export type LinkType = "" | "favorite" | "song" | "mypage";
 
 interface Props {
   link: LinkType;
@@ -15,7 +15,7 @@ const NavItem = ({ link }: Props): JSX.Element => {
   // 지정한 아이콘 출력
   const icon = () => {
     switch (link) {
-      case "home":
+      case "":
         return <TbHome />;
       case "favorite":
         return <TbMusic />;
