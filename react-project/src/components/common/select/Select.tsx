@@ -9,19 +9,30 @@ export interface Option<T> {
 
 interface Props<T> {
   defaultIdx?: number;
+  value?: T;
   placeholder?: string;
   options: Option<T>[];
   setValue(value: T): void;
 }
 
-function Select<T>({ defaultIdx = 0, placeholder = "", options, setValue }: Props<T>): JSX.Element {
-  const [valueIdx, setValueIdx] = useState<number>(defaultIdx);
+function Select<T>({ defaultIdx = 0, placeholder = "", value, options, setValue }: Props<T>): JSX.Element {
+  const [valueIdx, setValueIdx] = useState<number>(
+    value ? options.findIndex((item) => item.value === value) : defaultIdx,
+  );
 
   const onClick = (e: React.MouseEvent<HTMLLIElement>) => {
     if (e.target instanceof HTMLLIElement) {
       const newValueIndex = e.target.value;
       setValueIdx(newValueIndex);
       setValue(options[newValueIndex].value);
+    }
+  };
+
+  const onSelect = (item: Option<T>, index: number) => {
+    if (value) {
+      return value === item.value ? "check" : undefined;
+    } else {
+      return index === valueIdx ? "check" : undefined;
     }
   };
 
@@ -33,7 +44,7 @@ function Select<T>({ defaultIdx = 0, placeholder = "", options, setValue }: Prop
       </div>
       <ul>
         {options.map((item, index) => (
-          <li key={index} value={index} className={index === valueIdx ? "check" : undefined} onClick={onClick}>
+          <li key={index} value={index} className={onSelect(item, index)} onClick={onClick}>
             {item.text}
           </li>
         ))}

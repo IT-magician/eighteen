@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 
-interface User {
+export interface User {
   nickname: string;
   birth: string;
   gender: "M" | "F";

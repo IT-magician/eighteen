@@ -49,8 +49,20 @@ const App = (): JSX.Element => {
         } else if (response.status === 200) {
           // CASE 3 : 200 ACCEPTED
           // 이 경우 정상적으로 등록된 유저이으로 서비스 화면으로 이동합니다
-          // TODO: response data를 토대로 user update
-          setUser(response.data);
+
+          if (response.data.nickname) {
+            // TODO: response data를 토대로 user update
+            setUser(response.data);
+          } else {
+            // 이 경우 등록된 회원이나 정상적인 회원가입을 거치지 않은 유저입니다
+            // 따라서 회원가입 화면으로 이동합니다
+            setUser({
+              nickname: "",
+              birth: "",
+              gender: "M",
+              profileImage: "",
+            });
+          }
         }
       } catch (e) {
         if (axios.isAxiosError(e)) {
@@ -74,10 +86,7 @@ const App = (): JSX.Element => {
           <div className="logo">
             <Logo />
           </div>
-          <Routes>
-            <Route index path="/" element={<Login />} handle />
-            <Route path="/register" element={<Register />} />
-          </Routes>
+          {!user ? <Login /> : <Register />}
         </div>
       </StyledDiv>
     );
