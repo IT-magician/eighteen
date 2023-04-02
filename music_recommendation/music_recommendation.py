@@ -72,10 +72,17 @@ def emotion_classification(data_path=DATA_FILE, data_path2=DATA_FILE2):
     X = df[['energy', 'danceability', 'tempo']]
     y = df['emotion']
 
+
+    pred_X = music_df[['energy', 'danceability', 'tempo']]
+
     clf = DecisionTreeClassifier()
     clf.fit(X, y)
 
-    return
+    pred_X = music_df[['energy', 'danceability', 'tempo']]
+    predicted_emotion = clf.predict(pred_X)
+    predicted_emotion
+
+    return predicted_emotion
 
 def favorite_song(data_path=DATA_FILE, data_path3=DATA_FILE3):
     with open(data_path, encoding="utf-8") as f:
