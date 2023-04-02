@@ -89,7 +89,7 @@ const App = (): JSX.Element => {
             <Logo />
           </div>
           <Routes>
-            <Route path="/home" element={<Home />} />
+            <Route path="/" element={<Home />} />
             <Route path="/recommend/:type" element={<Recommend />} />
             <Route path="/song" element={<Song />} />
             <Route path="/song/:songid" element={<SongDetail />} />
@@ -140,7 +140,7 @@ const StyledDiv = styled.div`
       display: flex;
       justify-content: flex-end;
       & > div {
-        padding: 56px 32px;
+        margin: 56px 32px;
         box-sizing: border-box;
       }
     }

@@ -10,7 +10,7 @@ const Logo = (): JSX.Element => {
   const navigate = useNavigate();
 
   const onClick = () => {
-    navigate("home");
+    navigate("/");
   };
 
   return (

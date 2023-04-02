@@ -8,7 +8,7 @@ import NavItem, { LinkType } from "./NavItem";
  */
 const NavBar = () => {
   // 출력할 nav 버튼 목록
-  const navList: LinkType[] = ["home", "favorite", "song", "mypage"];
+  const navList: LinkType[] = ["", "favorite", "song", "mypage"];
 
   // 현재 pointer 애니메이션을 주기 위해 필요합니다.
   const location = useLocation();
