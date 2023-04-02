@@ -73,8 +73,6 @@ def emotion_classification(data_path=DATA_FILE, data_path2=DATA_FILE2):
     y = df['emotion']
 
 
-    pred_X = music_df[['energy', 'danceability', 'tempo']]
-
     clf = DecisionTreeClassifier()
     clf.fit(X, y)
 
@@ -111,5 +109,17 @@ def favorite_song(data_path=DATA_FILE, data_path3=DATA_FILE3):
 
     model = SVD(n_factors=100, n_epochs=20, random_state=123)
     model.fit(train)
+
+    user_list = favorite_df['user_id'].unique()
+    recommendations = {}
+
+    for user_id in user_list:
+        liked_songs = favorite_df.loc[(favorite_df['user_id'] == user_id) & (favorite_df['liked'] == 1), 'id'].tolist()
+        all_songs = favorite_df.loc[~favorite_df['id'].isin(liked_songs), 'id'].tolist()
+        
+        scores = [(song, model.predict(user_id, song).est) for song in all_songs]
+        recommendation_list = [score[0] for score in sorted(scores, key=lambda x: x[1], reverse=True)[:20] if score[0] not in liked_songs]
+
+        recommendations[user_id] = recommendation_list
     
-    return
+    return recommendation_list
