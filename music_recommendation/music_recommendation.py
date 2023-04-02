@@ -116,10 +116,8 @@ def favorite_song(data_path=DATA_FILE, data_path3=DATA_FILE3):
     for user_id in user_list:
         liked_songs = favorite_df.loc[(favorite_df['user_id'] == user_id) & (favorite_df['liked'] == 1), 'id'].tolist()
         all_songs = favorite_df.loc[~favorite_df['id'].isin(liked_songs), 'id'].tolist()
-        
+
         scores = [(song, model.predict(user_id, song).est) for song in all_songs]
         recommendation_list = [score[0] for score in sorted(scores, key=lambda x: x[1], reverse=True)[:20] if score[0] not in liked_songs]
-
-        recommendations[user_id] = recommendation_list
     
     return recommendation_list
