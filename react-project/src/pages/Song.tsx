@@ -17,7 +17,6 @@ const Song = (): JSX.Element => {
 
 const StyledDiv = styled.div`
   position: relative;
-  z-index: 1;
   padding: 96px 16px 80px;
   & > h1 {
     font-weight: 400;
