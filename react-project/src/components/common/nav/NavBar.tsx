@@ -32,9 +32,6 @@ const NavBar = () => {
 const StyledDiv = styled.div<{ location: number }>`
   width: 100%;
   height: 80px;
-  position: absolute;
-  bottom: 0;
-  left: 0;
   box-shadow: var(--shadow);
   background-color: var(--black-500);
   display: flex;

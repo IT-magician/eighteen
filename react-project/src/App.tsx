@@ -64,16 +64,10 @@ const App = (): JSX.Element => {
       }
     };
 
-    //getAccessToken();
-    setUser({
-      nickname: "",
-      birth: "",
-      gender: "M",
-      profileImage: "",
-    });
+    getAccessToken();
   }, []);
 
-  if (!user) {
+  if (!user || !user.nickname) {
     return (
       <StyledDiv className="App">
         <div className="Page max-height" id="Page">
@@ -81,7 +75,7 @@ const App = (): JSX.Element => {
             <Logo />
           </div>
           <Routes>
-            <Route path="/" element={<Login />} />
+            <Route index path="/" element={<Login />} handle />
             <Route path="/register" element={<Register />} />
           </Routes>
         </div>
@@ -95,7 +89,7 @@ const App = (): JSX.Element => {
             <Logo />
           </div>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route index path="/" element={<Home />} />
             <Route path="/recommend/:type" element={<Recommend />} />
             <Route path="/song" element={<Song />} />
             <Route path="/song/:songid" element={<SongDetail />} />
@@ -111,8 +105,13 @@ const App = (): JSX.Element => {
 };
 
 const StyledDiv = styled.div`
-  height: 100vh;
+  min-height: 100vh;
+  z-index: 0;
+  position: relative;
+  /* background-color: red; */
   display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   .max-height {
     height: 100vh !important;
@@ -121,9 +120,7 @@ const StyledDiv = styled.div`
 
   // 실제 페이지 정보가 담길 페이지 컴포넌트
   & > .Page {
-    position: relative;
     width: 100%;
-    margin-bottom: 80px;
     box-sizing: border-box;
     overflow: auto;
     display: flex;
@@ -162,7 +159,7 @@ const StyledDiv = styled.div`
   &::before {
     content: "";
     position: absolute;
-    z-index: 0;
+    z-index: -1;
     top: -60px;
     left: 0;
     width: 100%;
@@ -175,7 +172,7 @@ const StyledDiv = styled.div`
   // navbar
   & > *:last-child {
     z-index: 1;
-    display: sticky;
+    position: fixed;
     bottom: 0;
   }
 `;
