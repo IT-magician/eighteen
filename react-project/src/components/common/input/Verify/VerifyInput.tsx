@@ -131,4 +131,4 @@ const StyledDiv = styled.div<{ status: VerifyStatus }>`
   }
 `;
 
-export default VerifyInput;
+export default React.memo(VerifyInput);

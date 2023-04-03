@@ -73,7 +73,7 @@ const App = (): JSX.Element => {
       }
     };
 
-    getAccessToken();
+    enterService();
   }, []);
 
   if (!user || user.newby) {

@@ -9,6 +9,7 @@ import ko from "date-fns/locale/ko";
 import moment from "moment";
 import RegusterProfileDataPicker from "./RegusterProfileDataPicker";
 import { TextButton } from "../../common/button";
+import { modifyProfile } from "../../../apis/profile";
 
 registerLocale("ko", ko);
 
@@ -25,6 +26,7 @@ const RegisterProfile = ({ nextPage }: Props): JSX.Element => {
     nickname: "",
     profileImage: "",
   });
+  const { birth, gender, nickname } = data;
 
   const setGender = (gender: "M" | "F") => {
     setData({ ...data, gender });
@@ -43,13 +45,23 @@ const RegisterProfile = ({ nextPage }: Props): JSX.Element => {
     setTimeout(() => setShake(false), 500);
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if (!pass) onShake();
-    // TODO : data 값 토대로 프로필 값 수정 요청 보내기
-    else nextPage();
+    else {
+      // TODO : data 값 토대로 프로필 값 수정 요청 보내기
+      const formData = new FormData();
+      const newProfile = JSON.stringify({
+        nickname,
+        gender,
+        birth,
+      });
+      formData.append("profileInfo", new Blob([newProfile], { type: "application/json" }));
+      const res = await modifyProfile(formData);
+      if (res.data == "ok") {
+        nextPage();
+      }
+    }
   };
-
-  const { birth, gender, nickname } = data;
 
   return (
     <StyledDiv>
