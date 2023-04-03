@@ -12,7 +12,11 @@ import { TextButton } from "../../common/button";
 
 registerLocale("ko", ko);
 
-const RegisterProfile = (): JSX.Element => {
+interface Props {
+  nextPage(): void;
+}
+
+const RegisterProfile = ({ nextPage }: Props): JSX.Element => {
   const [pass, setPass] = useState<boolean>(false);
   const [shake, setShake] = useState<boolean>(false);
   const [data, setData] = useState<User>({
@@ -42,6 +46,7 @@ const RegisterProfile = (): JSX.Element => {
   const onSubmit = () => {
     if (!pass) onShake();
     // TODO : data 값 토대로 프로필 값 수정 요청 보내기
+    else nextPage();
   };
 
   const { birth, gender, nickname } = data;
@@ -105,9 +110,7 @@ const StyledDiv = styled.div`
 
   & > .next-button {
     width: 100%;
-    position: absolute;
-    left: 0;
-    bottom: 80px;
+    margin-top: 20vw;
     display: flex;
     justify-content: center;
   }
