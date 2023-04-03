@@ -36,4 +36,13 @@ public class RecommendController {
         ResponseSMusicDto responseSMusicDto = sMusicService.getSMusicList(userId, situationId);
         return new ResponseEntity<>(responseSMusicDto, HttpStatus.OK);
     }
+
+    @GetMapping("/weather")
+    public ResponseEntity<ResponseWMusicDto> getWMusicList(
+            @RequestParam("weatherId") Integer weatherId,
+            @RequestHeader("x-forwarded-for-user-id") String userId) {
+
+        ResponseWMusicDto responseWMusicDto = wMusicService.getWMusicList(userId, weatherId);
+        return new ResponseEntity<>(responseWMusicDto, HttpStatus.OK);
+    }
 }
