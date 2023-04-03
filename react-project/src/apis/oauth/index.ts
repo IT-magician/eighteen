@@ -9,5 +9,5 @@ export const checkUser = () => {
 };
 
 export const login = (type: OAuth) => {
-  window.location.href = `${process.env.PUBLIC_URL}/oauth2/authorization/${type}`;
+  window.location.href = `${process.env.REACT_APP_SERVER_URL}/oauth2/authorization/${type}`;
 };
