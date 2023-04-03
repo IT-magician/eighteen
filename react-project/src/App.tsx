@@ -33,6 +33,7 @@ const App = (): JSX.Element => {
             // CASE 1-2 : 401 UNAUTHORIZED
             // 이 경우 재 로그인이 필요하므로 로그인 화면으로 이동합니다
             setUser(null);
+            sessionStorage.clear();
           }
         }
       } finally {
@@ -67,7 +68,7 @@ const App = (): JSX.Element => {
             // CASE 1 : 401 UNAUTHORIZED
             // 이 경우 토큰이 만료되었거나, 로그인하지 않은 유저입니다
             // 최초의 경우 REFLESH TOKEN을 토대로 다시 한 번 ACCESS TOKEN을 발급합니다
-            getAccessToken();
+            await getAccessToken();
           }
         }
       }
