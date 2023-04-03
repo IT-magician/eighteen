@@ -6,8 +6,8 @@ import { OAuth } from "./type";
  */
 export const checkUser = async () => {
   const response = await instance.get(`/auth/reIssue`);
+  sessionStorage.setItem("access-token", response.headers["accessToken"]);
   instance.defaults.headers["Authorization"] = `Bearer ${sessionStorage.getItem("access-token")}`;
-  // sessionStorage.setItem("access-token", response.headers["accessToken"]);
   return response;
 };
 
