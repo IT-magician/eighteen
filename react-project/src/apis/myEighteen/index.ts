@@ -6,6 +6,7 @@ import { instance } from "..";
  * @param size 페이지크기
  */
 const getEighteenList = (page: number, size: number) => {
+  instance.defaults.headers["Authorization"] = `Bearer ${sessionStorage.getItem("access-token")}`;
   return instance.get(`/my_eighteen`, {
     params: {
       page,
@@ -18,6 +19,7 @@ const getEighteenList = (page: number, size: number) => {
  * [GET]애창곡 랜덤 조회
  */
 const getEighteenRandom = () => {
+  instance.defaults.headers["Authorization"] = `Bearer ${sessionStorage.getItem("access-token")}`;
   return instance.get(`/my_eighteen/random`);
 };
 
@@ -26,6 +28,7 @@ const getEighteenRandom = () => {
  * @param musicId 노래번호
  */
 const addEighteen = (musicId: number) => {
+  instance.defaults.headers["Authorization"] = `Bearer ${sessionStorage.getItem("access-token")}`;
   return instance.post(`/my_eighteen`, { musicId });
 };
 
@@ -34,6 +37,7 @@ const addEighteen = (musicId: number) => {
  * @param musicId 노래번호
  */
 const removeEighteen = (musicId: number) => {
+  instance.defaults.headers["Authorization"] = `Bearer ${sessionStorage.getItem("access-token")}`;
   return instance.delete(`/my_eighteen/${musicId}`);
 };
 
