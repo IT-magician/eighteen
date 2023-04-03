@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class RecommendController {
 
     private final EMusicService eMusicService;
+    private final SMusicService sMusicService;
 
     @GetMapping("/emotion")
     public ResponseEntity<ResponseEMusicDto> getEMusicList(
@@ -25,5 +26,14 @@ public class RecommendController {
 
         ResponseEMusicDto responseEMusicDto = eMusicService.getEMusicList(userId, emotionId);
         return new ResponseEntity<>(responseEMusicDto, HttpStatus.OK);
+    }
+
+    @GetMapping("/situation")
+    public ResponseEntity<ResponseSMusicDto> getSMusicList(
+            @RequestParam("situationId") Integer situationId,
+            @RequestHeader("x-forwarded-for-user-id") String userId) {
+
+        ResponseSMusicDto responseSMusicDto = sMusicService.getSMusicList(userId, situationId);
+        return new ResponseEntity<>(responseSMusicDto, HttpStatus.OK);
     }
 }
