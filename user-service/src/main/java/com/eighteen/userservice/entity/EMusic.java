@@ -17,8 +17,8 @@ public class EMusic {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "e_recc_id")
-    private Integer eReccId;
+    @Column(name = "e_music_id")
+    private Integer eMusicId;
 
     @ManyToOne
     @JoinColumn(name = "emotion_id")

@@ -20,8 +20,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${api_gateway_url}:3306/eighteen?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=true
-    username: root
-    password: b304b304
+    username: blur
+    password: blur
     hikari:
       pool-name: jpa-hikari-pool
       maximum-pool-size: 5
@@ -65,7 +65,10 @@ cloud:
 
 
 search-engine:
-  url: https://j8b304.p.ssafy.io/elastic_search
+  url: http://j8b304.p.ssafy.io/elastic_search
+
+flask:
+  url: http://j8b304.p.ssafy.io/flask
 
 
 

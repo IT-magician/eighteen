@@ -26,5 +26,5 @@ public class Situation {
     private String name;
 
     @OneToMany(mappedBy = "situation", cascade = CascadeType.ALL)
-    private List<SRecc> sReccs = new ArrayList<>();
+    private List<SMusic> sMusics = new ArrayList<>();
 }

@@ -38,20 +38,8 @@ public class User {
     @Column(name = "profileImage")
     private String profileImage;
 
-    @Column(name = "high_pitch")
-    private String highPitch;
-
-    @Column(name = "low_pitch")
-    private String lowPitch;
-
-    @Column(name = "vocal")
-    private String vocal;
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<MyEighteen> myEighteens = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<URecc> uReccs = new ArrayList<>();
 
     public void updateImage(String profileImage) {
         this.profileImage = profileImage;
