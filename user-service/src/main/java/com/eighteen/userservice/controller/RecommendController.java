@@ -18,6 +18,7 @@ public class RecommendController {
 
     private final EMusicService eMusicService;
     private final SMusicService sMusicService;
+    private final WMusicService wMusicService;
 
     @GetMapping("/emotion")
     public ResponseEntity<ResponseEMusicDto> getEMusicList(

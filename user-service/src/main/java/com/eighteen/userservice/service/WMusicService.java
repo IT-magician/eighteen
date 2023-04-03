@@ -2,10 +2,7 @@ package com.eighteen.userservice.service;
 
 import com.eighteen.userservice.dto.MusicDto;
 import com.eighteen.userservice.dto.response.ResponseWMusicDto;
-import com.eighteen.userservice.entity.WMusic;
-import com.eighteen.userservice.entity.Weather;
-import com.eighteen.userservice.entity.MyEighteen;
-import com.eighteen.userservice.entity.User;
+import com.eighteen.userservice.entity.*;
 import com.eighteen.userservice.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;

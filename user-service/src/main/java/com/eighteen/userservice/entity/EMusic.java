@@ -12,8 +12,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "e_recc")
-public class ERecc {
+@Table(name = "e_music")
+public class EMusic {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,4 +27,7 @@ public class ERecc {
     @ManyToOne
     @JoinColumn(name = "music_id")
     private Music music;
+
+    @Column(name = "popularity")
+    private Integer popularity;
 }

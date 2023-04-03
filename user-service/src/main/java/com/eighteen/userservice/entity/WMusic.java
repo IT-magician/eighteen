@@ -13,7 +13,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @Table(name = "w_recc")
-public class WRecc {
+public class WMusic {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
