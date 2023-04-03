@@ -5,6 +5,7 @@ export interface User {
   birth: string;
   gender: "M" | "F";
   profileImage: string;
+  newby?: boolean;
 }
 
 /**

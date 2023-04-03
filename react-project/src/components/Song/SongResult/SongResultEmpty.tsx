@@ -18,8 +18,9 @@ const SongResultEmpty = (): JSX.Element => {
 
 const StyledDiv = styled.div`
   & > div {
-    top: 40px;
+    padding-top: 40px;
     display: flex;
+    position: absolute;
     flex-direction: column;
     justify-content: center;
     align-items: center;

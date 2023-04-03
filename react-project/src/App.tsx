@@ -9,18 +9,23 @@ import { Logo } from "./components/common/logo";
 import { NavBar } from "./components/common/nav";
 import { Favorite, Home, Login, Mypage, Recommend, Song, SongDetail, Setting, Register } from "./pages";
 import { userState } from "./recoil/atom";
+import { loadingState } from "./recoil/atom/loadingState";
+import Loading from "./components/common/loading/Loading";
 
 const App = (): JSX.Element => {
   const [user, setUser] = useRecoilState(userState);
+  const [loading, setLoading] = useRecoilState(loadingState);
+
   useEffect(() => {
     // 최초 접근 시 main 요청을 통해 사용자 정보를 가져옵니다.
     const getAccessToken = async () => {
+      setLoading(true);
       try {
         // 최초 접근 시 ACCESS TOKEN 발급을 위해 요청을 보냅니다
         await checkUser();
         // CASE 1-1 : 200 ACCEPTED
         // 이 경우 발급받은 ACCESS TOKEN을 활용한 요청을 위해 callback 함수를 호출합니다
-        enterService();
+        await enterService();
       } catch (e) {
         // 요청 실패
         if (axios.isAxiosError(e)) {
@@ -30,6 +35,8 @@ const App = (): JSX.Element => {
             setUser(null);
           }
         }
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -45,24 +52,14 @@ const App = (): JSX.Element => {
             birth: "",
             gender: "M",
             profileImage: "",
+            newby: true,
           });
         } else if (response.status === 200) {
           // CASE 3 : 200 ACCEPTED
           // 이 경우 정상적으로 등록된 유저이으로 서비스 화면으로 이동합니다
 
-          if (response.data.nickname) {
-            // TODO: response data를 토대로 user update
-            setUser(response.data);
-          } else {
-            // 이 경우 등록된 회원이나 정상적인 회원가입을 거치지 않은 유저입니다
-            // 따라서 회원가입 화면으로 이동합니다
-            setUser({
-              nickname: "",
-              birth: "",
-              gender: "M",
-              profileImage: "",
-            });
-          }
+          // TODO: response data를 토대로 user update
+          setUser(response.data);
         }
       } catch (e) {
         if (axios.isAxiosError(e)) {
@@ -79,14 +76,15 @@ const App = (): JSX.Element => {
     getAccessToken();
   }, []);
 
-  if (!user || !user.nickname) {
+  if (!user || user.newby) {
     return (
       <StyledDiv className="App">
         <div className="Page max-height" id="Page">
           <div className="logo">
             <Logo />
           </div>
-          {!user ? <Login /> : <Register />}
+          {loading && <Loading />}
+          {loading || (!user ? <Login /> : <Register />)}
         </div>
       </StyledDiv>
     );
@@ -124,7 +122,6 @@ const StyledDiv = styled.div`
 
   .max-height {
     height: 100vh !important;
-    overflow: hidden !important;
   }
 
   // 실제 페이지 정보가 담길 페이지 컴포넌트
