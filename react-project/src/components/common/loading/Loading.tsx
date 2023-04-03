@@ -19,6 +19,7 @@ const StyledDiv = styled.div`
   align-items: center;
   width: 100%;
   position: relative;
+  margin: auto;
 
   & > span {
     position: absolute;
