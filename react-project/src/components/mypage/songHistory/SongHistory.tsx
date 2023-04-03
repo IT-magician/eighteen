@@ -19,14 +19,10 @@ interface Props {
  * 최근에 방문했던 노래 상세 페이지 순으로 SongItem을 보여주는 역할을 합니다.
  */
 const SongHistory = ({ musicList }: Props): JSX.Element => {
-  if (musicList) {
-    console.log(musicList);
-  }
-
   return (
     <StyledDiv>
       <p>최근 본 노래</p>
-      <SongSlideList songList={musicList} />
+      {musicList.length > 0 ? <SongSlideList songList={musicList} /> : <div>곡 리스트가 비어 있어요!</div>}
     </StyledDiv>
   );
 };
@@ -39,6 +35,12 @@ const StyledDiv = styled.div`
 
   & > ul {
     padding: 0px;
+  }
+
+  & > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 `;
 
