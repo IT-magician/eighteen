@@ -68,7 +68,7 @@ search-engine:
   url: http://j8b304.p.ssafy.io/elastic_search
 
 flask:
-  url: http://j8b304.p.ssafy.io/flask
+  url: http://localhost:5000/flask
 
 
 

@@ -41,7 +41,7 @@ public class RecommendController {
         return new ResponseEntity<>(responseRecommendDto, HttpStatus.OK);
     }
 
-    @GetMapping("/eighteen")
+    @GetMapping("/my_eighteen")
     public ResponseEntity<ResponseRecommendDto> getEighteenRecommend(
             @RequestHeader("x-forwarded-for-user-id") String userId) {
 
