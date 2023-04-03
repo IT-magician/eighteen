@@ -5,17 +5,15 @@ from dotenv import load_dotenv
 import os
 
 from sqlalchemy import create_engine
-from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String
  
 import pandas as pd
-import numpy as np
 from sklearn.tree import DecisionTreeClassifier
 import json
 from surprise import Reader, Dataset
 from surprise import SVD
-
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
@@ -59,7 +57,7 @@ class E_Music(Base):
     popularity = Column(Integer)
     emotion = Column(Integer)
 
-class MyEighteen(Base):
+class My_Eighteen(Base):
     __tablename__ = 'my_eighteen'
 
     my_eighteen_id = Column(Integer, primary_key=True)
@@ -113,13 +111,13 @@ def emotion_classification(data_path2=DATA_FILE2):
     emotion_df = pd.read_csv(data_path2, encoding='cp949')
     df = pd.merge(music_df, emotion_df, on=["music_id"])
 
-    X = df[['energy', 'dance_ability', 'valence']]
+    X = df[['energy', 'dance_ability', 'valence', 'tempo']]
     y = df['emotion']
 
     clf = DecisionTreeClassifier()
     clf.fit(X, y)
 
-    pred_X = music_df[['energy', 'dance_ability', 'valence']]
+    pred_X = music_df[['energy', 'dance_ability', 'valence', 'tempo']]
     predicted_emotion = clf.predict(pred_X)
 
     for music_id, popularity, emotion in zip(music_df['music_id'], music_df['popularity'], predicted_emotion):
@@ -134,51 +132,27 @@ def emotion_classification(data_path2=DATA_FILE2):
 
     return "ss"
 
-@app.route('/flask/favorite')
-def favorite_song(data_path=DATA_FILE, data_path3=DATA_FILE3):
-    # with DBSession() as session:
-    #     music_features = session.query(Music_Feature).all()
+@app.route('/flask/favorite/<user_id>')
+def favorite_song(user_id):
     
-    # music_df = pd.DataFrame([mf.__dict__ for mf in music_features])
-
-    with open(data_path, encoding="utf-8") as f:
-        data = json.loads(f.read())
+    with DBSession() as session:
+        my_eigtheens = session.query(My_Eighteen).all()
+    my_eigtheens_df = pd.DataFrame([mf.__dict__ for mf in my_eigtheens])
     
-    music_df = pd.DataFrame(data)
-    music_df = music_df.replace('', np.NaN)
-    music_df = music_df.dropna(axis=0)
-
-
-    with open(data_path3, encoding="utf-8") as f:
-        data2 = json.loads(f.read())
-
-    favorite_df = pd.DataFrame(data2)
-    favorite_df = favorite_df.dropna(axis=0)
-    favorite_df = favorite_df[['user_id', 'title', 'liked']]
-
+    user_music = pd.pivot_table(my_eigtheens_df, values='my_eighteen_id', index=['user_id'], columns='music_id', aggfunc=lambda x: 1 if len(x)>0 else 0, fill_value=0)
     reader = Reader(rating_scale=(0, 1))
-    data = Dataset.load_from_df(df=favorite_df, reader=reader)
+    data = Dataset.load_from_df(df=user_music, reader=reader)
 
     train = data.build_full_trainset()
-    test = train.build_testset()
-
     model = SVD(n_factors=100, n_epochs=20, random_state=123)
     model.fit(train)
-
-    user_list = favorite_df['user_id'].unique()
-    recommendations = {}
-
-    for user_id in user_list:
-        liked_songs = favorite_df.loc[(favorite_df['user_id'] == user_id) & (favorite_df['liked'] == 1), 'id'].tolist()
-        all_songs = favorite_df.loc[~favorite_df['id'].isin(liked_songs), 'id'].tolist()
-        
-        scores = [(song, model.predict(user_id, song).est) for song in all_songs]
-        recommendation_list = [score[0] for score in sorted(scores, key=lambda x: x[1], reverse=True)[:20] if score[0] not in liked_songs]
-
-        recommendations[user_id] = recommendation_list
     
-    return recommendation_list
+    liked_songs = my_eigtheens_df.loc[(my_eigtheens_df['user_id'] == user_id), 'music_id'].tolist()
+    all_songs = my_eigtheens_df.loc[~my_eigtheens_df['music_id'].isin(liked_songs), 'music_id'].tolist()
+    scores = [(song, model.predict(user_id, song).est) for song in all_songs]
+    recommendation_list = [score[0] for score in sorted(scores, key=lambda x: x[1], reverse=True)[:20] if score[0] not in liked_songs]
 
+    return recommendation_list
 
 
 
@@ -186,7 +160,6 @@ def favorite_song(data_path=DATA_FILE, data_path3=DATA_FILE3):
 def test():
     # Do something with the classifier object `clf`
     return jsonify({'result': 'Success'})
-
 
 if __name__ == "__main__" :
     app.run(host='0.0.0.0', debug=True)
