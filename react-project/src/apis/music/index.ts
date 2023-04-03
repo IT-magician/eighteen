@@ -7,6 +7,7 @@ import { instance } from "..";
  * @param size 페이지크기
  */
 const getMusicList = (keyword: string, page: number, size: number) => {
+  instance.defaults.headers["Authorization"] = `Bearer ${sessionStorage.getItem("access-token")}`;
   return instance.get(`/music`, {
     params: {
       keyword,
@@ -21,6 +22,7 @@ const getMusicList = (keyword: string, page: number, size: number) => {
  * @param musicId 노래번호
  */
 const getMusic = (musicId: number) => {
+  instance.defaults.headers["Authorization"] = `Bearer ${sessionStorage.getItem("access-token")}`;
   return instance.get(`/music/${musicId}`);
 };
 
