@@ -1,8 +1,11 @@
 package com.eighteen.userservice.service;
 
 import com.eighteen.userservice.dto.MusicDto;
-import com.eighteen.userservice.dto.response.ResponseEMusicDto;
-import com.eighteen.userservice.entity.*;
+import com.eighteen.userservice.dto.response.ResponseWMusicDto;
+import com.eighteen.userservice.entity.WMusic;
+import com.eighteen.userservice.entity.Weather;
+import com.eighteen.userservice.entity.MyEighteen;
+import com.eighteen.userservice.entity.User;
 import com.eighteen.userservice.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -14,30 +17,30 @@ import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
-public class EReccMusicService {
+public class WMusicService {
 
-    private final EmotionRepository emotionRepository;
+    private final WeatherRepository weatherRepository;
 
     private final MusicRepository musicRepository;
 
-    private final EMusicRepository eMusicRepository;
+    private final WMusicRepository wMusicRepository;
 
     private final UserRepository userRepository;
 
     private final MyEighteenRepository myEighteenRepository;
 
 
-    public ResponseEMusicDto getRecommendedMusicList(String userId, Integer emotionId) {
+    public ResponseWMusicDto getWMusicList(String userId, Integer weatherId) {
 
-        Emotion emotion = emotionRepository.findById(emotionId).orElseThrow();
-        List<EMusic> eMusics = eMusicRepository.findByEmotionAndPopularityGreaterThanEqualOrderByPopularityDesc(emotion, 30);
+        Weather weather = weatherRepository.findById(weatherId).orElseThrow();
+        List<WMusic> wMusics = wMusicRepository.findByWeatherAndPopularityGreaterThanEqualOrderByPopularityDesc(weather, 30);
         User user = userRepository.findByUserId(userId);
         List<MusicDto> response = new ArrayList<>();
         Random random = new Random();
-        if (eMusics.size() > 20) {
+        if (wMusics.size() > 20) {
             for (int i = 0; i < 20; i++) {
-                int randomIndex = random.nextInt(eMusics.size());
-                EMusic randomElement = eMusics.get(randomIndex);
+                int randomIndex = random.nextInt(wMusics.size());
+                WMusic randomElement = wMusics.get(randomIndex);
                 MusicDto randomMusic = new ModelMapper().map(randomElement.getMusic(), MusicDto.class);
                 MyEighteen myEighteen = myEighteenRepository.findByUserAndMusic(user, randomElement.getMusic());
                 if (myEighteen == null) {
@@ -47,9 +50,9 @@ public class EReccMusicService {
                 response.add(randomMusic);
             }
         } else {
-            for (EMusic eMusic : eMusics) {
-                MusicDto randomMusic = new ModelMapper().map(eMusic.getMusic(), MusicDto.class);
-                MyEighteen myEighteen = myEighteenRepository.findByUserAndMusic(user, eMusic.getMusic());
+            for (WMusic wMusic : wMusics) {
+                MusicDto randomMusic = new ModelMapper().map(wMusic.getMusic(), MusicDto.class);
+                MyEighteen myEighteen = myEighteenRepository.findByUserAndMusic(user, wMusic.getMusic());
                 if (myEighteen == null) {
                     randomMusic.setIsEighteen(Boolean.FALSE);
                 }
@@ -59,8 +62,8 @@ public class EReccMusicService {
             }
         }
 
-        ResponseEMusicDto responseEMusicDto = new ResponseEMusicDto(response);
+        ResponseWMusicDto responseWMusicDto = new ResponseWMusicDto(response);
 
-        return responseEMusicDto;
+        return responseWMusicDto;
     }
 }

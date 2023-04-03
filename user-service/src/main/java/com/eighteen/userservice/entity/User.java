@@ -51,7 +51,7 @@ public class User {
     private List<MyEighteen> myEighteens = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<URecc> uReccs = new ArrayList<>();
+    private List<UMusic> uReccs = new ArrayList<>();
 
     public void updateImage(String profileImage) {
         this.profileImage = profileImage;

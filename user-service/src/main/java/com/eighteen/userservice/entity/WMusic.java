@@ -12,17 +12,17 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "s_recc")
-public class SRecc {
+@Table(name = "w_recc")
+public class WMusic {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "s_recc_id")
-    private Integer sReccId;
+    @Column(name = "w_recc_id")
+    private Integer wReccId;
 
     @ManyToOne
-    @JoinColumn(name = "situation_id")
-    private Situation situation;
+    @JoinColumn(name = "weather_id")
+    private Weather weather;
 
     @ManyToOne
     @JoinColumn(name = "music_id")

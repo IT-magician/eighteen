@@ -26,5 +26,5 @@ public class Weather {
     private String name;
 
     @OneToMany(mappedBy = "weather", cascade = CascadeType.ALL)
-    private List<WRecc> wReccs = new ArrayList<>();
+    private List<WMusic> wReccs = new ArrayList<>();
 }

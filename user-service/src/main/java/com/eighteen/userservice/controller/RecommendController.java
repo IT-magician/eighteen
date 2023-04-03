@@ -1,7 +1,11 @@
 package com.eighteen.userservice.controller;
 
 import com.eighteen.userservice.dto.response.ResponseEMusicDto;
-import com.eighteen.userservice.service.EReccMusicService;
+import com.eighteen.userservice.dto.response.ResponseSMusicDto;
+import com.eighteen.userservice.dto.response.ResponseWMusicDto;
+import com.eighteen.userservice.service.EMusicService;
+import com.eighteen.userservice.service.SMusicService;
+import com.eighteen.userservice.service.WMusicService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,15 +16,35 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/recommend")
 public class RecommendController {
 
-    private final EReccMusicService eReccMusicService;
+    private final EMusicService eMusicService;
+    private final SMusicService sMusicService;
+    private final WMusicService wMusicService;
 
 
     @GetMapping("/emotion")
-    public ResponseEntity<ResponseEMusicDto> getRecommendedMusicList(
+    public ResponseEntity<ResponseEMusicDto> getEMusicList(
             @RequestParam("emotionId") Integer emotionId,
             @RequestHeader("x-forwarded-for-user-id") String userId) {
 
-        ResponseEMusicDto responseEMusicDto = eReccMusicService.getRecommendedMusicList(userId, emotionId);
+        ResponseEMusicDto responseEMusicDto = eMusicService.getEMusicList(userId, emotionId);
         return new ResponseEntity<>(responseEMusicDto, HttpStatus.OK);
+    }
+
+    @GetMapping("/situation")
+    public ResponseEntity<ResponseSMusicDto> getSMusicList(
+            @RequestParam("situationId") Integer situationId,
+            @RequestHeader("x-forwarded-for-user-id") String userId) {
+
+        ResponseSMusicDto responseSMusicDto = sMusicService.getSMusicList(userId, situationId);
+        return new ResponseEntity<>(responseSMusicDto, HttpStatus.OK);
+    }
+
+    @GetMapping("/weather")
+    public ResponseEntity<ResponseWMusicDto> getWMusicList(
+            @RequestParam("weatherId") Integer weatherId,
+            @RequestHeader("x-forwarded-for-user-id") String userId) {
+
+        ResponseWMusicDto responseWMusicDto = wMusicService.getWMusicList(userId, weatherId);
+        return new ResponseEntity<>(responseWMusicDto, HttpStatus.OK);
     }
 }
