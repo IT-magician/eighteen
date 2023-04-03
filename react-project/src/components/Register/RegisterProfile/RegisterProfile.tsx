@@ -9,10 +9,15 @@ import ko from "date-fns/locale/ko";
 import moment from "moment";
 import RegusterProfileDataPicker from "./RegusterProfileDataPicker";
 import { TextButton } from "../../common/button";
+import { modifyProfile } from "../../../apis/profile";
 
 registerLocale("ko", ko);
 
-const RegisterProfile = (): JSX.Element => {
+interface Props {
+  nextPage(): void;
+}
+
+const RegisterProfile = ({ nextPage }: Props): JSX.Element => {
   const [pass, setPass] = useState<boolean>(false);
   const [shake, setShake] = useState<boolean>(false);
   const [data, setData] = useState<User>({
@@ -21,6 +26,7 @@ const RegisterProfile = (): JSX.Element => {
     nickname: "",
     profileImage: "",
   });
+  const { birth, gender, nickname } = data;
 
   const setGender = (gender: "M" | "F") => {
     setData({ ...data, gender });
@@ -39,12 +45,23 @@ const RegisterProfile = (): JSX.Element => {
     setTimeout(() => setShake(false), 500);
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if (!pass) onShake();
-    // TODO : data 값 토대로 프로필 값 수정 요청 보내기
+    else {
+      // TODO : data 값 토대로 프로필 값 수정 요청 보내기
+      const formData = new FormData();
+      const newProfile = JSON.stringify({
+        nickname,
+        gender,
+        birth,
+      });
+      formData.append("profileInfo", new Blob([newProfile], { type: "application/json" }));
+      const res = await modifyProfile(formData);
+      if (res.data == "ok") {
+        nextPage();
+      }
+    }
   };
-
-  const { birth, gender, nickname } = data;
 
   return (
     <StyledDiv>
@@ -105,9 +122,7 @@ const StyledDiv = styled.div`
 
   & > .next-button {
     width: 100%;
-    position: absolute;
-    left: 0;
-    bottom: 80px;
+    margin-top: 20vw;
     display: flex;
     justify-content: center;
   }

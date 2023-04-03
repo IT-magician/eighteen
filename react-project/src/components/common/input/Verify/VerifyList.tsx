@@ -67,4 +67,4 @@ const StyledUl = styled.ul`
   padding: 0;
 `;
 
-export default VerifyList;
+export default React.memo(VerifyList);

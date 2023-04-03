@@ -7,8 +7,8 @@ const SongResultDefault = (): JSX.Element => {
       <div>
         <img src={`${process.env.PUBLIC_URL}/icon/favorite.png`} />
         <p>
-          제목, 가수명에 대한 검색어로 <br />
-          원하는 노래를 찾아보세요
+          아직 등록된 애창곡이 없어요 <br />
+          나만의 애창곡을 찾으러 가볼까요?
         </p>
       </div>
     </StyledDiv>

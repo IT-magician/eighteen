@@ -27,8 +27,9 @@ const modifyProfile = (data: FormData) => {
  * [GET]닉네임 중복 확인
  * @param nickname 닉네임
  */
-const verifyNickname = (nickname: string) => {
-  return instance.get(`/profile/checkNickname`, { params: { nickname } });
+const verifyNickname = async (nickname: string) => {
+  const { data } = await instance.get(`/profile/checkNickname`, { params: { nickname } });
+  return data === "ok";
 };
 
 /**
