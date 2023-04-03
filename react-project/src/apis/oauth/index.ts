@@ -4,8 +4,9 @@ import { OAuth } from "./type";
 /**
  * [GET]access token 요청
  */
-export const checkUser = () => {
-  return instance.get(`/auth/reIssue`);
+export const checkUser = async () => {
+  const response = await instance.get(`/auth/reIssue`);
+  sessionStorage.setItem("access-token", response.headers["accessToken"]);
 };
 
 export const login = (type: OAuth) => {
