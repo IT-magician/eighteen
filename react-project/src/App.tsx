@@ -69,8 +69,6 @@ const App = (): JSX.Element => {
             // 이 경우 토큰이 만료되었거나, 로그인하지 않은 유저입니다
             // 최초의 경우 REFLESH TOKEN을 토대로 다시 한 번 ACCESS TOKEN을 발급합니다
             await getAccessToken();
-          } else if (e.response?.status === 500) {
-            await getAccessToken();
           }
         }
       }
