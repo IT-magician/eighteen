@@ -25,7 +25,7 @@ const App = (): JSX.Element => {
         const response = await checkUser();
         // CASE 1-1 : 200 ACCEPTED
         // 이 경우 발급받은 ACCESS TOKEN을 활용한 요청을 위해 callback 함수를 호출합니다
-        sessionStorage.setItem("access-token", response.headers["accessToken"]);
+        sessionStorage.setItem("access-token", response.headers["accesstoken"]);
 
         await enterService();
       } catch (e) {
