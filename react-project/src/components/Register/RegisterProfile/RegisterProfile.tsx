@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import DatePicker, { registerLocale } from "react-datepicker";
 import { Select } from "../../common/select";
-import { User } from "../../../recoil/atom/userState";
+import { User, userState } from "../../../recoil/atom/userState";
 import { VerifyInput } from "../../common/input/Verify";
 import { nicknameVerify } from "../../../utils/validation";
 import ko from "date-fns/locale/ko";
@@ -10,6 +10,9 @@ import moment from "moment";
 import RegusterProfileDataPicker from "./RegusterProfileDataPicker";
 import { TextButton } from "../../common/button";
 import { modifyProfile } from "../../../apis/profile";
+import { useRecoilState } from "recoil";
+import { authState } from "../../../recoil/atom/authState";
+import axios from "axios";
 
 registerLocale("ko", ko);
 
@@ -18,26 +21,24 @@ interface Props {
 }
 
 const RegisterProfile = ({ nextPage }: Props): JSX.Element => {
+  const [auth, setAuth] = useRecoilState(authState);
   const [pass, setPass] = useState<boolean>(false);
   const [shake, setShake] = useState<boolean>(false);
-  const [data, setData] = useState<User>({
-    birth: "1999-01-01",
-    gender: "F",
-    nickname: "",
-    profileImage: "",
-  });
-  const { birth, gender, nickname } = data;
+  const [user, setUser] = useRecoilState(userState);
+
+  if (!user) return <></>;
+  const { birth, gender, nickname } = user;
 
   const setGender = (gender: "M" | "F") => {
-    setData({ ...data, gender });
+    setUser({ ...user, gender });
   };
 
   const setNickname = (nickname: string) => {
-    setData({ ...data, nickname });
+    setUser({ ...user, nickname });
   };
 
   const setBirth = (date: Date | null) => {
-    if (date) setData({ ...data, birth: moment(date).format("YYYY-MM-DD") });
+    if (date) setUser({ ...user, birth: moment(date).format("YYYY-MM-DD") });
   };
 
   const onShake = () => {
@@ -48,7 +49,7 @@ const RegisterProfile = ({ nextPage }: Props): JSX.Element => {
   const onSubmit = async () => {
     if (!pass) onShake();
     else {
-      // TODO : data 값 토대로 프로필 값 수정 요청 보내기
+      // TODO : user 값 토대로 프로필 값 수정 요청 보내기
       const formData = new FormData();
       const newProfile = JSON.stringify({
         nickname,
@@ -56,9 +57,18 @@ const RegisterProfile = ({ nextPage }: Props): JSX.Element => {
         birth,
       });
       formData.append("profileInfo", new Blob([newProfile], { type: "application/json" }));
-      const res = await modifyProfile(formData);
-      if (res.data == "ok") {
-        nextPage();
+
+      try {
+        const res = await modifyProfile(formData, auth.token);
+        if (res.data == "ok") {
+          nextPage();
+        }
+      } catch (e) {
+        if (axios.isAxiosError(e)) {
+          if (e.response?.status === 401) {
+            setAuth({ ...auth, token: "" });
+          }
+        }
       }
     }
   };
@@ -94,7 +104,13 @@ const RegisterProfile = ({ nextPage }: Props): JSX.Element => {
       </div>
       <div className="data">
         <label>닉네임</label>
-        <VerifyInput value={nickname} setValue={setNickname} setPass={setPass} notice={shake} verify={nicknameVerify} />
+        <VerifyInput
+          value={nickname}
+          setValue={setNickname}
+          setPass={setPass}
+          notice={shake}
+          verify={nicknameVerify(auth.token)}
+        />
       </div>
 
       <div className="next-button">

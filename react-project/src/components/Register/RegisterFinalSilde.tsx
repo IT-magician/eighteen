@@ -1,11 +1,21 @@
 import React from "react";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import { userState } from "../../recoil/atom";
 import { TextButton } from "../common/button";
 
 /**
  * 4번째 로그인 화면
  */
 const RegisterFinalSilde = (): JSX.Element => {
+  const [user, setUser] = useRecoilState(userState);
+
+  if (!user) return <></>;
+
+  const onClick = () => {
+    setUser({ ...user, newby: false });
+  };
+
   return (
     <StyledDiv>
       <h1>모든 준비가 끝났어요!</h1>
@@ -14,13 +24,7 @@ const RegisterFinalSilde = (): JSX.Element => {
         <span>신나는 노래방 라이프를 즐기러 가볼까요?</span>
       </h2>
       <div className="button-area">
-        <TextButton
-          text={"시작하기"}
-          color={"gradation"}
-          onClick={function (): void {
-            throw new Error("Function not implemented.");
-          }}
-        />
+        <TextButton text={"시작하기"} color={"gradation"} onClick={onClick} />
       </div>
     </StyledDiv>
   );
