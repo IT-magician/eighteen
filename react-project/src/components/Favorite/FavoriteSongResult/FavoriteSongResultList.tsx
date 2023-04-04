@@ -38,7 +38,7 @@ const FavoriteSongList = () => {
       }
     };
     getList();
-  }, []);
+  }, [search.loading]);
 
   return (
     <StyledDiv>
