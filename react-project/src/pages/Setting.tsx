@@ -13,6 +13,7 @@ import { modifyProfile, deleteAccount } from "../apis/profile";
 import SettingDatePicker from "../components/setting/SettingDatePicker";
 import { authState } from "../recoil/atom/authState";
 import axios from "axios";
+import { User } from "../recoil/atom/userState";
 
 // type ProfileAttr = "nickname" | "birth" | "gender" | "email" | "profileImage";
 
@@ -32,21 +33,13 @@ import axios from "axios";
  * 프로필 수정 화면
  */
 const Setting = (): JSX.Element => {
-  const [auth, setAuth] = useRecoilState(authState);
   const [globalUser, setGlobalUser] = useRecoilState(userState);
-  const [user, setUser] = useState({ ...globalUser });
+  if (!globalUser) return <></>;
+  const [auth, setAuth] = useRecoilState(authState);
+  const [user, setUser] = useState<User>({ ...globalUser });
   const [pass, setPass] = useState<boolean>(true);
   const file = useRef<File>();
   const navigate = useNavigate();
-
-  /**select에 할당할 genderIdx 설정 */
-  let genderIdx;
-
-  if (globalUser?.gender == "M") {
-    genderIdx = 0;
-  } else {
-    genderIdx = 1;
-  }
 
   /*
    *useState에 담긴 사용자 이름 수정
@@ -125,8 +118,6 @@ const Setting = (): JSX.Element => {
     }
   };
 
-  if (!globalUser) return <></>;
-
   return (
     <StyledDiv>
       <div className="backButtonDiv">
@@ -135,16 +126,16 @@ const Setting = (): JSX.Element => {
       <h1>프로필 설정</h1>
       <div>
         <div className="imageDiv">
-          <SettingImg image={globalUser.profileImage} setValue={setImage} />
+          <SettingImg image={user.profileImage} setValue={setImage} />
           <IconButton type="save" onClick={onHandleModifyProfile} />
         </div>
         <div className="birthSelectDiv">
-          <SettingDatePicker setValue={setBirth} birth={globalUser.birth} />
+          <SettingDatePicker setValue={setBirth} birth={user.birth} />
         </div>
         <div className="NameGenderDiv">
           {user && (
             <VerifyInput
-              value={globalUser.nickname}
+              value={user.nickname}
               setValue={setNicname}
               setPass={setPass}
               verify={nicknameVerify(auth.token)}
@@ -155,7 +146,7 @@ const Setting = (): JSX.Element => {
               { text: "남자", value: "M" },
               { text: "여자", value: "F" },
             ]}
-            defaultIdx={genderIdx}
+            value={user.gender}
             setValue={setGender}
           />
         </div>
