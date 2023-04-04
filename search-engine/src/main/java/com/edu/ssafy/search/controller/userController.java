@@ -20,8 +20,8 @@ public class userController {
         this.userIdxService = userIdxService;
     }
 
-    @PostMapping("/regist/{user_id}")
-    ResponseEntity regist(@PathVariable String user_id) {
+    @PostMapping("/regist")
+    ResponseEntity regist(@RequestHeader("x-forwarded-for-user-id") String user_id) {
         if (user_id == null || user_id.isEmpty()) return new ResponseEntity(HttpStatus.BAD_REQUEST);
 
         userIdxService.regist(user_id);
@@ -35,7 +35,7 @@ public class userController {
     }
 
     @DeleteMapping("/data")
-    ResponseEntity deleteData(@RequestHeader("x-forwarded-for-user-id")  String user_id, @RequestBody List<SongInfoDTO> songs) throws IOException {
+    ResponseEntity deleteData(@RequestHeader("x-forwarded-for-user-id") String user_id, @RequestBody List<SongInfoDTO> songs) throws IOException {
         userIdxService.deleteData(user_id, songs);
         return new ResponseEntity(HttpStatus.OK);
     }

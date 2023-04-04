@@ -69,8 +69,8 @@ public class searchController {
         return objectMapper.writeValueAsString(list);
     }
 
-    @GetMapping("/title/pagination/{title}")
-    ResponseEntity searchBytitle(@PathVariable String title, String user_id, Long pagination_idx, Long pagination_size, @RequestParam(required=false) Map<String,String> qparams) throws UnsupportedEncodingException, JsonProcessingException {
+    @GetMapping("/pagination/title/{title}")
+    ResponseEntity searchBytitle(@PathVariable String title, @RequestHeader("x-forwarded-for-user-id") String user_id, Long pagination_idx, Long pagination_size, @RequestParam(required=false) Map<String,String> qparams) throws UnsupportedEncodingException, JsonProcessingException {
         if (user_id == null || user_id.isEmpty()) return new ResponseEntity(HttpStatus.BAD_REQUEST);
 
         if (qparams.containsKey("pretty")) return new ResponseEntity(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(userIdxService.searchBytitleAndPagination(user_id, title, pagination_idx, pagination_size)), HttpStatus.OK);
@@ -78,8 +78,8 @@ public class searchController {
         return new ResponseEntity(objectMapper.writeValueAsString(userIdxService.searchBytitleAndPagination(user_id, title, pagination_idx, pagination_size)), HttpStatus.OK);
     }
 
-    @GetMapping("/singer/pagination/{singer}")
-    ResponseEntity searchBysinger(@PathVariable String singer, String user_id, Long pagination_idx, Long pagination_size, @RequestParam(required=false) Map<String,String> qparams) throws JsonProcessingException {
+    @GetMapping("/pagination/singer/{singer}")
+    ResponseEntity searchBysinger(@PathVariable String singer, @RequestHeader("x-forwarded-for-user-id") String user_id, Long pagination_idx, Long pagination_size, @RequestParam(required=false) Map<String,String> qparams) throws JsonProcessingException {
         if (user_id == null || user_id.isEmpty()) return new ResponseEntity(HttpStatus.BAD_REQUEST);
 
         if (qparams.containsKey("pretty")) return new ResponseEntity(objectMapper.writeValueAsString(userIdxService.searchBysingerAndPagination(user_id, singer, pagination_idx, pagination_size)), HttpStatus.OK);
