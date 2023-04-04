@@ -10,10 +10,10 @@ const checkNicknameLength = (value: string): boolean => {
   return value.length >= 2 && value.length <= 8;
 };
 
-const nicknameVerify: Verify[] = [
+const nicknameVerify = (token: string): Verify[] => [
   { desc: "한글, 영어, 숫자로 구성", func: checkNicknameString },
   { desc: "2글자 이상 8글자 이하", func: checkNicknameLength },
-  { desc: "사용가능한 닉네임", func: verifyNickname, lazy: true },
+  { desc: "사용가능한 닉네임", func: (string) => verifyNickname(string, token), lazy: true },
 ];
 
 export default nicknameVerify;

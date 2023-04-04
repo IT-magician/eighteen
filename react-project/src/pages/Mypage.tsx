@@ -6,6 +6,8 @@ import moment from "moment";
 import { getProfile, getSongHistory } from "../apis/profile";
 import { Profile } from "../components/mypage/profile";
 import { SongHistory } from "../components/mypage/songHistory";
+import { authState } from "../recoil/atom/authState";
+import axios from "axios";
 
 interface Music {
   isEighteen: boolean;
@@ -21,19 +23,36 @@ const musics: number[] = JSON.parse(localStorage.getItem("song-history") || "[]"
  * 마이페이지
  */
 const Mypage = (): JSX.Element => {
+  const [auth, setAuth] = useRecoilState(authState);
   const [user, setUser] = useRecoilState(userState);
   const [musicList, setMusicList] = useState<Music[]>([]);
   const [dummyGender, setDummyGender] = useState<string>("none");
 
   useEffect(() => {
     async function getUser() {
-      const { data } = await getProfile();
-      setUser(data);
+      try {
+        const { data } = await getProfile(auth.token);
+        setUser(data);
+      } catch (e) {
+        if (axios.isAxiosError(e)) {
+          if (e.response?.status === 401) {
+            setAuth({ ...auth, token: "" });
+          }
+        }
+      }
     }
 
     async function getHistory() {
-      const { data } = await getSongHistory(musics);
-      setMusicList(data);
+      try {
+        const { data } = await getSongHistory(musics, auth.token);
+        setMusicList(data);
+      } catch (e) {
+        if (axios.isAxiosError(e)) {
+          if (e.response?.status === 401) {
+            setAuth({ ...auth, token: "" });
+          }
+        }
+      }
     }
 
     if (user?.gender == "M") {

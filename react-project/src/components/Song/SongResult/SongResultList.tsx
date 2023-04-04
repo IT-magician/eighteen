@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { searchState } from "../../../recoil/atom/searchState";
@@ -6,11 +6,14 @@ import { Song, SongItem } from "../../common/song";
 import SongResultDefault from "./SongResultDefault";
 import SongResultEmpty from "./SongResultEmpty";
 import SongResultLoading from "./SongResultLoading";
-import SongSample from "../../../utils/sample/song.json";
 
 const SongResultList = (): JSX.Element => {
-  const [list] = useState<Song[]>(SongSample.data);
+  const [list, setList] = useState<Song[]>([]);
   const search = useRecoilValue(searchState);
+
+  useEffect(() => {
+    if (search.loading) return;
+  }, [search.loading]);
 
   return (
     <StyledDiv>
