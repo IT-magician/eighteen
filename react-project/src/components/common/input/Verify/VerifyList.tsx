@@ -38,11 +38,20 @@ const VerifyList = ({ value, lazyValue, verify, status, setStatus }: Props): JSX
     if (!value && status === "default") return;
 
     const newVerifyResult: VerifyResult[] = await Promise.all(
-      verify.map(async (item) =>
-        item.lazy
-          ? { desc: item.desc, status: (await item.func(lazyValue)) ? "pass" : "fail", lazy: true }
-          : { desc: item.desc, status: (await item.func(value)) ? "pass" : "fail" },
-      ),
+      verify.map(async (item, index) => {
+        if (value === lazyValue)
+          return item.lazy
+            ? {
+                desc: item.desc,
+                status: (await item.func(lazyValue)) ? "pass" : "fail",
+                lazy: true,
+              }
+            : { desc: item.desc, status: (await item.func(value)) ? "pass" : "fail" };
+        else
+          return item.lazy
+            ? { desc: item.desc, status: verifyResult[index].status, lazy: true }
+            : { desc: item.desc, status: (await item.func(value)) ? "pass" : "fail" };
+      }),
     );
 
     setVerifyResult(newVerifyResult);
