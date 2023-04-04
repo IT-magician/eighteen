@@ -28,14 +28,14 @@ public class userController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PutMapping("/data/{user_id}")
-    ResponseEntity addData(@PathVariable String user_id, @RequestBody List<SongInfoDTO> songs) throws IOException {
+    @PutMapping("/data")
+    ResponseEntity addData(@RequestHeader("x-forwarded-for-user-id") String user_id, @RequestBody List<SongInfoDTO> songs) throws IOException {
         userIdxService.addData(user_id, songs);
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @DeleteMapping("/data/{user_id}")
-    ResponseEntity deleteData(@PathVariable String user_id, @RequestBody List<SongInfoDTO> songs) throws IOException {
+    @DeleteMapping("/data")
+    ResponseEntity deleteData(@RequestHeader("x-forwarded-for-user-id")  String user_id, @RequestBody List<SongInfoDTO> songs) throws IOException {
         userIdxService.deleteData(user_id, songs);
         return new ResponseEntity(HttpStatus.OK);
     }
