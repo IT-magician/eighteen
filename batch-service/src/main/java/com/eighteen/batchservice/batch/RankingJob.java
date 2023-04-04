@@ -4,8 +4,7 @@ import com.eighteen.batchservice.entity.*;
 import com.eighteen.batchservice.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.Step;
+import org.springframework.batch.core.*;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.item.ItemProcessor;
@@ -59,16 +58,6 @@ public class RankingJob {
     private Map<Music, Integer> M6 = new HashMap<>();
     private Map<Music, Integer> F6 = new HashMap<>();
 
-    private void Chunk(int step) {
-
-        if (step == 1) {
-            this.chunkSize = (int)userRepository.count();
-        }
-        else if (step == 2) {
-            this.chunkSize = (int)myEighteenRepository.count();
-        }
-    }
-
     private void Refresh() {
 
         this.M1 = new HashMap<>();
@@ -88,21 +77,35 @@ public class RankingJob {
     @Bean
     public Job rankingJob_batchBuild() {
 
+        Step step1 = rankingJob_step1();
+        Step step2 = rankingJob_step2();
+
         return jobBuilderFactory.get("rankingJob")
-                .start(rankingJob_step1())
-                .next(rankingJob_step2())
+                .start(step1)
+                .next(step2)
                 .build();
     }
 
     @Bean
     public Step rankingJob_step1() {
-
-        Chunk(1);
+        this.chunkSize = (int)userRepository.count();
         return stepBuilderFactory.get("writeTemp")
                 .<User, List<TempRanking>>chunk(chunkSize)
                 .reader(jpaPageJob1_dbItemReader())
                 .processor(userToRankingProcessor())
                 .writer(jpaPageJob1_rankingItemWriter())
+                .listener(new StepExecutionListener() {
+                    @Override
+                    public void beforeStep(StepExecution stepExecution) {
+                        // Log statements to debug the issue
+                        System.out.println("Before step execution");
+                        System.out.println("Chunk size: " + chunkSize);
+                    }
+                    @Override
+                    public ExitStatus afterStep(StepExecution stepExecution) {
+                        return null;
+                    }
+                })
                 .build();
     }
 
@@ -123,6 +126,7 @@ public class RankingJob {
 
         return user -> {
             List<MyEighteen> myEighteens = user.getMyEighteens();
+            System.out.println(chunkSize);
             String genderId = user.getGender();
             LocalDate now = LocalDate.now();
             LocalDate birthDate = LocalDate.parse(user.getBirth());
@@ -184,8 +188,7 @@ public class RankingJob {
 
     @Bean
     public Step rankingJob_step2() {
-
-        Chunk(2);
+        this.chunkSize = (int)myEighteenRepository.count();
         System.out.println("---------------------------------------");
         System.out.println(chunkSize);
         System.out.println(chunkSize);
@@ -196,18 +199,41 @@ public class RankingJob {
         System.out.println(chunkSize);
         System.out.println(chunkSize);
         System.out.println("---------------------------------------");
-        Refresh();
         return stepBuilderFactory.get("TempToRank")
                 .<TempRanking, TempRanking>chunk(chunkSize)
                 .reader(jpaPageJob2_dbItemReader())
                 .processor(userToRankingProcessor2())
                 .writer(jpaPageJob2_rankingItemWriter(entityManager))
+                .listener(new StepExecutionListener() {
+                    @Override
+                    public void beforeStep(StepExecution stepExecution) {
+                        Refresh();
+                    }
+                    @Override
+                    public ExitStatus afterStep(StepExecution stepExecution) {
+                        return null;
+                    }
+                })
                 .build();
     }
 
     @Bean
     public JpaPagingItemReader<TempRanking> jpaPageJob2_dbItemReader() {
-
+        System.out.println("---------------------------------------");
+        System.out.println(chunkSize);
+        System.out.println(M1);
+        System.out.println(M2);
+        System.out.println(M3);
+        System.out.println(M4);
+        System.out.println(M5);
+        System.out.println(M6);
+        System.out.println(F1);
+        System.out.println(F2);
+        System.out.println(F3);
+        System.out.println(F4);
+        System.out.println(F5);
+        System.out.println(F6);
+        System.out.println("---------------------------------------");
         return new JpaPagingItemReaderBuilder<TempRanking>()
                 .name("jpaPageJob2_dbItemReader")
                 .entityManagerFactory(entityManagerFactory)
@@ -252,9 +278,24 @@ public class RankingJob {
 
     @Bean
     public ItemWriter<TempRanking> jpaPageJob2_rankingItemWriter(EntityManager entityManager) {
-
+        System.out.println("---------------------------------------");
+        System.out.println(chunkSize);
+        System.out.println(M1);
+        System.out.println(M2);
+        System.out.println(M3);
+        System.out.println(M4);
+        System.out.println(M5);
+        System.out.println(M6);
+        System.out.println(F1);
+        System.out.println(F2);
+        System.out.println(F3);
+        System.out.println(F4);
+        System.out.println(F5);
+        System.out.println(F6);
+        System.out.println("---------------------------------------");
         return list -> {
             rankingRepository.deleteAll();
+            System.out.println(chunkSize);
             Map<Music, Integer> M1Sorted = sortByValue(M1);
             Map<Music, Integer> F1Sorted = sortByValue(F1);
             Map<Music, Integer> M2Sorted = sortByValue(M2);

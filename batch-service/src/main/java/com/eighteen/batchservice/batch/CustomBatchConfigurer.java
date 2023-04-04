@@ -18,8 +18,7 @@ public class CustomBatchConfigurer extends DefaultBatchConfigurer {
 
     @Override
     public void setDataSource(DataSource dataSource) {
-        // Do nothing
-        // https://www.raegon.com/spring-batch-jpa-without-meta
+
     }
 
     @Bean

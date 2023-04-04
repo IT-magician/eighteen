@@ -1,9 +1,9 @@
 api_gateway_url: localhost
 
 spring:
-#  batch:
-#    job:
-#      enabled: false
+  batch:
+    job:
+      enabled: false
 
   application:
     name: batch-service
