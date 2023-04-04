@@ -28,8 +28,8 @@ public class userController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PutMapping("/data")
-    ResponseEntity addData(@RequestHeader("x-forwarded-for-user-id") String user_id, @RequestBody List<SongInfoDTO> songs) throws IOException {
+    @PutMapping("/data/{user_id}")
+    ResponseEntity addData(@PathVariable String user_id, @RequestBody List<SongInfoDTO> songs) throws IOException {
         userIdxService.addData(user_id, songs);
         return new ResponseEntity(HttpStatus.OK);
     }
