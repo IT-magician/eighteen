@@ -57,9 +57,11 @@ public class ProfileController {
             @ApiResponse(code = 500, message = "Internal server error")
     })
     @GetMapping("/checkNickname")
-    public ResponseEntity<String> checkNickname(@ApiParam(value = "입력 닉네임", required = true) @RequestParam("nickname") String nickname) {
+    public ResponseEntity<String> checkNickname(@RequestHeader("x-forwarded-for-user-id") String userId,
+                                                @ApiParam(value = "입력 닉네임", required = true) @RequestParam("nickname") String nickname) {
 
-        String res = profileService.checkNickname(nickname);
+        String res = profileService.checkNickname(userId, nickname);
+
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
