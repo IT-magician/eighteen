@@ -4,12 +4,15 @@ import RegisterFavoriteInput from "./RegisterFavoriteInput";
 import { FavoriteSongResult } from "../../Favorite";
 import RegisterSearchModal from "../RegisterSearchModal/RegisterSearchModal";
 import { TextButton } from "../../common/button";
+import { useRecoilValue } from "recoil";
+import { userState } from "../../../recoil/atom";
 
 interface Props {
   nextPage(): void;
 }
 
 const RegisterFavoriteSetting = ({ nextPage }: Props): JSX.Element => {
+  const user = useRecoilValue(userState);
   const [modal, setModal] = useState<boolean>(false);
 
   const onClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -19,7 +22,9 @@ const RegisterFavoriteSetting = ({ nextPage }: Props): JSX.Element => {
   return (
     <StyledDiv>
       <h1>
-        <span>사용자님의</span>
+        <span>
+          <b>{user?.nickname}</b>님의
+        </span>
         <span>애창곡은 무엇인가요?</span>
       </h1>
       <h2>

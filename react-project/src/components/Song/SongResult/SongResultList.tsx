@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
+import React, { useEffect, useRef, useState } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { searchForTitle } from "../../../apis/search";
 import { searchState } from "../../../recoil/atom/searchState";
 import { Song, SongItem } from "../../common/song";
 import SongResultDefault from "./SongResultDefault";
@@ -9,11 +10,24 @@ import SongResultLoading from "./SongResultLoading";
 
 const SongResultList = (): JSX.Element => {
   const [list, setList] = useState<Song[]>([]);
-  const search = useRecoilValue(searchState);
+  const [search, setSearch] = useRecoilState(searchState);
 
   useEffect(() => {
-    if (search.loading) return;
-  }, [search.loading]);
+    if (search.loading || !search.keyword) return;
+    setSearch({ ...search, loading: true });
+
+    // 1초마다 한번씩 최종 변경된 사항으로 검색합니다
+    setTimeout(() => {
+      setSearch((pre) => {
+        const setData = async () => {
+          const { data } = await searchForTitle(pre.keyword);
+          console.dir(data);
+        };
+        setData();
+        return { ...pre, loading: false };
+      });
+    }, 1000);
+  }, [search.keyword, search.type]);
 
   return (
     <StyledDiv>
