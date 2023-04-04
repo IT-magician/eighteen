@@ -1,7 +1,7 @@
 api_gateway_url: j8b304.p.ssafy.io
 
 server:
-  port: 8081
+  port: 8080
 
 spring:
   application:
@@ -65,7 +65,10 @@ cloud:
 
 
 search-engine:
-  url: https://j8b304.p.ssafy.io/elastic_search
+  url: http://j8b304.p.ssafy.io/elastic_search
+
+flask:
+  url: http://localhost:5000/flask
 
 
 

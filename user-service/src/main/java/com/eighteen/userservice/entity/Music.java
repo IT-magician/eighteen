@@ -27,12 +27,6 @@ public class Music {
     @Column(name = "singer")
     private String singer;
 
-    @Column(name = "composer")
-    private String composer;
-
-    @Column(name = "lyricist")
-    private String lyricist;
-
     @Column(name = "thumbnail_url")
     private String thumbnailUrl;
 

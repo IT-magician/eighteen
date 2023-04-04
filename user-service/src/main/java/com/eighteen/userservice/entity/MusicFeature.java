@@ -30,17 +30,8 @@ public class MusicFeature {
     @Column(name = "valence")
     private Float valence;
 
-    @Column(name = "mood")
-    private Float mood;
-
     @Column(name = "`key`")
     private Integer key;
-
-    @Column(name = "high_pitch")
-    private String highPitch;
-
-    @Column(name = "low_pitch")
-    private String lowPitch;
 
     @OneToOne
     @MapsId

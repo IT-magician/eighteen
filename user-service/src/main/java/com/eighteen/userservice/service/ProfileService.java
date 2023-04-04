@@ -49,9 +49,9 @@ public class ProfileService {
     public String checkNickname(String nickname) {
 
         User user = userRepository.findByNickname(nickname);
-        String res = "ok";
+        String res = "no";
         if (user == null) {
-            res = "no";
+            res = "ok";
         }
         return res;
     }

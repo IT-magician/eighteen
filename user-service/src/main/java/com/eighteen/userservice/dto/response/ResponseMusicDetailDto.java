@@ -42,10 +42,6 @@ public class ResponseMusicDetailDto {
         this.singer = music.getSinger();
         this.thumbnailUrl = music.getThumbnailUrl();
         this.youtubeUrl = music.getYoutubeUrl();
-        this.highPitch = musicFeature.getHighPitch();
-        this.lowPitch = musicFeature.getLowPitch();
         this.key = musicFeature.getKey();
-        this.user_highPitch = user.getHighPitch();
-        this.user_lowPitch = user.getLowPitch();
     }
 }

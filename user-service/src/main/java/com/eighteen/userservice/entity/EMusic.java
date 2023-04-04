@@ -12,19 +12,22 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "s_recc")
-public class SRecc {
+@Table(name = "e_music")
+public class EMusic {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "s_recc_id")
-    private Integer sReccId;
+    @Column(name = "e_music_id")
+    private Integer eMusicId;
 
     @ManyToOne
-    @JoinColumn(name = "situation_id")
-    private Situation situation;
+    @JoinColumn(name = "emotion_id")
+    private Emotion emotion;
 
     @ManyToOne
     @JoinColumn(name = "music_id")
     private Music music;
+
+    @Column(name = "popularity")
+    private Integer popularity;
 }

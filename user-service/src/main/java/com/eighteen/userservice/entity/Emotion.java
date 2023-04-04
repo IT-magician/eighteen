@@ -26,5 +26,5 @@ public class Emotion {
     private String name;
 
     @OneToMany(mappedBy = "emotion", cascade = CascadeType.ALL)
-    private List<ERecc> eReccs = new ArrayList<>();
+    private List<EMusic> eMusics = new ArrayList<>();
 }
