@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { searchForTitle } from "../../../apis/search";
 import { searchState } from "../../../recoil/atom/searchState";
 import { Song, SongItem } from "../../common/song";
 import SongResultDefault from "./SongResultDefault";
@@ -20,8 +19,7 @@ const SongResultList = (): JSX.Element => {
     setTimeout(() => {
       setSearch((pre) => {
         const setData = async () => {
-          const { data } = await searchForTitle(pre.keyword);
-          console.dir(data);
+          console.log(pre.keyword);
         };
         setData();
         return { ...pre, loading: false };
