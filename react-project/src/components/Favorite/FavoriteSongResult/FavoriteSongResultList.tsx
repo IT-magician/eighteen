@@ -1,6 +1,9 @@
-import React, { useState } from "react";
-import { useRecoilValue } from "recoil";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { getEighteenList } from "../../../apis/myEighteen";
+import { authState } from "../../../recoil/atom/authState";
 import { searchState } from "../../../recoil/atom/searchState";
 import { Song, SongItem } from "../../common/song";
 import FavoriteSongResultDefault from "./FavoriteSongResultDefault";
@@ -8,8 +11,35 @@ import FavoriteSongResultEmpty from "./FavoriteSongResultEmpty";
 import FavoriteSongResultLoading from "./FavoriteSongResultLoading";
 
 const FavoriteSongList = () => {
-  const [list] = useState<Song[]>([]);
+  const [auth, setAuth] = useRecoilState(authState);
+  const [list, setList] = useState<Song[]>([]);
+  const [page] = useState<number>(0);
   const search = useRecoilValue(searchState);
+
+  useEffect(() => {
+    if (search.loading) return;
+    const getList = async () => {
+      try {
+        const res = await getEighteenList(page, 10, auth.token);
+        if (res.status === 204) {
+          // CASE 1: 204 NO CONTENT
+          setList([]);
+        } else if (res.status === 200) {
+          // CASE 2: 200 ACCEPTED
+          setList(res.data.content);
+        }
+      } catch (e) {
+        if (axios.isAxiosError(e)) {
+          if (e.response?.status === 401) {
+            // CASE 3: 401 UNAUTHORIZED
+            setAuth({ ...auth, token: "" });
+          }
+        }
+      }
+    };
+    getList();
+  }, []);
+
   return (
     <StyledDiv>
       {search.loading && <FavoriteSongResultLoading />}

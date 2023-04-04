@@ -6,8 +6,8 @@ import { RecommendType } from "./type";
  * @param recommend 추천방식(myEighteen, weather, emotion, situation)
  * @param id 추천선택 id
  */
-const recommendSong = (recommend: RecommendType, id?: number) => {
-  instance.defaults.headers["Authorization"] = `Bearer ${sessionStorage.getItem("access-token")}`;
+const recommendSong = (recommend: RecommendType, token: string, id?: number) => {
+  instance.defaults.headers["Authorization"] = token;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const params: any = {};
   if (id) {
@@ -21,8 +21,8 @@ const recommendSong = (recommend: RecommendType, id?: number) => {
  * @param ageId 연령 ID
  * @param genderId 성별 ID
  */
-const getEighteenRanking = (age: number, gender: string) => {
-  instance.defaults.headers["Authorization"] = `Bearer ${sessionStorage.getItem("access-token")}`;
+const getEighteenRanking = (age: number, gender: string, token: string) => {
+  instance.defaults.headers["Authorization"] = token;
   return instance.get(`/ranking`, { params: { age, gender } });
 };
 

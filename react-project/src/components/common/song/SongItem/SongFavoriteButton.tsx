@@ -2,6 +2,9 @@ import React, { useRef } from "react";
 import styled from "styled-components";
 import { TbMusic } from "react-icons/tb";
 import { addEighteen, removeEighteen } from "../../../../apis/myEighteen";
+import { useRecoilState } from "recoil";
+import { authState } from "../../../../recoil/atom/authState";
+import axios from "axios";
 
 interface Props {
   musicId: number;
@@ -14,6 +17,7 @@ interface Props {
  * 음악 애창곡 등록 버튼 컴포넌트
  */
 const SongFavoriteButton = ({ musicId, isEighteen, setEighteen, onCustomClick }: Props): JSX.Element => {
+  const [auth, setAuth] = useRecoilState(authState);
   const loading = useRef<boolean>(false);
 
   const onToggle = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -30,9 +34,15 @@ const SongFavoriteButton = ({ musicId, isEighteen, setEighteen, onCustomClick }:
 
     let success = false;
     try {
-      if (isEighteen) await removeEighteen(musicId);
-      else await addEighteen(musicId);
+      if (isEighteen) await removeEighteen(musicId, auth.token);
+      else await addEighteen(musicId, auth.token);
       success = true;
+    } catch (e) {
+      if (axios.isAxiosError(e)) {
+        if (e.response?.status === 401) {
+          setAuth({ ...auth, token: "" });
+        }
+      }
     } finally {
       // 과도한 요청을 방지하기 위해 1초의 요청 간격을 줍니다
       await setTimeout(() => {

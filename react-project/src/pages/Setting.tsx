@@ -11,6 +11,8 @@ import { VerifyInput } from "../components/common/input/Verify";
 import { nicknameVerify } from "../utils/validation";
 import { modifyProfile, deleteAccount } from "../apis/profile";
 import SettingDatePicker from "../components/setting/SettingDatePicker";
+import { authState } from "../recoil/atom/authState";
+import axios from "axios";
 
 // type ProfileAttr = "nickname" | "birth" | "gender" | "email" | "profileImage";
 
@@ -30,6 +32,7 @@ import SettingDatePicker from "../components/setting/SettingDatePicker";
  * 프로필 수정 화면
  */
 const Setting = (): JSX.Element => {
+  const [auth, setAuth] = useRecoilState(authState);
   const [globalUser, setGlobalUser] = useRecoilState(userState);
   const [user, setUser] = useState({ ...globalUser });
   const [pass, setPass] = useState<boolean>(true);
@@ -93,17 +96,32 @@ const Setting = (): JSX.Element => {
     });
     formData.append("profileInfo", new Blob([newProfile], { type: "application/json" }));
     if (file.current instanceof File) formData.append("profileImage", file.current);
-
-    const res = await modifyProfile(formData);
-    if (res.data == "ok") {
-      navigate("/mypage");
+    try {
+      const res = await modifyProfile(formData, auth.token);
+      if (res.data == "ok") {
+        navigate("/mypage");
+      }
+    } catch (e) {
+      if (axios.isAxiosError(e)) {
+        if (e.response?.status === 401) {
+          setAuth({ ...auth, token: "" });
+        }
+      }
     }
   };
 
   const onHandleDeleteAccount = async () => {
-    const res = await deleteAccount();
-    if (res) {
-      setGlobalUser(null);
+    try {
+      const res = await deleteAccount(auth.token);
+      if (res) {
+        setGlobalUser(null);
+      }
+    } catch (e) {
+      if (axios.isAxiosError(e)) {
+        if (e.response?.status === 401) {
+          setAuth({ ...auth, token: "" });
+        }
+      }
     }
   };
 
@@ -125,7 +143,12 @@ const Setting = (): JSX.Element => {
         </div>
         <div className="NameGenderDiv">
           {user && (
-            <VerifyInput value={globalUser.nickname} setValue={setNicname} setPass={setPass} verify={nicknameVerify} />
+            <VerifyInput
+              value={globalUser.nickname}
+              setValue={setNicname}
+              setPass={setPass}
+              verify={nicknameVerify(auth.token)}
+            />
           )}
           <Select<string>
             options={[
