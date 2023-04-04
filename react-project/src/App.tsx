@@ -22,9 +22,11 @@ const App = (): JSX.Element => {
       setLoading(true);
       try {
         // 최초 접근 시 ACCESS TOKEN 발급을 위해 요청을 보냅니다
-        await checkUser();
+        const response = await checkUser();
         // CASE 1-1 : 200 ACCEPTED
         // 이 경우 발급받은 ACCESS TOKEN을 활용한 요청을 위해 callback 함수를 호출합니다
+        sessionStorage.setItem("access-token", response.headers["accessToken"]);
+
         await enterService();
       } catch (e) {
         // 요청 실패
