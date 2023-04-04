@@ -40,7 +40,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     }
 
     private String makeRedirectUrl() {
-        return UriComponentsBuilder.fromUriString("http://192.168.31.176:3000")
+        return UriComponentsBuilder.fromUriString("http://j8b304.p.ssafy.io/")
                 .build().toUriString();
     }
 
