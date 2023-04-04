@@ -1,6 +1,7 @@
 package com.eighteen.userservice.service;
 
 import com.eighteen.userservice.dto.MusicDto;
+import com.eighteen.userservice.dto.response.ResponseRankingDto;
 import com.eighteen.userservice.dto.response.ResponseRecommendDto;
 import com.eighteen.userservice.entity.*;
 import com.eighteen.userservice.repository.*;
@@ -13,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -40,7 +43,10 @@ public class RecommendService {
     private final RestTemplate restTemplate;
 
     private final Environment env;
+
     private final MusicRepository musicRepository;
+
+    private final RankingService rankingService;
 
     public ResponseRecommendDto getEMusicList(String userId, Integer emotionId) {
 
@@ -155,26 +161,30 @@ public class RecommendService {
 
     public ResponseRecommendDto getEighteenRecommend(String userId) {
 
-        String recommendUrl = String.format(env.getProperty("flask.url")) + "/recommend/" + userId;
-        HttpEntity<String> entity = new HttpEntity<>(null);
-        ResponseEntity<List> response = restTemplate.exchange(recommendUrl, HttpMethod.GET, entity, List.class);
-        List<Integer> musiclist = response.getBody();
         User user = userRepository.findByUserId(userId);
-        List<MusicDto> musicDtos = new ArrayList<>();
-        for (Integer musicId : musiclist) {
-            Music music = musicRepository.findByMusicId(musicId);
-            MyEighteen myEighteen = myEighteenRepository.findByUserAndMusic(user, music);
-            MusicDto musicDto = new ModelMapper().map(music, MusicDto.class);
-            if (myEighteen == null) {
-                musicDto.setIsEighteen(Boolean.FALSE);
+        List<MyEighteen> myEighteens = myEighteenRepository.findByUser(user);
+        if (myEighteens.size() > 0) {
+            String recommendUrl = String.format(env.getProperty("flask.url")) + "/recommend/" + userId;
+            HttpEntity<String> entity = new HttpEntity<>(null);
+            ResponseEntity<List> response = restTemplate.exchange(recommendUrl, HttpMethod.GET, entity, List.class);
+            List<Integer> musiclist = response.getBody();
+            List<MusicDto> musicDtos = new ArrayList<>();
+            for (Integer musicId : musiclist) {
+                Music music = musicRepository.findByMusicId(musicId);
+                MyEighteen myEighteen = myEighteenRepository.findByUserAndMusic(user, music);
+                MusicDto musicDto = new ModelMapper().map(music, MusicDto.class);
+                if (myEighteen == null) {
+                    musicDto.setIsEighteen(Boolean.FALSE);
+                }
+                else {
+                    musicDto.setIsEighteen(Boolean.TRUE);
+                }
+                musicDtos.add(musicDto);
             }
-            else {
-                musicDto.setIsEighteen(Boolean.TRUE);
-            }
-            musicDtos.add(musicDto);
+            ResponseRecommendDto responseRecommendDto = new ResponseRecommendDto(musicDtos);
+            return responseRecommendDto;
         }
-
-        ResponseRecommendDto responseRecommendDto = new ResponseRecommendDto(musicDtos);
+        ResponseRecommendDto responseRecommendDto = new ResponseRecommendDto();
         return responseRecommendDto;
     }
 }

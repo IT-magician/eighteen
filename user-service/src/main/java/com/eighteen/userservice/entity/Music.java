@@ -30,7 +30,7 @@ public class Music {
     @Column(name = "thumbnail_url")
     private String thumbnailUrl;
 
-    @Column(name = "youtube_link")
+    @Column(name = "youtube_url")
     private String youtubeUrl;
 
     @OneToOne(mappedBy = "music", cascade = CascadeType.ALL)

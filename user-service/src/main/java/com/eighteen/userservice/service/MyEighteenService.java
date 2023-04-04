@@ -49,21 +49,27 @@ public class MyEighteenService {
 
         User user = userRepository.findByUserId(userId);
         List<MyEighteen> myEighteens = myEighteenRepository.findByUser(user);
-        if (myEighteens.size() < size) {
-            size = myEighteens.size();
+        if (myEighteens.size() > 0) {
+            if (myEighteens.size() < size) {
+                size = myEighteens.size();
+            }
+            List<MusicDto> musicDtos = new ArrayList<>();
+            for (MyEighteen myEighteen : myEighteens) {
+                MusicDto musicDto = new ModelMapper().map(myEighteen.getMusic(), MusicDto.class);
+                musicDto.setIsEighteen(Boolean.TRUE);
+                musicDtos.add(musicDto);
+            }
+            Pageable pageable = PageRequest.of(page, size);
+            int start = (int)pageable.getOffset();
+            int end = Math.min((start + pageable.getPageSize()), musicDtos.size());
+            Page<MusicDto> musicDtoPage = new PageImpl<>(musicDtos.subList(start, end), pageable, musicDtos.size());
+            ResponseGetEighteenDto responseGetEighteenDto = new ResponseGetEighteenDto(musicDtoPage);
+            return responseGetEighteenDto;
         }
-        List<MusicDto> musicDtos = new ArrayList<>();
-        for (MyEighteen myEighteen : myEighteens) {
-            MusicDto musicDto = new ModelMapper().map(myEighteen.getMusic(), MusicDto.class);
-            musicDto.setIsEighteen(Boolean.TRUE);
-            musicDtos.add(musicDto);
+        else {
+            ResponseGetEighteenDto responseGetEighteenDto = new ResponseGetEighteenDto();
+            return responseGetEighteenDto;
         }
-        Pageable pageable = PageRequest.of(page, size);
-        int start = (int)pageable.getOffset();
-        int end = Math.min((start + pageable.getPageSize()), musicDtos.size());
-        Page<MusicDto> musicDtoPage = new PageImpl<>(musicDtos.subList(start, end), pageable, musicDtos.size());
-        ResponseGetEighteenDto responseGetEighteenDto = new ResponseGetEighteenDto(musicDtoPage);
-        return responseGetEighteenDto;
     }
 
     public ResponseRandomDto getRandom(String userId) {

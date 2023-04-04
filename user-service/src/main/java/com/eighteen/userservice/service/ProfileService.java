@@ -46,11 +46,12 @@ public class ProfileService {
         return responseProfileDto;
     }
 
-    public String checkNickname(String nickname) {
+    public String checkNickname(String userId, String nickname) {
 
         User user = userRepository.findByNickname(nickname);
+        User other = userRepository.findByUserId(userId);
         String res = "no";
-        if (user == null) {
+        if (user == null || user == other) {
             res = "ok";
         }
         return res;

@@ -36,6 +36,9 @@ public class MyEighteenController {
                                                               @RequestParam("page") Integer page, @RequestParam("size") Integer size) {
 
         ResponseGetEighteenDto responseGetEighteenDto = myEighteenService.getEighteen(userId, page, size);
+        if (responseGetEighteenDto.getMusicPage() == null) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        }
         return ResponseEntity.status(HttpStatus.OK).body(responseGetEighteenDto);
     }
 
