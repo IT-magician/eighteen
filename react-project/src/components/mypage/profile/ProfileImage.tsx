@@ -12,9 +12,13 @@ const ProfileImage = ({ image }: Props): JSX.Element => {
   const imgURL = `${image}`;
   const dummyAlt = `eightten-logo.png`;
 
+  const onDefaultImg = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    e.currentTarget.src = `${process.env.PUBLIC_URL}/img/default_profile.png`;
+  };
+
   return (
     <StyledDiv>
-      <img src={imgURL} alt={dummyAlt} />
+      <img src={imgURL} alt={dummyAlt} onError={onDefaultImg} />
     </StyledDiv>
   );
 };
