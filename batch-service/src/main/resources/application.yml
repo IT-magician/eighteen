@@ -1,4 +1,4 @@
-api_gateway_url: localhost
+api_gateway_url: j8b304.p.ssafy.io
 
 spring:
   batch:
@@ -10,8 +10,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${api_gateway_url}:3306/eighteen?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=true
-    username: blur
-    password: blur
+    username: root
+    password: b304b304
     hikari:
       pool-name: jpa-hikari-pool
       maximum-pool-size: 5

@@ -23,7 +23,7 @@ public class SchedulingConfig {
         this.rankingJob = rankingJob;
     }
 
-    @Scheduled(fixedDelay = 30000)
+    @Scheduled(fixedDelay = 10 * 60 * 1000)
     public void runBatchJob() throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
         JobParameters jobParameters = new JobParametersBuilder()
                 .addString("jobId", String.valueOf(System.currentTimeMillis()))

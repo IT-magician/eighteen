@@ -43,7 +43,7 @@ public class RankingJob {
 
     private final EntityManager entityManager;
 
-    private int chunkSize;
+    private int chunkSize = 1;
 
     private Map<Music, Integer> M1 = new HashMap<>();
     private Map<Music, Integer> F1 = new HashMap<>();
@@ -89,6 +89,9 @@ public class RankingJob {
     @Bean
     public Step rankingJob_step1() {
         this.chunkSize = (int)userRepository.count();
+        if (chunkSize < 1) {
+            this.chunkSize = 1;
+        }
         return stepBuilderFactory.get("writeTemp")
                 .<User, List<TempRanking>>chunk(chunkSize)
                 .reader(jpaPageJob1_dbItemReader())
@@ -97,9 +100,7 @@ public class RankingJob {
                 .listener(new StepExecutionListener() {
                     @Override
                     public void beforeStep(StepExecution stepExecution) {
-                        // Log statements to debug the issue
-                        System.out.println("Before step execution");
-                        System.out.println("Chunk size: " + chunkSize);
+
                     }
                     @Override
                     public ExitStatus afterStep(StepExecution stepExecution) {
@@ -129,13 +130,19 @@ public class RankingJob {
             System.out.println(chunkSize);
             String genderId = user.getGender();
             LocalDate now = LocalDate.now();
-            LocalDate birthDate = LocalDate.parse(user.getBirth());
-            int age = Period.between(birthDate, now).getYears();
-            if (age > 60) {
-                age = 60;
+            int age = 0;
+            if (user.getBirth() != null) {
+                LocalDate birthDate = LocalDate.parse(user.getBirth());
+                age = Period.between(birthDate, now).getYears();
+                if (age > 60) {
+                    age = 60;
+                }
+                else if (age < 19) {
+                    age = 10;
+                }
             }
-            else if (age < 19) {
-                age = 10;
+            else {
+                age = 60;
             }
             String agId = genderId + String.valueOf(age/10);
             AgeGender ageGender = ageGenderRepository.findByAgId(agId);
@@ -189,16 +196,9 @@ public class RankingJob {
     @Bean
     public Step rankingJob_step2() {
         this.chunkSize = (int)myEighteenRepository.count();
-        System.out.println("---------------------------------------");
-        System.out.println(chunkSize);
-        System.out.println(chunkSize);
-        System.out.println(chunkSize);
-        System.out.println(chunkSize);
-        System.out.println(chunkSize);
-        System.out.println(chunkSize);
-        System.out.println(chunkSize);
-        System.out.println(chunkSize);
-        System.out.println("---------------------------------------");
+        if (chunkSize < 1) {
+            this.chunkSize = 1;
+        }
         return stepBuilderFactory.get("TempToRank")
                 .<TempRanking, TempRanking>chunk(chunkSize)
                 .reader(jpaPageJob2_dbItemReader())
@@ -219,21 +219,7 @@ public class RankingJob {
 
     @Bean
     public JpaPagingItemReader<TempRanking> jpaPageJob2_dbItemReader() {
-        System.out.println("---------------------------------------");
-        System.out.println(chunkSize);
-        System.out.println(M1);
-        System.out.println(M2);
-        System.out.println(M3);
-        System.out.println(M4);
-        System.out.println(M5);
-        System.out.println(M6);
-        System.out.println(F1);
-        System.out.println(F2);
-        System.out.println(F3);
-        System.out.println(F4);
-        System.out.println(F5);
-        System.out.println(F6);
-        System.out.println("---------------------------------------");
+
         return new JpaPagingItemReaderBuilder<TempRanking>()
                 .name("jpaPageJob2_dbItemReader")
                 .entityManagerFactory(entityManagerFactory)
@@ -278,21 +264,7 @@ public class RankingJob {
 
     @Bean
     public ItemWriter<TempRanking> jpaPageJob2_rankingItemWriter(EntityManager entityManager) {
-        System.out.println("---------------------------------------");
-        System.out.println(chunkSize);
-        System.out.println(M1);
-        System.out.println(M2);
-        System.out.println(M3);
-        System.out.println(M4);
-        System.out.println(M5);
-        System.out.println(M6);
-        System.out.println(F1);
-        System.out.println(F2);
-        System.out.println(F3);
-        System.out.println(F4);
-        System.out.println(F5);
-        System.out.println(F6);
-        System.out.println("---------------------------------------");
+
         return list -> {
             rankingRepository.deleteAll();
             System.out.println(chunkSize);
