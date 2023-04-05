@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import DatePicker, { registerLocale } from "react-datepicker";
 import { Select } from "../../common/select";
-import { User, userState } from "../../../recoil/atom/userState";
+import { userState } from "../../../recoil/atom/userState";
 import { VerifyInput } from "../../common/input/Verify";
 import { nicknameVerify } from "../../../utils/validation";
 import ko from "date-fns/locale/ko";
