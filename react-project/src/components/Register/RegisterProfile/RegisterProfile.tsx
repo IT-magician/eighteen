@@ -13,6 +13,7 @@ import { modifyProfile } from "../../../apis/profile";
 import { useRecoilState } from "recoil";
 import { authState } from "../../../recoil/atom/authState";
 import axios from "axios";
+import { searchRegist } from "../../../apis/search";
 
 registerLocale("ko", ko);
 
@@ -60,6 +61,8 @@ const RegisterProfile = ({ nextPage }: Props): JSX.Element => {
 
       try {
         const res = await modifyProfile(formData, auth.token);
+        await searchRegist(auth.token);
+
         if (res.data == "ok") {
           nextPage();
         }

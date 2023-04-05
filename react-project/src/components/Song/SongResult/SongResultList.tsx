@@ -1,6 +1,9 @@
+import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { searchForSinger, searchForTitle } from "../../../apis/search";
+import { authState } from "../../../recoil/atom/authState";
 import { searchState } from "../../../recoil/atom/searchState";
 import { Song, SongItem } from "../../common/song";
 import SongResultDefault from "./SongResultDefault";
@@ -10,6 +13,7 @@ import SongResultLoading from "./SongResultLoading";
 const SongResultList = (): JSX.Element => {
   const [list, setList] = useState<Song[]>([]);
   const [search, setSearch] = useRecoilState(searchState);
+  const [auth, setAuth] = useRecoilState(authState);
 
   useEffect(() => {
     if (search.loading || !search.keyword) return;
@@ -20,6 +24,19 @@ const SongResultList = (): JSX.Element => {
       setSearch((pre) => {
         const setData = async () => {
           console.log(pre.keyword);
+          try {
+            if (pre.type === "title") {
+              const res = await searchForTitle(pre.keyword, 0, 50, auth.token);
+              console.dir(res);
+            } else {
+              const res = await searchForSinger(pre.keyword, 0, 50, auth.token);
+              console.dir(res);
+            }
+          } catch (e) {
+            if (axios.isAxiosError(e)) {
+              setAuth({ ...auth, token: "" });
+            }
+          }
         };
         setData();
         return { ...pre, loading: false };

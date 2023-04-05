@@ -5,6 +5,7 @@ import { addEighteen, removeEighteen } from "../../../../apis/myEighteen";
 import { useRecoilState } from "recoil";
 import { authState } from "../../../../recoil/atom/authState";
 import axios from "axios";
+import { addEighteenForSearch, removeEighteenForSearch } from "../../../../apis/search";
 
 interface Props {
   musicId: number;
@@ -34,8 +35,13 @@ const SongFavoriteButton = ({ musicId, isEighteen, setEighteen, onCustomClick }:
 
     let success = false;
     try {
-      if (isEighteen) await removeEighteen(musicId, auth.token);
-      else await addEighteen(musicId, auth.token);
+      if (isEighteen) {
+        await removeEighteen(musicId, auth.token);
+        await removeEighteenForSearch([{ id: musicId }], auth.token);
+      } else {
+        await addEighteen(musicId, auth.token);
+        await addEighteenForSearch([{ id: musicId }], auth.token);
+      }
       success = true;
     } catch (e) {
       if (axios.isAxiosError(e)) {
