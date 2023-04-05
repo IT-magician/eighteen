@@ -37,6 +37,18 @@ public class Music {
     @PrimaryKeyJoinColumn
     private MusicFeature musicFeature;
 
+    @OneToOne(mappedBy = "music", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private EMusic emusic;
+
+    @OneToOne(mappedBy = "music", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private WMusic wmusic;
+
+    @OneToOne(mappedBy = "music", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private SMusic smusic;
+
     @OneToMany(mappedBy = "music", cascade = CascadeType.ALL)
     private List<MyEighteen> myEighteens = new ArrayList<>();
 }

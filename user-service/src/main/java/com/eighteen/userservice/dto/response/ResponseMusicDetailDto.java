@@ -26,15 +26,10 @@ public class ResponseMusicDetailDto {
 
     private String youtubeUrl;
 
-    private String highPitch;
-
-    private String lowPitch;
-
     private Integer key;
 
-    private String user_highPitch;
+    private Boolean isEighteen;
 
-    private String user_lowPitch;
     public ResponseMusicDetailDto(User user, Music music, MusicFeature musicFeature) {
 
         this.musicId = music.getMusicId();

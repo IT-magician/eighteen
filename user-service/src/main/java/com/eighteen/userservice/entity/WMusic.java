@@ -16,18 +16,18 @@ import javax.persistence.*;
 public class WMusic {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "w_music_id")
-    private Integer wReccId;
+    @Column(name = "music_id")
+    private Integer musicId;
 
     @ManyToOne
     @JoinColumn(name = "weather_id")
     private Weather weather;
 
-    @ManyToOne
-    @JoinColumn(name = "music_id")
-    private Music music;
-
     @Column(name = "popularity")
     private Integer popularity;
+
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "music_id")
+    private Music music;
 }
