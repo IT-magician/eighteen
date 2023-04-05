@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.nio.DoubleBuffer;
@@ -34,6 +35,9 @@ public class SearchService {
 
     private WebClient webClient = WebClient.builder()
             .baseUrl("http://j8b304.p.ssafy.io:9200")
+            .exchangeStrategies(ExchangeStrategies.builder()
+                    .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(-1)) // to unlimited memory size
+                    .build())
             .build();
 
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -43,8 +47,6 @@ public class SearchService {
     }
 
     public List<SongInfoDTO> searchBytitle(String title) {
-
-
         String responseBody = webClient.method(HttpMethod.GET)         // POST method
                 .uri("/tj_song_list_idx/_search?filter_path=hits.hits.*,aggregations.*")    // baseUrl 이후 uri
                 .headers(headers -> headers.setBasicAuth(username, password)) // basic auth
@@ -63,11 +65,9 @@ public class SearchService {
                         )
                 )     // set body value
                 .retrieve()                 // client message 전송
-                .bodyToMono(String.class)  // body type : EmpInfo
+                .bodyToMono(String.class)   // body type : EmpInfo
                 .block();                   // await
 
-
-        System.out.println(responseBody);
 
         Map<String, Map<String, List<Map<String, Map<String, Object>>>>> map = gson.fromJson(responseBody, Map.class);
         List<SongInfoDTO> list = new LinkedList<>();
