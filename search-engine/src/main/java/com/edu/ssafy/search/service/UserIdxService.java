@@ -132,6 +132,18 @@ public class UserIdxService {
                 .block();                   // await
     }
 
+    public void unregist(String user_id) {
+        String responseBody;
+
+        responseBody = webClient.method(HttpMethod.DELETE)         // POST method
+                .uri(String.format("/favorite_song_list@%s", user_id))    // baseUrl 이후 uri
+                .headers(headers -> headers.setBasicAuth(username, password)) // basic auth
+                .acceptCharset(Charset.forName("UTF-8"))
+                .retrieve()                 // client message 전송
+                .bodyToMono(String.class)  // body type : EmpInfo
+                .block();                   // await
+    }
+
     public void addData(String user_id, List<SongInfoDTO> songs) throws IOException {
         StringBuilder sb = new StringBuilder();
 

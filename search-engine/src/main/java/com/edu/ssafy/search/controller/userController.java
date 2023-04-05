@@ -28,6 +28,14 @@ public class userController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @PostMapping("/unregist")
+    ResponseEntity unregist(@RequestHeader("x-forwarded-for-user-id") String user_id) {
+        if (user_id == null || user_id.isEmpty()) return new ResponseEntity(HttpStatus.BAD_REQUEST);
+
+        userIdxService.unregist(user_id);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
     @PutMapping("/data")
     ResponseEntity addData(@RequestHeader("x-forwarded-for-user-id") String user_id, @RequestBody List<SongInfoDTO> songs) throws IOException {
         userIdxService.addData(user_id, songs);
