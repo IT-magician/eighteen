@@ -18,7 +18,7 @@ const FavoriteSongList = () => {
 
   useEffect(() => {
     if (search.loading) return;
-    const getList = async () => {
+    const getTotalList = async () => {
       try {
         const res = await getEighteenList(page, 10, auth.token);
         if (res.status === 204) {
@@ -26,7 +26,7 @@ const FavoriteSongList = () => {
           setList([]);
         } else if (res.status === 200) {
           // CASE 2: 200 ACCEPTED
-          setList(res.data.content);
+          setList(res.data.musicPage.content);
         }
       } catch (e) {
         if (axios.isAxiosError(e)) {
@@ -37,8 +37,8 @@ const FavoriteSongList = () => {
         }
       }
     };
-    getList();
-  }, [search.loading]);
+    if (!search.keyword) getTotalList();
+  }, [search]);
 
   return (
     <StyledDiv>
