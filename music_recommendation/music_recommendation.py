@@ -140,10 +140,7 @@ def situation_classification(data_path=DATA_FILE, data_path4=DATA_FILE4):
     with open(data_path4, encoding="utf-8") as f:
         data2 = json.loads(f.read())
 
-    situation_df = pd.DataFrame(data2)
-    situation_df = situation_df.dropna(axis=0)
-
-    df = pd.merge(music_df, situation_df, on=["title", "singer"])
+    df = pd.DataFrame(data2)
     df = df.dropna(axis=0)
 
     X = df[['energy', 'danceability', 'tempo']]
