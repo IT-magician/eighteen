@@ -193,3 +193,38 @@ def recommend_song_by_emotion(emotion, data_path=DATA_FILE, data_path2=DATA_FILE
     
     return result
 
+def recommend_song_by_situation(situation, data_path=DATA_FILE, data_path4=DATA_FILE4):
+    with open(data_path, encoding="utf-8") as f:
+        data = json.loads(f.read())
+    
+    music_df = pd.DataFrame(data)
+    music_df = music_df.replace('', np.NaN)
+    music_df = music_df.dropna(axis=0)
+
+    with open(data_path4, encoding="utf-8") as f:
+        data2 = json.loads(f.read())
+
+    df = pd.DataFrame(data2)
+    df = df.dropna(axis=0)
+
+    X = df[['energy', 'danceability', 'tempo']]
+    y = df['situation']
+
+    scaler = preprocessing.StandardScaler()
+    X = scaler.fit_transform(X)
+
+    svm_clf = svm.SVC()
+    svm_clf.fit(X, y)
+
+    pred_X = music_df[['energy', 'danceability', 'tempo']]
+    pred_X = scaler.transform(pred_X)
+    predicted_situation = svm_clf.predict(pred_X)
+    music_df['situation'] = predicted_situation
+    
+
+    selected = music_df.loc[(music_df['situation'] == situation) & (music_df['popularity'] >= 30), 'id']
+    result = random.sample(selected.tolist(), 20)
+    
+    return result
+
+
