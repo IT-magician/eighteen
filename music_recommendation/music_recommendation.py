@@ -23,6 +23,7 @@ DATA_FILE = os.path.join(DATA_DIR, "results.json")
 DATA_FILE2 = os.path.join(DATA_DIR, "emotions.json")
 DATA_FILE3 = os.path.join(DATA_DIR, "favorite_musics.json")
 DATA_FILE4 = os.path.join(DATA_DIR, "situations.json")
+DATA_FILE5 = os.path.join(DATA_DIR, "weathers.json")
 
 music_columns = (
     "id",
@@ -157,6 +158,35 @@ def situation_classification(data_path=DATA_FILE, data_path4=DATA_FILE4):
     predicted_situation = svm_clf.predict(pred_X)
     
     return predicted_situation
+
+def weather_classification(data_path=DATA_FILE, data_path5=DATA_FILE5):
+    with open(data_path, encoding="utf-8") as f:
+        data = json.loads(f.read())
+
+    music_df = pd.DataFrame(data)
+    music_df = music_df.replace('', np.NaN)
+    music_df = music_df.dropna(axis=0)
+
+    with open(data_path5, encoding="utf-8") as f:
+        data2 = json.loads(f.read())
+        
+    weather_df = pd.DataFrame(data2)
+    weather_df = weather_df.dropna(axis=0)
+
+    df = pd.merge(music_df, weather_df, on=["title", "singer"])
+
+    X = df[['energy', 'danceability', 'tempo']]
+    y = df['weather_df']
+
+
+    clf = DecisionTreeClassifier()
+    clf.fit(X, y)
+
+    pred_X = music_df[['energy', 'danceability', 'tempo']]
+    predicted_weather = clf.predict(pred_X)
+
+    return predicted_weather
+
 
 def recommend_song_by_emotion(emotion, data_path=DATA_FILE, data_path2=DATA_FILE2):
     with open(data_path, encoding="utf-8") as f:
