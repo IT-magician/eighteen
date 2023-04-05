@@ -30,6 +30,7 @@ const RecommendList = ({ weather }: Props): JSX.Element => {
     const getRankingList = async () => {
       try {
         const { data } = await getEighteenRanking(Number(age), gender, auth.token);
+        console.dir(data);
         setSongList(data.musicDtos);
       } catch (e) {
         if (axios.isAxiosError(e)) {
@@ -55,7 +56,7 @@ const RecommendList = ({ weather }: Props): JSX.Element => {
   }, [location]);
   return (
     <StyledDiv>
-      <SongSlideList songList={songList} />
+      <SongSlideList songList={songList} ranking={type === "ranking"} />
       <RecommendSelector weather={weather} />
     </StyledDiv>
   );
