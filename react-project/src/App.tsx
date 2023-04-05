@@ -131,6 +131,7 @@ const StyledDiv = styled.div`
 
   // 실제 페이지 정보가 담길 페이지 컴포넌트
   & > .Page {
+    height: ${() => window.innerHeight - 80}px;
     width: 100%;
     box-sizing: border-box;
     overflow: auto;
