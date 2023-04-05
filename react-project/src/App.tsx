@@ -157,7 +157,7 @@ const StyledDiv = styled.div`
       display: flex;
       justify-content: flex-end;
       & > div {
-        margin: 56px 32px -80px;
+        margin: 56px 32px;
         box-sizing: border-box;
       }
     }
