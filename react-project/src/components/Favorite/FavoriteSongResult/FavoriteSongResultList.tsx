@@ -1,4 +1,5 @@
 import axios from "axios";
+import { loadavg } from "os";
 import React, { useEffect, useRef, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
@@ -31,11 +32,11 @@ const FavoriteSongList = () => {
         setSearch((pre) => {
           const { type, keyword, page } = pre;
           getData(type, keyword, page);
-          return { ...pre, loading: false };
+          return { ...pre };
         });
       }, 1000);
     }
-  }, [search]);
+  }, [search.keyword, search.type]);
 
   // 애창곡 리스트 전체 함수
   const getTotalData = async (page: number) => {
@@ -87,6 +88,8 @@ const FavoriteSongList = () => {
           setAuth({ ...auth, token: "" });
         }
       }
+    } finally {
+      setSearch((pre) => ({ ...pre, loading: false }));
     }
     return false;
   };
