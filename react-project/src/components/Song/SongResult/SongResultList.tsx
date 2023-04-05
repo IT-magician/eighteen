@@ -16,7 +16,11 @@ const SongResultList = (): JSX.Element => {
   const [auth, setAuth] = useRecoilState(authState);
 
   useEffect(() => {
-    if (search.loading || !search.keyword) return;
+    if (search.loading) return;
+    if (!search.keyword) {
+      setList([]);
+      return;
+    }
     setSearch({ ...search, loading: true });
 
     // 1초마다 한번씩 최종 변경된 사항으로 검색합니다
@@ -42,7 +46,9 @@ const SongResultList = (): JSX.Element => {
             }
           } catch (e) {
             if (axios.isAxiosError(e)) {
-              setAuth({ ...auth, token: "" });
+              if (e.response?.status === 401) {
+                setAuth({ ...auth, token: "" });
+              }
             }
           }
         };
