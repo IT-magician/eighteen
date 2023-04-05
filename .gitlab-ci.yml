@@ -214,3 +214,35 @@ deploy-job/flask:replace_docker_container:      # This job runs in the deploy st
   script:
     - docker run -p 9004:5000 --name flask -d flask
 
+
+
+batch-service:
+  stage: build
+  only:
+    - develop
+  script:
+    - cd batch-service
+    - docker build -t batch-service .
+
+
+deploy-job/batch-service:preparing_for_replace:      # This job runs in the deploy stage.
+  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
+  environment: production
+  only:
+    - develop
+  needs: ["batch-service"]
+  allow_failure: true
+  when: on_success
+  script:
+    - docker container stop batch-service && docker container rm batch-service
+
+deploy-job/batch-service:replace_docker_container:      # This job runs in the deploy stage.
+  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
+  environment: production
+  only:
+    - develop
+  needs: ["deploy-job/batch-service:preparing_for_replace"]
+  # allow_failure: true
+  when: on_success
+  script:
+    - docker run --name batch-service -d batch-service
