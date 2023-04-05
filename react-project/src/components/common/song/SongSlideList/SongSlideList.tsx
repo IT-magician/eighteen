@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Song, SongItem } from "../SongItem";
+import { Song, SongItem, SongRankingItem } from "../SongItem";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination } from "swiper";
@@ -9,9 +9,10 @@ import { Pagination } from "swiper";
 interface Props {
   songList: Song[];
   size?: number;
+  ranking?: boolean;
 }
 
-const SongSlideList = ({ songList, size = 5 }: Props): JSX.Element => {
+const SongSlideList = ({ songList, size = 5, ranking = false }: Props): JSX.Element => {
   // 페이지 사이즈만큼 곡 목록을 그룹핑합니다
   const songPage = useMemo(() => {
     let page: Song[] = [];
@@ -34,19 +35,30 @@ const SongSlideList = ({ songList, size = 5 }: Props): JSX.Element => {
   return (
     <StyledDiv size={size}>
       <Swiper modules={[Pagination]} spaceBetween={50} slidesPerView={1} pagination={{ clickable: true }}>
-        {songPage.map((page, index) => (
-          <SwiperSlide key={`page-${index}`} className="swiper-slide">
+        {songPage.map((page, page_index) => (
+          <SwiperSlide key={`page-${page_index}`} className="swiper-slide">
             <ul>
-              {page.map((song, index) => (
-                <SongItem
-                  key={index}
-                  musicId={song.musicId}
-                  title={song.title}
-                  singer={song.singer}
-                  isEighteen={song.isEighteen}
-                  thumbnailUrl={song.thumbnailUrl}
-                />
-              ))}
+              {page.map((song, index) =>
+                ranking ? (
+                  <SongRankingItem
+                    key={index}
+                    rank={page_index * size + index + 1}
+                    musicId={song.musicId}
+                    title={song.title}
+                    singer={song.singer}
+                    thumbnailUrl={song.thumbnailUrl}
+                  />
+                ) : (
+                  <SongItem
+                    key={index}
+                    musicId={song.musicId}
+                    title={song.title}
+                    singer={song.singer}
+                    isEighteen={song.isEighteen}
+                    thumbnailUrl={song.thumbnailUrl}
+                  />
+                ),
+              )}
             </ul>
           </SwiperSlide>
         ))}
@@ -57,7 +69,7 @@ const SongSlideList = ({ songList, size = 5 }: Props): JSX.Element => {
 
 const StyledDiv = styled.div<{ size: number }>`
   & .swiper-slide {
-    height: ${({ size }) => `${size * 68 + 8}px`};
+    min-height: ${({ size }) => `${size * 68 + 8}px`};
   }
   & ul {
     margin: 0;
