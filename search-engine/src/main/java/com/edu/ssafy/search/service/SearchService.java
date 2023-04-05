@@ -36,6 +36,8 @@ public class SearchService {
             .baseUrl("http://j8b304.p.ssafy.io:9200")
             .build();
 
+    private ObjectMapper objectMapper = new ObjectMapper();
+
     public SearchService() {
         this.gson = new Gson();
     }
@@ -65,7 +67,7 @@ public class SearchService {
                 .block();                   // await
 
 
-
+        System.out.println(responseBody);
 
         Map<String, Map<String, List<Map<String, Map<String, Object>>>>> map = gson.fromJson(responseBody, Map.class);
         List<SongInfoDTO> list = new LinkedList<>();
@@ -73,26 +75,33 @@ public class SearchService {
         Map<String, Double[]> levenshteinDistance_dict = new HashMap<>();
 
 
-        for (int i = 0;i < map.get("hits").get("hits").size();i++) {
-            int id = Integer.parseInt((String) map.get("hits").get("hits").get(i).get("_source").get("id"));
-            String _title = (String) map.get("hits").get("hits").get(i).get("_source").get("title");
-            String singer = (String) map.get("hits").get("hits").get(i).get("_source").get("singer");
-            String youtube_url = (String) map.get("hits").get("hits").get(i).get("_source").get("youtube_url");
 
-            list.add(
-                    SongInfoDTO.builder()
-                            .id(id)
-                            .title(_title)
-                            .singer(singer)
-                            .youtube_url(youtube_url)
-                            .build());
+        for (int i = 0;i < map.get("hits").get("hits").size();i++) {
+////            int id = (int) map.get("hits").get("hits").get(i).get("_source").get("id");
+            String _title = (String) map.get("hits").get("hits").get(i).get("_source").get("title");
+//            String singer = (String) map.get("hits").get("hits").get(i).get("_source").get("singer");
+//            String youtube_url = (String) map.get("hits").get("hits").get(i).get("_source").get("youtube_url");
+//            String thumbnail_url = (String) map.get("hits").get("hits").get(i).get("_source").get("thumbnail_url");
+
+            SongInfoDTO song = objectMapper.convertValue(map.get("hits").get("hits").get(i).get("_source"), SongInfoDTO.class);
+            list.add(song);
+
+//            System.out.println(song);
+
+//            list.add(
+//                    SongInfoDTO.builder()
+//                            .id(id)
+//                            .title(_title)
+//                            .singer(singer)
+//                            .youtube_url(youtube_url)
+////                            .thumbnail_url(thumbnail_url)
+//                            .build());
 
             int maxLen = _title.length() > _title.length() ? _title.length() : title.length();
             double temp = ld.apply(_title, title);
             double result = (maxLen - temp) / maxLen;
             levenshteinDistance_dict.put(_title, new Double[]{result, analyzer.setBase(_title, title).analyze()});
         }
-
 
 
         list.sort(
@@ -143,18 +152,24 @@ public class SearchService {
         Map<String, Double[]> levenshteinDistance_dict = new HashMap<>();
 
         for (int i = 0;i < map.get("hits").get("hits").size();i++) {
-            int id = Integer.parseInt((String) map.get("hits").get("hits").get(i).get("_source").get("id"));
-            String title = (String) map.get("hits").get("hits").get(i).get("_source").get("title");
+//            int id = Integer.parseInt((String) map.get("hits").get("hits").get(i).get("_source").get("id"));
+//            String title = (String) map.get("hits").get("hits").get(i).get("_source").get("title");
             String _singer = (String) map.get("hits").get("hits").get(i).get("_source").get("singer");
-            String youtube_url = (String) map.get("hits").get("hits").get(i).get("_source").get("youtube_url");
+//            String youtube_url = (String) map.get("hits").get("hits").get(i).get("_source").get("youtube_url");
+//            String thumbnail_url = (String) map.get("hits").get("hits").get(i).get("_source").get("thumbnail_url");
 
-            list.add(
-                    SongInfoDTO.builder()
-                            .id(id)
-                            .title(title)
-                            .singer(_singer)
-                            .youtube_url(youtube_url)
-                            .build());
+
+            SongInfoDTO song = objectMapper.convertValue(map.get("hits").get("hits").get(i).get("_source"), SongInfoDTO.class);
+            list.add(song);
+
+//            list.add(
+//                    SongInfoDTO.builder()
+//                            .id(id)
+//                            .title(title)
+//                            .singer(_singer)
+//                            .youtube_url(youtube_url)
+//                            .thumbnail_url(thumbnail_url)
+//                            .build());
 
             int maxLen = _singer.length() > _singer.length() ? _singer.length() : singer.length();
             double temp = ld.apply(_singer, singer);
@@ -208,7 +223,6 @@ public class SearchService {
                 .block();                   // await
 
 
-        System.out.println(responseBody);
 
         Map<String, Map<String, List<Map<String, Map<String, Object>>>>> map = gson.fromJson(responseBody, Map.class);
         List<SongInfoDTO> list = new LinkedList<>();
@@ -217,18 +231,23 @@ public class SearchService {
 
 
         for (int i = 0;i < map.get("hits").get("hits").size();i++) {
-            int id = Integer.parseInt((String) map.get("hits").get("hits").get(i).get("_source").get("id"));
+//            int id = Integer.parseInt((String) map.get("hits").get("hits").get(i).get("_source").get("id"));
             String _title = (String) map.get("hits").get("hits").get(i).get("_source").get("title");
-            String singer = (String) map.get("hits").get("hits").get(i).get("_source").get("singer");
-            String youtube_url = (String) map.get("hits").get("hits").get(i).get("_source").get("youtube_url");
+//            String singer = (String) map.get("hits").get("hits").get(i).get("_source").get("singer");
+//            String youtube_url = (String) map.get("hits").get("hits").get(i).get("_source").get("youtube_url");
+//            String thumbnail_url = (String) map.get("hits").get("hits").get(i).get("_source").get("thumbnail_url");
 
-            list.add(
-                    SongInfoDTO.builder()
-                            .id(id)
-                            .title(_title)
-                            .singer(singer)
-                            .youtube_url(youtube_url)
-                            .build());
+
+            SongInfoDTO song = objectMapper.convertValue(map.get("hits").get("hits").get(i).get("_source"), SongInfoDTO.class);
+            list.add(song);
+//            list.add(
+//                    SongInfoDTO.builder()
+//                            .id(id)
+//                            .title(_title)
+//                            .singer(singer)
+//                            .youtube_url(youtube_url)
+//                            .thumbnail_url(thumbnail_url)
+//                            .build());
 
             int maxLen = _title.length() > _title.length() ? _title.length() : title.length();
             double temp = ld.apply(_title, title);
@@ -286,18 +305,23 @@ public class SearchService {
         Map<String, Double[]> levenshteinDistance_dict = new HashMap<>();
 
         for (int i = 0;i < map.get("hits").get("hits").size();i++) {
-            int id = Integer.parseInt((String) map.get("hits").get("hits").get(i).get("_source").get("id"));
-            String title = (String) map.get("hits").get("hits").get(i).get("_source").get("title");
+//            int id = Integer.parseInt((String) map.get("hits").get("hits").get(i).get("_source").get("id"));
+//            String title = (String) map.get("hits").get("hits").get(i).get("_source").get("title");
             String _singer = (String) map.get("hits").get("hits").get(i).get("_source").get("singer");
-            String youtube_url = (String) map.get("hits").get("hits").get(i).get("_source").get("youtube_url");
+//            String youtube_url = (String) map.get("hits").get("hits").get(i).get("_source").get("youtube_url");
+//            String thumbnail_url = (String) map.get("hits").get("hits").get(i).get("_source").get("thumbnail_url");
 
-            list.add(
-                    SongInfoDTO.builder()
-                            .id(id)
-                            .title(title)
-                            .singer(_singer)
-                            .youtube_url(youtube_url)
-                            .build());
+
+            SongInfoDTO song = objectMapper.convertValue(map.get("hits").get("hits").get(i).get("_source"), SongInfoDTO.class);
+            list.add(song);
+//            list.add(
+//                    SongInfoDTO.builder()
+//                            .id(id)
+//                            .title(title)
+//                            .singer(_singer)
+//                            .youtube_url(youtube_url)
+//                            .thumbnail_url(thumbnail_url)
+//                            .build());
 
             int maxLen = _singer.length() > _singer.length() ? _singer.length() : singer.length();
             double temp = ld.apply(_singer, singer);
