@@ -22,8 +22,8 @@ const FavoriteSongList = () => {
     maxPage.current = 0;
     setList([]);
 
-    if (search.loading || !search.keyword) return;
-    setSearch({ ...search, loading: true });
+    if (search.loading) return;
+    setSearch((pre) => ({ ...pre, loading: true }));
 
     if (!search.keyword) getTotalData(search.page);
     else {
