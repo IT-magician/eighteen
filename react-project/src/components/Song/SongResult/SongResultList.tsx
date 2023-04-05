@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { searchForSinger, searchForTitle } from "../../../apis/search";
 import { authState } from "../../../recoil/atom/authState";
@@ -14,49 +14,56 @@ const SongResultList = (): JSX.Element => {
   const [list, setList] = useState<Song[]>([]);
   const [search, setSearch] = useRecoilState(searchState);
   const [auth, setAuth] = useRecoilState(authState);
+  const maxPage = useRef<number>(0);
 
   useEffect(() => {
-    if (search.loading) return;
-    if (!search.keyword) {
-      setList([]);
-      return;
-    }
+    if (search.loading || !search.keyword) return;
     setSearch({ ...search, loading: true });
+
+    maxPage.current = 0;
+    setList([]);
 
     // 1초마다 한번씩 최종 변경된 사항으로 검색합니다
     setTimeout(() => {
       setSearch((pre) => {
-        const setData = async () => {
-          try {
-            const { data } =
-              pre.type === "title"
-                ? await searchForTitle(pre.keyword, 0, 50, auth.token)
-                : await searchForSinger(pre.keyword, 0, 50, auth.token);
-
-            if (data.music_list instanceof Array) {
-              setList(
-                data.music_list.map((item: any) => ({
-                  musicId: item.id,
-                  title: item.title,
-                  singer: item.singer,
-                  isEighteen: item.preferable,
-                  thumnailUrl: "",
-                })),
-              );
-            }
-          } catch (e) {
-            if (axios.isAxiosError(e)) {
-              if (e.response?.status === 401) {
-                setAuth({ ...auth, token: "" });
-              }
-            }
-          }
-        };
-        setData();
+        const { type, keyword, page } = pre;
+        getData(type, keyword, page);
         return { ...pre, loading: false };
       });
     }, 1000);
   }, [search.keyword, search.type]);
+
+  const getData = async (type: string, keyword: string, page: number) => {
+    try {
+      const { data } =
+        type === "title"
+          ? await searchForTitle(keyword, page, 20, auth.token)
+          : await searchForSinger(keyword, page, 20, auth.token);
+
+      maxPage.current = data.total_page;
+
+      if (data.music_list instanceof Array) {
+        setList([
+          ...list,
+          ...data.music_list.map((item: any) => ({
+            musicId: item.id,
+            title: item.title,
+            singer: item.singer,
+            isEighteen: item.preferable,
+            thumnailUrl: item.thumbnail_url,
+          })),
+        ]);
+        return true;
+      }
+    } catch (e) {
+      if (axios.isAxiosError(e)) {
+        if (e.response?.status === 401) {
+          setAuth({ ...auth, token: "" });
+        }
+      }
+    }
+    return false;
+  };
 
   return (
     <StyledDiv>

@@ -1,8 +1,9 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { getEighteenList } from "../../../apis/myEighteen";
+import { searchEighteenForSinger, searchEighteenForTitle } from "../../../apis/search";
 import { authState } from "../../../recoil/atom/authState";
 import { searchState } from "../../../recoil/atom/searchState";
 import { Song, SongItem } from "../../common/song";
@@ -11,34 +12,84 @@ import FavoriteSongResultEmpty from "./FavoriteSongResultEmpty";
 import FavoriteSongResultLoading from "./FavoriteSongResultLoading";
 
 const FavoriteSongList = () => {
-  const [auth, setAuth] = useRecoilState(authState);
   const [list, setList] = useState<Song[]>([]);
-  const [page] = useState<number>(0);
-  const search = useRecoilValue(searchState);
+  const [search, setSearch] = useRecoilState(searchState);
+  const [auth, setAuth] = useRecoilState(authState);
+  const maxPage = useRef<number>(0);
 
   useEffect(() => {
-    if (search.loading) return;
-    const getTotalList = async () => {
-      try {
-        const res = await getEighteenList(page, 10, auth.token);
-        if (res.status === 204) {
-          // CASE 1: 204 NO CONTENT
-          setList([]);
-        } else if (res.status === 200) {
-          // CASE 2: 200 ACCEPTED
-          setList(res.data.musicPage.content);
-        }
-      } catch (e) {
-        if (axios.isAxiosError(e)) {
-          if (e.response?.status === 401) {
-            // CASE 3: 401 UNAUTHORIZED
-            setAuth({ ...auth, token: "" });
-          }
+    if (search.loading || !search.keyword) return;
+    setSearch({ ...search, loading: true });
+
+    maxPage.current = 0;
+    setList([]);
+
+    if (!search.keyword) getTotalData(search.page);
+    else {
+      // 1초마다 한번씩 최종 변경된 사항으로 검색합니다
+      setTimeout(() => {
+        setSearch((pre) => {
+          const { type, keyword, page } = pre;
+          getData(type, keyword, page);
+          return { ...pre, loading: false };
+        });
+      }, 1000);
+    }
+  }, [search]);
+
+  // 애창곡 리스트 전체 함수
+  const getTotalData = async (page: number) => {
+    try {
+      const res = await getEighteenList(page, 20, auth.token);
+      if (res.status === 200) {
+        // CASE 2: 200 ACCEPTED
+        maxPage.current = res.data.musicPage.totalPages;
+        setList([...list, ...res.data.musicPage.content]);
+        return true;
+      }
+    } catch (e) {
+      if (axios.isAxiosError(e)) {
+        if (e.response?.status === 401) {
+          // CASE 3: 401 UNAUTHORIZED
+          setAuth({ ...auth, token: "" });
         }
       }
-    };
-    if (!search.keyword) getTotalList();
-  }, [search]);
+    }
+    return false;
+  };
+
+  // 애창곡 리스트 검색 함수
+  const getData = async (type: string, keyword: string, page: number) => {
+    try {
+      const { data } =
+        type === "title"
+          ? await searchEighteenForTitle(keyword, page, 20, auth.token)
+          : await searchEighteenForSinger(keyword, page, 20, auth.token);
+
+      maxPage.current = data.total_page;
+
+      if (data.music_list instanceof Array) {
+        setList([
+          ...list,
+          ...data.music_list.map((item: any) => ({
+            musicId: item.id,
+            title: item.title,
+            singer: item.singer,
+            isEighteen: item.preferable,
+            thumnailUrl: item.thumbnail_url,
+          })),
+        ]);
+        return true;
+      }
+    } catch (e) {
+      if (axios.isAxiosError(e)) {
+        if (e.response?.status === 401) {
+          setAuth({ ...auth, token: "" });
+        }
+      }
+    }
+    return false;
+  };
 
   return (
     <StyledDiv>
