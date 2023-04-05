@@ -19,11 +19,11 @@ const FavoriteSongList = () => {
   const maxPage = useRef<number>(0);
 
   useEffect(() => {
-    if (search.loading || !search.keyword) return;
-    setSearch({ ...search, loading: true });
-
     maxPage.current = 0;
     setList([]);
+
+    if (search.loading || !search.keyword) return;
+    setSearch({ ...search, loading: true });
 
     if (!search.keyword) getTotalData(search.page);
     else {
