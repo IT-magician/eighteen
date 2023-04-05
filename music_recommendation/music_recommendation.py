@@ -72,7 +72,12 @@ def emotion_classification(data_path=DATA_FILE, data_path2=DATA_FILE2):
     music_df = music_df.replace('', np.NaN)
     music_df = music_df.dropna(axis=0)
 
-    emotion_df = pd.read_csv(data_path2, encoding='cp949')
+    with open(data_path2, encoding="utf-8") as f:
+        data2 = json.loads(f.read())
+        
+    emotion_df = pd.DataFrame(data2)
+    emotion_df = emotion_df.dropna(axis=0)
+
     df = pd.merge(music_df, emotion_df, on=["title", "singer"])
 
     X = df[['energy', 'danceability', 'tempo']]
@@ -155,3 +160,4 @@ def situation_classification(data_path=DATA_FILE, data_path4=DATA_FILE4):
     predicted_situation = svm_clf.predict(pred_X)
     
     return predicted_situation
+
