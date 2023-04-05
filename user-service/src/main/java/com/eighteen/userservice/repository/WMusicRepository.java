@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface WMusicRepository extends JpaRepository<WMusic, Integer> {
 
-    public List<WMusic> findByWeatherAndPopularityGreaterThanEqualOrderByPopularityDesc(Weather weather, int popularity);
+    public List<WMusic> findByWeatherAndPopularityGreaterThanEqual(Weather weather, int popularity);
 }

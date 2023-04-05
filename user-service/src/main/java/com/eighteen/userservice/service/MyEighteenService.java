@@ -114,7 +114,6 @@ public class MyEighteenService {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<SearchDto> requestEntity = new HttpEntity<>(searchDto, headers);
-//        restTemplate.put(addDataUrl, requestEntity);
         myEighteenRepository.save(myEighteen);
         return music.getTitle();
     }
@@ -127,8 +126,6 @@ public class MyEighteenService {
             MyEighteen myEighteen = myEighteenRepository.findByUserAndMusic(user, music);
             myEighteenRepository.delete(myEighteen);
         }
-//        SearchDto searchDto = new SearchDto(myEighteen.getMusic());
-//        String deleteDataUrl = String.format(env.getProperty("search-engine.url")) + "/data/" + userId;
     }
 
 }
