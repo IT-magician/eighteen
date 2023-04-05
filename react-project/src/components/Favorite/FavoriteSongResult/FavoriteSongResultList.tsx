@@ -25,17 +25,14 @@ const FavoriteSongList = () => {
     if (search.loading) return;
     setSearch((pre) => ({ ...pre, loading: true }));
 
-    if (!search.keyword) getTotalData(search.page);
-    else {
-      // 1초마다 한번씩 최종 변경된 사항으로 검색합니다
-      setTimeout(() => {
-        setSearch((pre) => {
-          const { type, keyword, page } = pre;
-          getData(type, keyword, page);
-          return { ...pre };
-        });
-      }, 1000);
-    }
+    // 1초마다 한번씩 최종 변경된 사항으로 검색합니다
+    setTimeout(() => {
+      setSearch((pre) => {
+        const { type, keyword, page } = pre;
+        getData(type, keyword, page);
+        return { ...pre };
+      });
+    }, 1000);
   }, [search.keyword, search.type]);
 
   // 애창곡 리스트 전체 함수
@@ -64,26 +61,28 @@ const FavoriteSongList = () => {
   // 애창곡 리스트 검색 함수
   const getData = async (type: string, keyword: string, page: number) => {
     try {
-      const { data } =
-        type === "title"
-          ? await searchEighteenForTitle(keyword, page, 20, auth.token)
-          : await searchEighteenForSinger(keyword, page, 20, auth.token);
+      if (keyword) {
+        const { data } =
+          type === "title"
+            ? await searchEighteenForTitle(keyword, page, 20, auth.token)
+            : await searchEighteenForSinger(keyword, page, 20, auth.token);
 
-      maxPage.current = data.total_page;
+        maxPage.current = data.total_page;
 
-      if (data.music_list instanceof Array) {
-        setList([
-          ...list,
-          ...data.music_list.map((item: any) => ({
-            musicId: item.id,
-            title: item.title,
-            singer: item.singer,
-            isEighteen: item.preferable,
-            thumnailUrl: item.thumbnail_url,
-          })),
-        ]);
+        if (data.music_list instanceof Array) {
+          setList((pre) => [
+            ...pre,
+            ...data.music_list.map((item: any) => ({
+              musicId: item.id,
+              title: item.title,
+              singer: item.singer,
+              isEighteen: item.preferable,
+              thumnailUrl: item.thumbnail_url,
+            })),
+          ]);
+        }
         return true;
-      }
+      } else return getTotalData(page);
     } catch (e) {
       if (axios.isAxiosError(e)) {
         if (e.response?.status === 401) {
