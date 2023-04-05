@@ -16,8 +16,9 @@ from sklearn.svm import SVC
 from sklearn import svm
 from sklearn import preprocessing
 
+import random
 
-DATA_DIR = "/data"
+DATA_DIR = "data"
 DATA_FILE = os.path.join(DATA_DIR, "results.json")
 DATA_FILE2 = os.path.join(DATA_DIR, "emotions.json")
 DATA_FILE3 = os.path.join(DATA_DIR, "favorite_musics.json")
@@ -106,7 +107,6 @@ def favorite_song(data_path=DATA_FILE, data_path3=DATA_FILE3):
     data = Dataset.load_from_df(df=favorite_df, reader=reader)
 
     train = data.build_full_trainset()
-    test = train.build_testset()
 
     model = SVD(n_factors=100, n_epochs=20, random_state=123)
     model.fit(train)
