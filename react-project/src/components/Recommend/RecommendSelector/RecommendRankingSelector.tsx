@@ -2,10 +2,17 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import { Select } from "../../common/select";
+import { useRecoilValue } from "recoil";
+import { userState } from "../../../recoil/atom";
+import moment from "moment";
 
 const RecommendRankingSelector = (): JSX.Element => {
+  const user = useRecoilValue(userState);
   const [search, setSearch] = useSearchParams();
-  const [params, setParams] = useState({ age: search.get("age") || "0", gender: search.get("gender") || "M" });
+  const [params, setParams] = useState({
+    age: search.get("age") || `${getAge(user?.birth ?? "1999-01-01")}`,
+    gender: search.get("gender") || user?.gender || "M",
+  });
 
   useEffect(() => {
     setSearch(params, { replace: true });
@@ -13,8 +20,8 @@ const RecommendRankingSelector = (): JSX.Element => {
 
   return (
     <StyledDiv>
-      <Select options={genderList} setValue={(gender) => setParams({ ...params, gender })} />
-      <Select options={ageList} setValue={(age) => setParams({ ...params, age })} />
+      <Select options={genderList} value={params.gender} setValue={(gender) => setParams({ ...params, gender })} />
+      <Select options={ageList} value={params.age} setValue={(age) => setParams({ ...params, age })} />
     </StyledDiv>
   );
 };
@@ -32,6 +39,13 @@ const genderList = [
   { text: "남성", value: "M" },
   { text: "여성", value: "F" },
 ];
+
+const getAge = (birth: string): number => {
+  const today = moment(new Date());
+  const age = today.diff(moment(birth, "YYYY-MM-DD"), "years");
+  const ageId = Math.floor(age / 10) ?? 1;
+  return ageId > 6 ? 6 : ageId;
+};
 
 const StyledDiv = styled.div`
   position: absolute;
