@@ -43,8 +43,8 @@ const SongResultList = (): JSX.Element => {
       maxPage.current = data.total_page;
 
       if (data.music_list instanceof Array) {
-        setList([
-          ...list,
+        setList((pre) => [
+          ...pre,
           ...data.music_list.map((item: any) => ({
             musicId: item.id,
             title: item.title,
