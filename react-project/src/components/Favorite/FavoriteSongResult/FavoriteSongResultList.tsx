@@ -55,6 +55,8 @@ const FavoriteSongList = () => {
           setAuth({ ...auth, token: "" });
         }
       }
+    } finally {
+      setSearch((pre) => ({ ...pre, loading: false }));
     }
     return false;
   };

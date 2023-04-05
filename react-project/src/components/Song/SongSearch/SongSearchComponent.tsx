@@ -51,7 +51,7 @@ const SongSearchComponent = (): JSX.Element => {
     if (e.currentTarget instanceof HTMLElement) {
       const { keyword, type } = e.currentTarget.dataset;
       if (keyword && type) {
-        setSearch({ ...search, keyword, type });
+        setSearch((pre) => ({ ...pre, keyword, type, page: 0 }));
         onAdd(keyword, type);
       }
     }
