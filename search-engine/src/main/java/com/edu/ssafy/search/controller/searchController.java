@@ -87,4 +87,24 @@ public class searchController {
         return new ResponseEntity(objectMapper.writeValueAsString(userIdxService.searchBysingerAndPagination(user_id, singer, pagination_idx, pagination_size)), HttpStatus.OK);
 
     }
+
+    @GetMapping("/eighteen/pagination/title/{title}")
+    ResponseEntity searchBytitleWithPreferable(@PathVariable String title, @RequestHeader("x-forwarded-for-user-id") String user_id, Long pagination_idx, Long pagination_size, @RequestParam(required=false) Map<String,String> qparams) throws UnsupportedEncodingException, JsonProcessingException {
+        if (user_id == null || user_id.isEmpty()) return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        Map<String, Object> map = userIdxService.searchBytitleAndPaginationWithPreferable(user_id, title, pagination_idx, pagination_size);
+
+        if (qparams.containsKey("pretty")) return new ResponseEntity(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(map), HttpStatus.OK);
+
+        return new ResponseEntity(objectMapper.writeValueAsString(map), HttpStatus.OK);
+    }
+
+    @GetMapping("/eighteen/pagination/singer/{singer}")
+    ResponseEntity searchBysingerWithPreferable(@PathVariable String singer, @RequestHeader("x-forwarded-for-user-id") String user_id, Long pagination_idx, Long pagination_size, @RequestParam(required=false) Map<String,String> qparams) throws JsonProcessingException {
+        if (user_id == null || user_id.isEmpty()) return new ResponseEntity(HttpStatus.BAD_REQUEST);
+
+        if (qparams.containsKey("pretty")) return new ResponseEntity(objectMapper.writeValueAsString(userIdxService.searchBysingerAndPaginationWithPreferable(user_id, singer, pagination_idx, pagination_size)), HttpStatus.OK);
+
+        return new ResponseEntity(objectMapper.writeValueAsString(userIdxService.searchBysingerAndPaginationWithPreferable(user_id, singer, pagination_idx, pagination_size)), HttpStatus.OK);
+
+    }
 }
