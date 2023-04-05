@@ -222,6 +222,8 @@ batch-service:
     - develop
   script:
     - cd batch-service
+    - chmod +x gradlew
+    - ./gradlew clean bootJar
     - docker build -t batch-service .
 
 
