@@ -8,6 +8,14 @@ export const searchRegist = (token: string) => {
   instance.defaults.headers["Authorization"] = token;
   return instance.post(`/elastic_search/regist`);
 };
+/**
+ * [POST] search를 위한 회원탈퇴 요청
+ * @param token 토큰
+ */
+export const searchUnregist = (token: string) => {
+  instance.defaults.headers["Authorization"] = token;
+  return instance.post(`/elastic_search/unregist`);
+};
 
 /**
  * [PUT] search를 위한 애창곡 등록 요청
