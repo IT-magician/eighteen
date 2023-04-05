@@ -3,6 +3,7 @@ from flask_cors import CORS
 
 from dotenv import load_dotenv
 import os
+import random
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -12,8 +13,8 @@ from sqlalchemy import Column, Integer, String
 import pandas as pd
 from sklearn.tree import DecisionTreeClassifier
 import json
-# from surprise import Reader, Dataset
-# from surprise import SVD
+from surprise import Reader, Dataset
+from surprise import SVD
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
@@ -115,7 +116,7 @@ def dataInsert():
 
     return "Success"
 
-@app.route('/flask/emotion')
+@app.route('/flask/predict/emotion')
 def emotion_classification(data_path=EMOTION_DATA):
     with DBSession() as session:
         session.query(E_Music).delete()
@@ -151,7 +152,7 @@ def emotion_classification(data_path=EMOTION_DATA):
 
     return "success"
 
-@app.route('/flask/situation')
+@app.route('/flask/predict/situation')
 def situation_classification(data_path=SITUATION_DATA):
     with DBSession() as session:
         session.query(S_Music).delete()
@@ -187,7 +188,7 @@ def situation_classification(data_path=SITUATION_DATA):
 
     return "success"
 
-@app.route('/flask/weather')
+@app.route('/flask/predict/weather')
 def weather_classification(data_path=WEATHER_DATA):
     with DBSession() as session:
         session.query(W_Music).delete()
@@ -246,6 +247,39 @@ def favorite_song(user_id):
     recommendation_list = [score[0] for score in sorted(scores, key=lambda x: x[1], reverse=True)[:20] if score[0] not in liked_songs]
 
     return recommendation_list
+
+@app.route('/flask/recommend/emotion/<emotion_id>')
+def emotion_recommend(emotion_id):
+    with DBSession() as session:
+        popular_e_musics = session.query(E_Music).filter(E_Music.emotion_id==emotion_id, E_Music.popularity>=30).all()
+        recommended_e_musics = random.sample(popular_e_musics, k=20)
+        result = []
+        for music in recommended_e_musics:
+            result.append(music.music_id)
+
+        return result
+    
+@app.route('/flask/recommend/situation/<situation_id>')
+def situation_recommend(situation_id):
+    with DBSession() as session:
+        popular_s_musics = session.query(S_Music).filter(S_Music.situation_id==situation_id, S_Music.popularity>=30).all()
+        recommended_s_musics = random.sample(popular_s_musics, k=20)
+        result = []
+        for music in recommended_s_musics:
+            result.append(music.music_id)
+
+        return result
+    
+@app.route('/flask/recommend/weather/<weather_id>')
+def weather_recommend(weather_id):
+    with DBSession() as session:
+        popular_w_musics = session.query(W_Music).filter(W_Music.weather_id==weather_id, W_Music.popularity>=30).all()
+        recommended_w_musics = random.sample(popular_w_musics, k=20)
+        result = []
+        for music in recommended_w_musics:
+            result.append(music.music_id)
+
+        return result
 
 if __name__ == "__main__" :
     app.run(host='0.0.0.0', debug=True)
