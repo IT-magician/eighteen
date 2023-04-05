@@ -36,9 +36,14 @@ const addEighteen = (musicId: number, token: string) => {
  * [DELETE]애창곡 삭제
  * @param musicId 노래번호
  */
-const removeEighteen = (musicId: number, token: string) => {
+const removeEighteen = (musics: number[], token: string) => {
   instance.defaults.headers["Authorization"] = token;
-  return instance.delete(`/my_eighteen/${musicId}`);
+  return instance.delete(`/my_eighteen`, {
+    params: { musics },
+    paramsSerializer: {
+      indexes: null,
+    },
+  });
 };
 
 export { getEighteenList, addEighteen, removeEighteen, getEighteenRandom };
