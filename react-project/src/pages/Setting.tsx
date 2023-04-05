@@ -106,8 +106,8 @@ const Setting = (): JSX.Element => {
 
   const onHandleDeleteAccount = async () => {
     try {
-      await deleteAccount(auth.token);
       await searchUnregist(auth.token);
+      await deleteAccount(auth.token);
       setGlobalUser(null);
     } catch (e) {
       if (axios.isAxiosError(e)) {
