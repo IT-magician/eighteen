@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface EMusicRepository extends JpaRepository<EMusic, Integer> {
 
-    public List<EMusic> findByEmotionAndPopularityGreaterThanEqualOrderByPopularityDesc(Emotion emotion, int popularity);
+    public List<EMusic> findByEmotionAndPopularityGreaterThanEqual(Emotion emotion, int popularity);
 }

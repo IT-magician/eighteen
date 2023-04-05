@@ -51,7 +51,7 @@ public class RecommendService {
     public ResponseRecommendDto getEMusicList(String userId, Integer emotionId) {
 
         Emotion emotion = emotionRepository.findById(emotionId).orElseThrow();
-        List<EMusic> eMusics = eMusicRepository.findByEmotionAndPopularityGreaterThanEqualOrderByPopularityDesc(emotion, 30);
+        List<EMusic> eMusics = eMusicRepository.findByEmotionAndPopularityGreaterThanEqual(emotion, 30);
         User user = userRepository.findByUserId(userId);
         List<MusicDto> response = new ArrayList<>();
         Random random = new Random();
@@ -88,7 +88,7 @@ public class RecommendService {
     public ResponseRecommendDto getSMusicList(String userId, Integer situationId) {
 
         Situation situation = situationRepository.findById(situationId).orElseThrow();
-        List<SMusic> sMusics = sMusicRepository.findBySituationAndPopularityGreaterThanEqualOrderByPopularityDesc(situation, 30);
+        List<SMusic> sMusics = sMusicRepository.findBySituationAndPopularityGreaterThanEqual(situation, 30);
         User user = userRepository.findByUserId(userId);
         List<MusicDto> response = new ArrayList<>();
         Random random = new Random();
@@ -125,7 +125,7 @@ public class RecommendService {
     public ResponseRecommendDto getWMusicList(String userId, Integer weatherId) {
 
         Weather weather = weatherRepository.findById(weatherId).orElseThrow();
-        List<WMusic> wMusics = wMusicRepository.findByWeatherAndPopularityGreaterThanEqualOrderByPopularityDesc(weather, 30);
+        List<WMusic> wMusics = wMusicRepository.findByWeatherAndPopularityGreaterThanEqual(weather, 30);
         User user = userRepository.findByUserId(userId);
         List<MusicDto> response = new ArrayList<>();
         Random random = new Random();
