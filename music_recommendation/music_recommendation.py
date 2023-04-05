@@ -170,13 +170,13 @@ def weather_classification(data_path=DATA_FILE, data_path5=DATA_FILE5):
     with open(data_path5, encoding="utf-8") as f:
         data2 = json.loads(f.read())
         
-    weather_df = pd.DataFrame(data2)
-    weather_df = weather_df.dropna(axis=0)
+    df = pd.DataFrame(data2)
+    df = df.dropna(axis=0)
 
-    df = pd.merge(music_df, weather_df, on=["title", "singer"])
+    df = pd.merge(music_df, df, on=["title", "singer"])
 
     X = df[['energy', 'danceability', 'tempo']]
-    y = df['weather_df']
+    y = df['weather']
 
 
     clf = DecisionTreeClassifier()
