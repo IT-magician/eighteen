@@ -36,7 +36,7 @@ const SongFavoriteButton = ({ musicId, isEighteen, setEighteen, onCustomClick }:
     let success = false;
     try {
       if (isEighteen) {
-        await removeEighteen(musicId, auth.token);
+        await removeEighteen([musicId], auth.token);
         await removeEighteenForSearch([{ id: musicId }], auth.token);
       } else {
         await addEighteen(musicId, auth.token);
