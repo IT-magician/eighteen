@@ -50,6 +50,8 @@ const RegisterProfile = ({ nextPage }: Props): JSX.Element => {
   const onSubmit = async () => {
     if (!pass) onShake();
     else {
+      await searchRegist(auth.token);
+
       // TODO : user 값 토대로 프로필 값 수정 요청 보내기
       const formData = new FormData();
       const newProfile = JSON.stringify({
@@ -61,7 +63,6 @@ const RegisterProfile = ({ nextPage }: Props): JSX.Element => {
 
       try {
         const res = await modifyProfile(formData, auth.token);
-        await searchRegist(auth.token);
 
         if (res.data == "ok") {
           nextPage();
