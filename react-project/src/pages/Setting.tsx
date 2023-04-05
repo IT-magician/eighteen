@@ -14,6 +14,7 @@ import SettingDatePicker from "../components/setting/SettingDatePicker";
 import { authState } from "../recoil/atom/authState";
 import axios from "axios";
 import { User } from "../recoil/atom/userState";
+import { searchUnregist } from "../apis/search";
 
 // type ProfileAttr = "nickname" | "birth" | "gender" | "email" | "profileImage";
 
@@ -105,10 +106,9 @@ const Setting = (): JSX.Element => {
 
   const onHandleDeleteAccount = async () => {
     try {
-      const res = await deleteAccount(auth.token);
-      if (res) {
-        setGlobalUser(null);
-      }
+      await deleteAccount(auth.token);
+      await searchUnregist(auth.token);
+      setGlobalUser(null);
     } catch (e) {
       if (axios.isAxiosError(e)) {
         if (e.response?.status === 401) {
