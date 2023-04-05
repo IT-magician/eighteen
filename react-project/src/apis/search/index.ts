@@ -6,7 +6,7 @@ import { instance } from "..";
  */
 export const searchRegist = (token: string) => {
   instance.defaults.headers["Authorization"] = token;
-  return instance.post(`/elatic_search/regist`);
+  return instance.post(`/elastic_search/regist`);
 };
 
 /**
@@ -16,7 +16,7 @@ export const searchRegist = (token: string) => {
  */
 export const addEighteenForSearch = (musicIdList: { id: number }[], token: string) => {
   instance.defaults.headers["Authorization"] = token;
-  return instance.put(`/elatic_search/data`, musicIdList);
+  return instance.put(`/elastic_search/data`, musicIdList);
 };
 
 /**
@@ -26,7 +26,7 @@ export const addEighteenForSearch = (musicIdList: { id: number }[], token: strin
  */
 export const removeEighteenForSearch = (musicIdList: { id: number }[], token: string) => {
   instance.defaults.headers["Authorization"] = token;
-  return instance.delete(`/elatic_search/data`, { data: musicIdList });
+  return instance.delete(`/elastic_search/data`, { data: musicIdList });
 };
 
 /**
