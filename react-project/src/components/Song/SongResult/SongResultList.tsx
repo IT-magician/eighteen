@@ -23,14 +23,22 @@ const SongResultList = (): JSX.Element => {
     setTimeout(() => {
       setSearch((pre) => {
         const setData = async () => {
-          console.log(pre.keyword);
           try {
-            if (pre.type === "title") {
-              const res = await searchForTitle(pre.keyword, 0, 50, auth.token);
-              console.dir(res);
-            } else {
-              const res = await searchForSinger(pre.keyword, 0, 50, auth.token);
-              console.dir(res);
+            const { data } =
+              pre.type === "title"
+                ? await searchForTitle(pre.keyword, 0, 50, auth.token)
+                : await searchForSinger(pre.keyword, 0, 50, auth.token);
+
+            if (data.music_list instanceof Array) {
+              setList(
+                data.music_list.map((item: any) => ({
+                  musicId: item.id,
+                  title: item.title,
+                  singer: item.singer,
+                  isEighteen: item.preferable,
+                  thumnailUrl: "",
+                })),
+              );
             }
           } catch (e) {
             if (axios.isAxiosError(e)) {
