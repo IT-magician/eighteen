@@ -28,7 +28,7 @@ const SongResultList = (): JSX.Element => {
       setSearch((pre) => {
         const { type, keyword, page } = pre;
         getData(type, keyword, page);
-        return { ...pre, loading: false };
+        return { ...pre };
       });
     }, 1000);
   }, [search.keyword, search.type]);
@@ -61,6 +61,8 @@ const SongResultList = (): JSX.Element => {
           setAuth({ ...auth, token: "" });
         }
       }
+    } finally {
+      setSearch((pre) => ({ ...pre, loading: false }));
     }
     return false;
   };
