@@ -13,4 +13,5 @@ public class SongInfoDTO {
     String title;
     String singer;
     String youtube_url;
+    String thumbnail_url;
 }
