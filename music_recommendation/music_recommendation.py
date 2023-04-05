@@ -102,10 +102,6 @@ def favorite_song(data_path=DATA_FILE, data_path3=DATA_FILE3):
     favorite_df = favorite_df.dropna(axis=0)
     favorite_df = favorite_df[['user_id', 'title', 'liked']]
 
-    tab = pd.crosstab(favorite_df['user_id'], favorite_df['title'])
-    favorite_df_group = favorite_df.groupby(['user_id', 'title'])
-    tab = favorite_df_group.sum().unstack()
-
     reader = Reader(rating_scale=(0, 1))
     data = Dataset.load_from_df(df=favorite_df, reader=reader)
 
