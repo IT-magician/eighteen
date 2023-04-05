@@ -173,8 +173,6 @@ def weather_classification(data_path=DATA_FILE, data_path5=DATA_FILE5):
     df = pd.DataFrame(data2)
     df = df.dropna(axis=0)
 
-    df = pd.merge(music_df, df, on=["title", "singer"])
-
     X = df[['energy', 'danceability', 'tempo']]
     y = df['weather']
 
