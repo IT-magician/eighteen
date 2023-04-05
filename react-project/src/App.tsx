@@ -152,11 +152,12 @@ const StyledDiv = styled.div`
       background-color: #00000080;
     }
     & > .logo {
+      position: relative;
       overflow: visible;
       display: flex;
       justify-content: flex-end;
       & > div {
-        margin: 56px 32px;
+        margin: 56px 32px -80px;
         box-sizing: border-box;
       }
     }
