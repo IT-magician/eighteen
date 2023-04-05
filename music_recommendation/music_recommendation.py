@@ -169,21 +169,19 @@ def recommend_song_by_emotion(emotion, data_path=DATA_FILE, data_path2=DATA_FILE
     with open(data_path2, encoding="utf-8") as f:
         data2 = json.loads(f.read())
         
-    emotion_df = pd.DataFrame(data2)
-    emotion_df = emotion_df.dropna(axis=0)
-    
-    df = pd.merge(music_df, emotion_df, on=["title", "singer"])
+    df = pd.DataFrame(data2)
+    df = df.dropna(axis=0)
 
     X = df[['energy', 'danceability', 'tempo']]
     y = df['emotion']
-
 
     clf = DecisionTreeClassifier()
     clf.fit(X, y)
 
     pred_X = music_df[['energy', 'danceability', 'tempo']]
     predicted_emotion = clf.predict(pred_X)
-    predicted_emotion
+    music_df['emotion'] = predicted_emotion
+
 
     selected = music_df.loc[(music_df['emotion'] == emotion) & (music_df['popularity'] >= 30), 'id']
     result = random.sample(selected.tolist(), 20)
