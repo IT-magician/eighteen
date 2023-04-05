@@ -274,4 +274,49 @@ public class UserIdxService {
                 "music_list", list
         );
     }
+
+
+    public Map<String, Object> searchBytitleAndPaginationWithPreferable(String user_id, String title, long pagination_idx, long pagination_size) {
+        List<SongInfoDTO> songs = searchService.searchBytitleOnUserData(user_id, title);
+
+
+        Set<Integer> user_favorite_songs = getUserFavoriteSongWithId(user_id);
+
+//        System.out.println("size : " + songs.size());
+//        System.out.println("start : " + pagination_idx*pagination_size + ", " + (pagination_idx+1)*pagination_size);
+
+        List<SongWithPreferableDTO> list = new LinkedList<>();
+        for (int i = (int) (pagination_idx*pagination_size); i < Math.min((pagination_idx+1)*pagination_size, songs.size()); i++) {
+            SongWithPreferableDTO songWithPreferableDTO = objectMapper.convertValue(songs.get(i), SongWithPreferableDTO.class);
+            songWithPreferableDTO.setPreferable(user_favorite_songs.contains(songWithPreferableDTO.getId()));
+            list.add(songWithPreferableDTO);
+        }
+
+        return Map.of(
+                "total_page", songs.size()/pagination_size + (songs.size()%pagination_size > 0?1:0),
+                "music_list", list
+        );
+    }
+
+    public Map<String, Object> searchBysingerAndPaginationWithPreferable(String user_id, String singer, long pagination_idx, long pagination_size) {
+        List<SongInfoDTO> songs = searchService.searchBysingerOnUserData(user_id, singer);
+
+
+        Set<Integer> user_favorite_songs = getUserFavoriteSongWithId(user_id);
+
+//        System.out.println("size : " + songs.size());
+//        System.out.println("start : " + pagination_idx*pagination_size + ", " + (pagination_idx+1)*pagination_size);
+
+        List<SongWithPreferableDTO> list = new LinkedList<>();
+        for (int i = (int) (pagination_idx*pagination_size); i < Math.min((pagination_idx+1)*pagination_size, songs.size()); i++) {
+            SongWithPreferableDTO songWithPreferableDTO = objectMapper.convertValue(songs.get(i), SongWithPreferableDTO.class);
+            songWithPreferableDTO.setPreferable(user_favorite_songs.contains(songWithPreferableDTO.getId()));
+            list.add(songWithPreferableDTO);
+        }
+
+        return Map.of(
+                "total_page", songs.size()/pagination_size + (songs.size()%pagination_size > 0?1:0),
+                "music_list", list
+        );
+    }
 }
