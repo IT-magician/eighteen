@@ -84,14 +84,14 @@ public class MyEighteenService {
             for (int i = 0; i < 5; i++) {
                 int randomIndex = random.nextInt(myEighteens.size());
                 MyEighteen randomElement = myEighteens.get(randomIndex);
-                MusicDto randomMusic = new ModelMapper().map(randomElement, MusicDto.class);
+                MusicDto randomMusic = new ModelMapper().map(randomElement.getMusic(), MusicDto.class);
                 randomMusic.setIsEighteen(Boolean.TRUE);
                 randoms.add(randomMusic);
             }
         }
         else {
             for (MyEighteen myEighteen : myEighteens) {
-                MusicDto randomMusic = new ModelMapper().map(myEighteen, MusicDto.class);
+                MusicDto randomMusic = new ModelMapper().map(myEighteen.getMusic(), MusicDto.class);
                 randomMusic.setIsEighteen(Boolean.TRUE);
                 randoms.add(randomMusic);
             }
