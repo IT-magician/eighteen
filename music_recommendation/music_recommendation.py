@@ -251,3 +251,33 @@ def recommend_song_by_situation(situation, data_path=DATA_FILE, data_path4=DATA_
     return result
 
 
+def recommend_song_by_weather(weather, data_path=DATA_FILE, data_path5=DATA_FILE5):
+    with open(data_path, encoding="utf-8") as f:
+        data = json.loads(f.read())
+
+    music_df = pd.DataFrame(data)
+    music_df = music_df.replace('', np.NaN)
+    music_df = music_df.dropna(axis=0)
+
+    with open(data_path5, encoding="utf-8") as f:
+        data2 = json.loads(f.read())
+        
+    df = pd.DataFrame(data2)
+    df = df.dropna(axis=0)
+
+    X = df[['energy', 'danceability', 'tempo']]
+    y = df['weather']
+
+    clf = DecisionTreeClassifier()
+    clf.fit(X, y)
+
+    pred_X = music_df[['energy', 'danceability', 'tempo']]
+    predicted_weather = clf.predict(pred_X)
+    music_df['weather'] = predicted_weather
+
+
+    selected = music_df.loc[(music_df['weather'] == weather) & (music_df['popularity'] >= 30), 'id']
+    result = random.sample(selected.tolist(), 20)
+    
+    return result
+
