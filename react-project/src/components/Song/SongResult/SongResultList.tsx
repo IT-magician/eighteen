@@ -17,11 +17,11 @@ const SongResultList = (): JSX.Element => {
   const maxPage = useRef<number>(0);
 
   useEffect(() => {
-    if (search.loading || !search.keyword) return;
-    setSearch({ ...search, loading: true });
-
     maxPage.current = 0;
     setList([]);
+
+    if (search.loading || !search.keyword) return;
+    setSearch((pre) => ({ ...pre, loading: true }));
 
     // 1초마다 한번씩 최종 변경된 사항으로 검색합니다
     setTimeout(() => {
