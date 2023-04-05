@@ -23,7 +23,7 @@ const RegisterSearchModal = ({ show, close }: Props): JSX.Element => {
   }, [show]);
 
   const onClose = () => {
-    setSearch({ keyword: "", type: "title", loading: false });
+    setSearch({ keyword: "", type: "title", loading: false, page: 0 });
     close();
   };
   return (
