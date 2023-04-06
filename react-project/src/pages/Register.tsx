@@ -46,6 +46,18 @@ const StyledDiv = styled.div`
   & > div:last-child {
     left: -16px;
   }
+  & h1,
+  & h2,
+  & > div > div {
+    -webkit-animation: fade-in-bottom 0.6s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+    animation: fade-in-bottom 0.6s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+  }
+  & h2 {
+    animation-delay: 0.4s;
+  }
+  & div > div {
+    animation-delay: 0.8s;
+  }
 `;
 
 export default Register;
