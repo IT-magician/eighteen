@@ -51,6 +51,47 @@ public class UserIdxService {
     public void regist(String user_id) {
         String responseBody;
 
+        System.out.println("{\n" +
+                "  \"settings\": {\n" +
+                "    \"index\": {\n" +
+                "      \"analysis\": {\n" +
+                "        \"filter\": {\n" +
+                "          \"suggest_filter\": {\n" +
+                "            \"type\": \"edge_ngram\",\n" +
+                "            \"min_gram\": 1,\n" +
+                "            \"max_gram\": 50\n" +
+                "          }\n" +
+                "        },\n" +
+                "        \"tokenizer\": {\n" +
+                "          \"jaso_search_tokenizer\": {\n" +
+                "            \"type\": \"jaso_tokenizer\",\n" +
+                "            \"mistype\": true,\n" +
+                "            \"chosung\": false\n" +
+                "          },\n" +
+                "          \"jaso_index_tokenizer\": {\n" +
+                "            \"type\": \"jaso_tokenizer\",\n" +
+                "            \"mistype\": true,\n" +
+                "            \"chosung\": true\n" +
+                "          }\n" +
+                "        },\n" +
+                "        \"analyzer\": {\n" +
+                "          \"suggest_search_analyzer\": {\n" +
+                "            \"type\": \"custom\",\n" +
+                "            \"tokenizer\": \"jaso_search_tokenizer\"\n" +
+                "          },\n" +
+                "          \"suggest_index_analyzer\": {\n" +
+                "            \"type\": \"custom\",\n" +
+                "            \"tokenizer\": \"jaso_index_tokenizer\",\n" +
+                "            \"filter\": [\n" +
+                "              \"suggest_filter\"\n" +
+                "            ]\n" +
+                "          }\n" +
+                "        }\n" +
+                "      }\n" +
+                "    }\n" +
+                "  }\n" +
+                "}");
+
         responseBody = webClient.method(HttpMethod.PUT)         // POST method
                 .uri(String.format("/favorite_song_list@%s", user_id))    // baseUrl 이후 uri
                 .headers(headers -> headers.setBasicAuth(username, password)) // basic auth
@@ -103,33 +144,33 @@ public class UserIdxService {
                 .block();                   // await
 
 
-        responseBody = webClient.method(HttpMethod.PUT)         // POST method
-                .uri(String.format("/favorite_song_list@%s/_mapping", user_id))    // baseUrl 이후 uri
-                .headers(headers -> headers.setBasicAuth(username, password)) // basic auth
-                .acceptCharset(Charset.forName("UTF-8"))
-                .contentType(MediaType.APPLICATION_JSON) // json body
-                .bodyValue(
-                        "{\n" +
-                                "  \"properties\": {\n" +
-                                "    \"title\": {\n" +
-                                "      \"type\": \"text\",\n" +
-                                "      \"store\": true,\n" +
-                                "      \"analyzer\": \"suggest_index_analyzer\",\n" +
-                                "      \"search_analyzer\": \"suggest_search_analyzer\"\n" +
-                                "    },\n" +
-                                "    \n" +
-                                "    \"singer\": {\n" +
-                                "      \"type\": \"text\",\n" +
-                                "      \"store\": true,\n" +
-                                "      \"analyzer\": \"suggest_index_analyzer\",\n" +
-                                "      \"search_analyzer\": \"suggest_search_analyzer\"\n" +
-                                "    }\n" +
-                                "  }\n" +
-                                "}"
-                )     // set body value
-                .retrieve()                 // client message 전송
-                .bodyToMono(String.class)  // body type : EmpInfo
-                .block();                   // await
+//        responseBody = webClient.method(HttpMethod.PUT)         // POST method
+//                .uri(String.format("/favorite_song_list@%s/_mapping", user_id))    // baseUrl 이후 uri
+//                .headers(headers -> headers.setBasicAuth(username, password)) // basic auth
+//                .acceptCharset(Charset.forName("UTF-8"))
+//                .contentType(MediaType.APPLICATION_JSON) // json body
+//                .bodyValue(
+//                        "{\n" +
+//                                "  \"properties\": {\n" +
+//                                "    \"title\": {\n" +
+//                                "      \"type\": \"text\",\n" +
+//                                "      \"store\": true,\n" +
+//                                "      \"analyzer\": \"suggest_index_analyzer\",\n" +
+//                                "      \"search_analyzer\": \"suggest_search_analyzer\"\n" +
+//                                "    },\n" +
+//                                "    \n" +
+//                                "    \"singer\": {\n" +
+//                                "      \"type\": \"text\",\n" +
+//                                "      \"store\": true,\n" +
+//                                "      \"analyzer\": \"suggest_index_analyzer\",\n" +
+//                                "      \"search_analyzer\": \"suggest_search_analyzer\"\n" +
+//                                "    }\n" +
+//                                "  }\n" +
+//                                "}"
+//                )     // set body value
+//                .retrieve()                 // client message 전송
+//                .bodyToMono(String.class)  // body type : EmpInfo
+//                .block();                   // await
     }
 
     public void unregist(String user_id) {
