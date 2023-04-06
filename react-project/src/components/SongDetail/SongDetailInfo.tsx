@@ -62,10 +62,10 @@ const SongDetailInfo = (): JSX.Element => {
     try {
       if (data.isEighteen) {
         await removeEighteen([data.musicId], auth.token);
-        await removeEighteenForSearch([{ id: data.musicId }], auth.token);
+        await removeEighteenForSearch([{ id: data.musicId, title: data.title, singer: data.singer }], auth.token);
       } else {
         await addEighteen(data.musicId, auth.token);
-        await addEighteenForSearch([{ id: data.musicId }], auth.token);
+        await addEighteenForSearch([{ id: data.musicId, title: data.title, singer: data.singer }], auth.token);
       }
       success = true;
     } catch (e) {
