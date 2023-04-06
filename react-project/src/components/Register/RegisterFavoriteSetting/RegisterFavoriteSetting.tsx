@@ -36,40 +36,6 @@ const RegisterFavoriteSetting = ({ nextPage }: Props): JSX.Element => {
       </div>
       <FavoriteSongResult />
       <RegisterSearchModal show={modal} close={() => setModal(false)} />
-      <p>
-        sdfsdfsdf
-        <br />
-        sdfsdfsdf
-        <br />
-        sdfsdfsdf
-        <br />
-        sdfsdfsdf
-        <br />
-        sdfsdfsdf
-        <br />
-        sdfsdfsdf
-        <br />
-        sdfsdfsdf
-        <br />
-        sdfsdfsdf
-        <br />
-        sdfsdfsdf
-        <br />
-        sdfsdfsdf
-        <br />
-        sdfsdfsdf
-        <br />
-        sdfsdfsdf
-        <br />
-        sdfsdfsdf
-        <br />
-        sdfsdfsdf
-        <br />
-        sdfsdfsdf
-        <br />
-        sdfsdfsdf
-        <br />
-      </p>
       <div className="next-button">
         <TextButton text={"다음단계로 →"} color={"blue"} onClick={nextPage} />
       </div>
