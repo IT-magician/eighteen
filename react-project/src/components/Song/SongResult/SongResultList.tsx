@@ -87,24 +87,14 @@ const SongResultList = (): JSX.Element => {
       {search.loading && <SongResultLoading />}
       {search.loading || Boolean(list.length) || Boolean(search.keyword) || <SongResultDefault />}
       {search.loading || Boolean(list.length) || (Boolean(search.keyword) && <SongResultEmpty />)}
-      {/* <ul>
-        {list.map((item, index) => (
-          <SongItem
-            key={index}
-            musicId={item.musicId}
-            title={item.title}
-            singer={item.singer}
-            isEighteen={item.isEighteen}
-            thumbnailUrl={item.thumbnailUrl}
-          />
-        ))}
-      </ul> */}
       <InfiniteScroll
         next={() => {
+          if (search.loading) return;
+          setSearch((pre) => ({ ...pre, loading: true }));
           getData(search.type, search.keyword, search.page);
         }}
-        hasMore={true}
-        loader={<h4>loading</h4>}
+        hasMore={search.page < maxPage.current}
+        loader={<SongResultLoading />}
         dataLength={list.length}
         scrollableTarget={"Page"}
       >
