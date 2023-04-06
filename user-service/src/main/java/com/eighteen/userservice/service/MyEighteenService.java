@@ -81,9 +81,9 @@ public class MyEighteenService {
             while (randoms.size() < 5) {
                 int randomIndex = random.nextInt(myEighteens.size());
                 MyEighteen randomElement = myEighteens.get(randomIndex);
-                if (!randoms.contains(randomElement)) {
-                    MusicDto randomMusic = new ModelMapper().map(randomElement.getMusic(), MusicDto.class);
-                    randomMusic.setIsEighteen(Boolean.TRUE);
+                MusicDto randomMusic = new ModelMapper().map(randomElement.getMusic(), MusicDto.class);
+                randomMusic.setIsEighteen(Boolean.TRUE);
+                if (!randoms.contains(randomMusic)) {
                     randoms.add(randomMusic);
                 }
             }
