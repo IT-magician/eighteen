@@ -223,8 +223,7 @@ public class SearchService {
                 .retrieve()                 // client message 전송
                 .bodyToMono(String.class)  // body type : EmpInfo
                 .block();                   // await
-
-
+        System.out.println(responseBody);
 
         Map<String, Map<String, List<Map<String, Map<String, Object>>>>> map = gson.fromJson(responseBody, Map.class);
         if (map == null || !map.containsKey("hits") || !map.get("hits").containsKey("hits")) return null;
