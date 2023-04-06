@@ -105,6 +105,7 @@ const Setting = (): JSX.Element => {
   };
 
   const onHandleDeleteAccount = async () => {
+    if (!pass) return;
     try {
       await searchUnregist(auth.token);
       await deleteAccount(auth.token);
