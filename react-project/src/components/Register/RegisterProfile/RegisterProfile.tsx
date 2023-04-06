@@ -150,7 +150,7 @@ const StyledDiv = styled.div`
 
   & > .next-button {
     width: 100%;
-    margin-top: 20vw;
+    margin-top: 60px;
     display: flex;
     justify-content: center;
   }

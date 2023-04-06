@@ -63,6 +63,7 @@ const RecommendList = ({ weather }: Props): JSX.Element => {
       }
     };
     setLoading(true);
+    setSongList([]);
 
     switch (type) {
       case "ranking":
