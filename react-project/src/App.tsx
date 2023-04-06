@@ -135,9 +135,19 @@ const StyledDiv = styled.div`
     width: 100%;
     box-sizing: border-box;
     overflow: auto;
+    overflow-x: hidden;
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    & > div {
+      -webkit-animation: fade-in-bottom 0.6s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+      animation: fade-in-bottom 0.6s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+      & > div {
+      }
+      & > h1 {
+      }
+    }
 
     // 스크롤 디자인 CSS
     &::-webkit-scrollbar {
