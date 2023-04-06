@@ -80,7 +80,7 @@ const RecommendList = ({ weather }: Props): JSX.Element => {
       case "weather":
         getRecommendList(type, "" + getWeatherIdx(weather.weather));
         return;
-      case "myEighteen":
+      case "my_eighteen":
         getRecommendList(type);
         return;
     }
