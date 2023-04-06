@@ -11,7 +11,11 @@ import SongResultEmpty from "./SongResultEmpty";
 import SongResultLoading from "./SongResultLoading";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-const SongResultList = (): JSX.Element => {
+interface Props {
+  scrollId?: string;
+}
+
+const SongResultList = ({ scrollId = "Page" }: Props): JSX.Element => {
   const [list, setList] = useState<Song[]>([]);
   const [search, setSearch] = useRecoilState(searchState);
   const [auth, setAuth] = useRecoilState(authState);
@@ -96,7 +100,7 @@ const SongResultList = (): JSX.Element => {
         hasMore={search.page < maxPage.current}
         loader={<SongResultLoading />}
         dataLength={list.length}
-        scrollableTarget={"Page"}
+        scrollableTarget={scrollId}
       >
         {list.map((item, index) => (
           <SongItem

@@ -27,13 +27,13 @@ const RegisterSearchModal = ({ show, close }: Props): JSX.Element => {
     close();
   };
   return (
-    <StyledDiv className={status}>
+    <StyledDiv className={status} id="modal">
       <div className="background" />
       <button className="close-button" onClick={onClose}>
         <TbX />
       </button>
       <RegisterFavoriteInput />
-      <SongResultList />
+      <SongResultList scrollId="modal" />
     </StyledDiv>
   );
 };
