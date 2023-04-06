@@ -78,22 +78,20 @@ public class MyEighteenService {
 
         List<MyEighteen> myEighteens = myEighteenRepository.findByUser(user);
         Random random = new Random();
-        List<MusicDto> randoms = new ArrayList<>();
+    Set<MusicDto> randoms = new HashSet<>();
 
-        if (myEighteens.size() > 5) {
-    Set<Integer> selectedIndexes = new HashSet<>();
-    while (selectedIndexes.size() < 5) {
+if (myEighteens.size() > 5) {
+    while (randoms.size() < 5) {
         int randomIndex = random.nextInt(myEighteens.size());
-        if (!selectedIndexes.contains(randomIndex)) {
-            selectedIndexes.add(randomIndex);
-            MyEighteen randomElement = myEighteens.get(randomIndex);
+MyEighteen randomElement = myEighteens.get(randomIndex);
+        if (!randoms.contains(randomElement)) {
             MusicDto randomMusic = new ModelMapper().map(randomElement, MusicDto.class);
             randomMusic.setIsEighteen(Boolean.TRUE);
             randoms.add(randomMusic);
         }
     }
 }
-        else {
+         else {
             for (MyEighteen myEighteen : myEighteens) {
                 MusicDto randomMusic = new ModelMapper().map(myEighteen.getMusic(), MusicDto.class);
                 randomMusic.setIsEighteen(Boolean.TRUE);
