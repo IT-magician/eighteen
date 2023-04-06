@@ -331,7 +331,10 @@ public class UserIdxService {
 
     public Map<String, Object> searchBytitleAndPaginationWithPreferable(String user_id, String title, long pagination_idx, long pagination_size) {
         List<SongInfoDTO> songs = searchService.searchBytitleOnUserData(user_id, title);
-
+        if (songs == null || songs.isEmpty()) return Map.of(
+                "total_page", 0,
+                "music_list", new LinkedList<>()
+        );
 
         Set<Integer> user_favorite_songs = getUserFavoriteSongWithId(user_id);
 
@@ -353,7 +356,10 @@ public class UserIdxService {
 
     public Map<String, Object> searchBysingerAndPaginationWithPreferable(String user_id, String singer, long pagination_idx, long pagination_size) {
         List<SongInfoDTO> songs = searchService.searchBysingerOnUserData(user_id, singer);
-
+        if (songs == null || songs.isEmpty()) return Map.of(
+                "total_page", 0,
+                "music_list", new LinkedList<>()
+        );
 
         Set<Integer> user_favorite_songs = getUserFavoriteSongWithId(user_id);
 
