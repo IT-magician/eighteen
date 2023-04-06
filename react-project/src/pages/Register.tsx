@@ -29,6 +29,8 @@ const StyledDiv = styled.div`
   & h1,
   & h2 {
     font-weight: 400;
+    -webkit-animation: fade-in-bottom 0.6s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+    animation: fade-in-bottom 0.6s cubic-bezier(0.39, 0.575, 0.565, 1) both;
     & > span {
       margin: 8px 0px;
       display: block;
@@ -42,20 +44,14 @@ const StyledDiv = styled.div`
   }
   & h2 {
     font-size: 20px;
+    animation-delay: 0.4s;
   }
   & > div:last-child {
     left: -16px;
   }
-  & h1,
-  & h2,
   & > div > div {
-    -webkit-animation: fade-in-bottom 0.6s cubic-bezier(0.39, 0.575, 0.565, 1) both;
-    animation: fade-in-bottom 0.6s cubic-bezier(0.39, 0.575, 0.565, 1) both;
-  }
-  & h2 {
-    animation-delay: 0.4s;
-  }
-  & div > div {
+    -webkit-animation: fade-in-bottom 0.6s cubic-bezier(0.39, 0.575, 0.565, 1) backwards;
+    animation: fade-in-bottom 0.6s cubic-bezier(0.39, 0.575, 0.565, 1) backwards;
     animation-delay: 0.8s;
   }
 `;

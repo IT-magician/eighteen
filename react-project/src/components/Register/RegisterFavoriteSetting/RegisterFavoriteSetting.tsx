@@ -36,6 +36,40 @@ const RegisterFavoriteSetting = ({ nextPage }: Props): JSX.Element => {
       </div>
       <FavoriteSongResult />
       <RegisterSearchModal show={modal} close={() => setModal(false)} />
+      <p>
+        sdfsdfsdf
+        <br />
+        sdfsdfsdf
+        <br />
+        sdfsdfsdf
+        <br />
+        sdfsdfsdf
+        <br />
+        sdfsdfsdf
+        <br />
+        sdfsdfsdf
+        <br />
+        sdfsdfsdf
+        <br />
+        sdfsdfsdf
+        <br />
+        sdfsdfsdf
+        <br />
+        sdfsdfsdf
+        <br />
+        sdfsdfsdf
+        <br />
+        sdfsdfsdf
+        <br />
+        sdfsdfsdf
+        <br />
+        sdfsdfsdf
+        <br />
+        sdfsdfsdf
+        <br />
+        sdfsdfsdf
+        <br />
+      </p>
       <div className="next-button">
         <TextButton text={"다음단계로 →"} color={"blue"} onClick={nextPage} />
       </div>
@@ -55,11 +89,10 @@ const StyledDiv = styled.div`
       pointer-events: none;
     }
   }
-  & > div {
-  }
   & > .next-button {
     width: 100%;
     margin: 64px 0;
+    padding-bottom: 80px;
     display: flex;
     justify-content: center;
   }
