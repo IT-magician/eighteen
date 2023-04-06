@@ -127,6 +127,10 @@ const StyledDiv = styled.div`
 
   .max-height {
     height: 100vh !important;
+    & > div {
+      -webkit-animation: none !important;
+      animation: none !important;
+    }
   }
 
   // 실제 페이지 정보가 담길 페이지 컴포넌트
