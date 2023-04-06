@@ -8,7 +8,6 @@ import { RecommendType } from "../../../apis/recommend/type";
 import { getWeatherIdx } from "../../../apis/weather";
 import { authState } from "../../../recoil/atom/authState";
 import { Weather } from "../../../recoil/atom/weatherState";
-import SampleData from "../../../utils/sample/song.json";
 import { Song, SongSlideList } from "../../common/song";
 import { RecommendSelector } from "../RecommendSelector";
 
