@@ -109,11 +109,6 @@ public class MyEighteenService {
                 .user(user)
                 .music(music)
                 .build();
-        String addDataUrl = String.format(env.getProperty("search-engine.url")) + "/data/" + userId;
-        SearchDto searchDto = new SearchDto(myEighteen.getMusic());
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<SearchDto> requestEntity = new HttpEntity<>(searchDto, headers);
         myEighteenRepository.save(myEighteen);
         return music.getTitle();
     }
