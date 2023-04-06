@@ -24,10 +24,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -78,20 +75,20 @@ public class MyEighteenService {
 
         List<MyEighteen> myEighteens = myEighteenRepository.findByUser(user);
         Random random = new Random();
-    Set<MusicDto> randoms = new HashSet<>();
+        Set<MusicDto> randoms = new HashSet<>();
 
-if (myEighteens.size() > 5) {
-    while (randoms.size() < 5) {
-        int randomIndex = random.nextInt(myEighteens.size());
-MyEighteen randomElement = myEighteens.get(randomIndex);
-        if (!randoms.contains(randomElement)) {
-            MusicDto randomMusic = new ModelMapper().map(randomElement, MusicDto.class);
-            randomMusic.setIsEighteen(Boolean.TRUE);
-            randoms.add(randomMusic);
+        if (myEighteens.size() > 5) {
+            while (randoms.size() < 5) {
+                int randomIndex = random.nextInt(myEighteens.size());
+        MyEighteen randomElement = myEighteens.get(randomIndex);
+                if (!randoms.contains(randomElement)) {
+                    MusicDto randomMusic = new ModelMapper().map(randomElement, MusicDto.class);
+                    randomMusic.setIsEighteen(Boolean.TRUE);
+                    randoms.add(randomMusic);
+                }
+            }
         }
-    }
-}
-         else {
+        else {
             for (MyEighteen myEighteen : myEighteens) {
                 MusicDto randomMusic = new ModelMapper().map(myEighteen.getMusic(), MusicDto.class);
                 randomMusic.setIsEighteen(Boolean.TRUE);
