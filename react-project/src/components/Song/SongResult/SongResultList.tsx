@@ -9,6 +9,7 @@ import { Song, SongItem } from "../../common/song";
 import SongResultDefault from "./SongResultDefault";
 import SongResultEmpty from "./SongResultEmpty";
 import SongResultLoading from "./SongResultLoading";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const SongResultList = (): JSX.Element => {
   const [list, setList] = useState<Song[]>([]);
@@ -34,6 +35,7 @@ const SongResultList = (): JSX.Element => {
   }, [search.keyword, search.type]);
 
   const getData = async (type: string, keyword: string, page: number) => {
+    let result = false;
     try {
       const { data } =
         type === "title"
@@ -43,17 +45,29 @@ const SongResultList = (): JSX.Element => {
       maxPage.current = data.total_page;
 
       if (data.music_list instanceof Array) {
-        setList((pre) => [
-          ...pre,
-          ...data.music_list.map((item: any) => ({
-            musicId: item.id,
-            title: item.title,
-            singer: item.singer,
-            isEighteen: item.preferable,
-            thumnailUrl: item.thumbnail_url,
-          })),
-        ]);
-        return true;
+        if (search.keyword === keyword && search.type === type) {
+          setList((pre) => [
+            ...pre,
+            ...data.music_list.map((item: any) => ({
+              musicId: item.id,
+              title: item.title,
+              singer: item.singer,
+              isEighteen: item.preferable,
+              thumnailUrl: item.thumbnail_url,
+            })),
+          ]);
+        } else {
+          setList([
+            ...data.music_list.map((item: any) => ({
+              musicId: item.id,
+              title: item.title,
+              singer: item.singer,
+              isEighteen: item.preferable,
+              thumnailUrl: item.thumbnail_url,
+            })),
+          ]);
+        }
+        result = true;
       }
     } catch (e) {
       if (axios.isAxiosError(e)) {
@@ -62,9 +76,9 @@ const SongResultList = (): JSX.Element => {
         }
       }
     } finally {
-      setSearch((pre) => ({ ...pre, loading: false }));
+      setSearch((pre) => ({ ...pre, loading: false, page: result ? page + 1 : pre.page }));
     }
-    return false;
+    return result;
   };
 
   return (
@@ -73,7 +87,7 @@ const SongResultList = (): JSX.Element => {
       {search.loading && <SongResultLoading />}
       {search.loading || Boolean(list.length) || Boolean(search.keyword) || <SongResultDefault />}
       {search.loading || Boolean(list.length) || (Boolean(search.keyword) && <SongResultEmpty />)}
-      <ul>
+      {/* <ul>
         {list.map((item, index) => (
           <SongItem
             key={index}
@@ -84,7 +98,27 @@ const SongResultList = (): JSX.Element => {
             thumbnailUrl={item.thumbnailUrl}
           />
         ))}
-      </ul>
+      </ul> */}
+      <InfiniteScroll
+        next={() => {
+          getData(search.type, search.keyword, search.page);
+        }}
+        hasMore={true}
+        loader={<h4>loading</h4>}
+        dataLength={list.length}
+        scrollableTarget={"Page"}
+      >
+        {list.map((item, index) => (
+          <SongItem
+            key={index}
+            musicId={item.musicId}
+            title={item.title}
+            singer={item.singer}
+            isEighteen={item.isEighteen}
+            thumbnailUrl={item.thumbnailUrl}
+          />
+        ))}
+      </InfiniteScroll>
     </StyledDiv>
   );
 };
