@@ -50,26 +50,12 @@ class Music_Feature(Base):
     popularity = Column(Integer)
     tempo = Column(Integer)
 
-class E_Music(Base):
-    __tablename__ = 'e_music'
-
-    music_id = Column(Integer, primary_key=True)
-    popularity = Column(Integer)
-    emotion_id = Column(Integer)
-
 class S_Music(Base):
     __tablename__ = 's_music'
 
     music_id = Column(Integer, primary_key=True)
     popularity = Column(Integer)
     situation_id = Column(Integer)
-
-class W_Music(Base):
-    __tablename__ = 'w_music'
-
-    music_id = Column(Integer, primary_key=True)
-    popularity = Column(Integer)
-    weather_id = Column(Integer)
 
 class My_Eighteen(Base):
     __tablename__ = 'my_eighteen'
@@ -116,42 +102,6 @@ def dataInsert():
 
     return "Success"
 
-@app.route('/flask/predict/emotion')
-def emotion_classification(data_path=EMOTION_DATA):
-    with DBSession() as session:
-        session.query(E_Music).delete()
-        session.commit()
-        music_features = session.query(Music_Feature).all()
-
-    music_df = pd.DataFrame([mf.__dict__ for mf in music_features])
-
-    with open(data_path, encoding="utf-8") as f:
-        data = json.loads(f.read())
-        
-    emotion_df = pd.DataFrame(data)
-    emotion_df = emotion_df.dropna(axis=0)
-
-    X = emotion_df[['energy', 'dance_ability', 'tempo']]
-    y = emotion_df['emotion']
-
-    clf = DecisionTreeClassifier()
-    clf.fit(X, y)
-
-    pred_X = music_df[['energy', 'dance_ability', 'tempo']]
-    predicted_emotion = clf.predict(pred_X)
-
-    for music_id, popularity, emotion in zip(music_df['music_id'], music_df['popularity'], predicted_emotion):
-        e_music = E_Music(music_id=music_id, popularity=popularity, emotion_id=emotion)
-        session.add(e_music)
-
-    try:
-        session.commit()
-    except Exception as e:
-        session.rollback()
-        print(f"An error occurred while inserting data: {e}")
-
-    return "success"
-
 @app.route('/flask/predict/situation')
 def situation_classification(data_path=SITUATION_DATA):
     with DBSession() as session:
@@ -188,42 +138,6 @@ def situation_classification(data_path=SITUATION_DATA):
 
     return "success"
 
-@app.route('/flask/predict/weather')
-def weather_classification(data_path=WEATHER_DATA):
-    with DBSession() as session:
-        session.query(W_Music).delete()
-        session.commit()
-        music_features = session.query(Music_Feature).all()
-
-    music_df = pd.DataFrame([mf.__dict__ for mf in music_features])
-
-    with open(data_path, encoding="utf-8") as f:
-        data = json.loads(f.read())
-        
-    weather_df = pd.DataFrame(data)
-    weather_df = weather_df.dropna(axis=0)
-
-    X = weather_df[['energy', 'dance_ability', 'tempo']]
-    y = weather_df['weather']
-
-    clf = DecisionTreeClassifier()
-    clf.fit(X, y)
-
-    pred_X = music_df[['energy', 'dance_ability', 'tempo']]
-    predicted_weather = clf.predict(pred_X)
-
-    for music_id, popularity, weather in zip(music_df['music_id'], music_df['popularity'], predicted_weather):
-        w_music = W_Music(music_id=music_id, popularity=popularity, weather_id=weather)
-        session.add(w_music)
-
-    try:
-        session.commit()
-    except Exception as e:
-        session.rollback()
-        print(f"An error occurred while inserting data: {e}")
-
-    return "success"
-
 @app.route('/flask/recommend/<user_id>')
 def favorite_song(user_id):
     
@@ -249,15 +163,33 @@ def favorite_song(user_id):
     return recommendation_list
 
 @app.route('/flask/recommend/emotion/<emotion_id>')
-def emotion_recommend(emotion_id):
+def emotion_recommend(emotion_id, data_path=EMOTION_DATA):
     with DBSession() as session:
-        popular_e_musics = session.query(E_Music).filter(E_Music.emotion_id==emotion_id, E_Music.popularity>=30).all()
-        recommended_e_musics = random.sample(popular_e_musics, k=20)
-        result = []
-        for music in recommended_e_musics:
-            result.append(music.music_id)
+        music_features = session.query(Music_Feature).all()
 
-        return result
+    music_df = pd.DataFrame([mf.__dict__ for mf in music_features])
+
+    with open(data_path, encoding="utf-8") as f:
+        data = json.loads(f.read())
+        
+    emotion_df = pd.DataFrame(data)
+    emotion_df = emotion_df.dropna(axis=0)
+
+    X = emotion_df[['energy', 'dance_ability', 'tempo']]
+    y = emotion_df['emotion']
+
+    clf = DecisionTreeClassifier()
+    clf.fit(X, y)
+
+    pred_X = music_df[['energy', 'dance_ability', 'tempo']]
+    predicted_emotion = clf.predict(pred_X)
+
+    music_df['emotion'] = predicted_emotion
+    selected = music_df.loc[(music_df['emotion'] == int(emotion_id)) & (music_df['popularity'] >= 30), 'music_id']
+
+    result = random.sample(selected.tolist(), 20)
+    
+    return result
     
 @app.route('/flask/recommend/situation/<situation_id>')
 def situation_recommend(situation_id):
@@ -271,15 +203,33 @@ def situation_recommend(situation_id):
         return result
     
 @app.route('/flask/recommend/weather/<weather_id>')
-def weather_recommend(weather_id):
+def weather_recommend(weather_id, data_path=WEATHER_DATA):
     with DBSession() as session:
-        popular_w_musics = session.query(W_Music).filter(W_Music.weather_id==weather_id, W_Music.popularity>=30).all()
-        recommended_w_musics = random.sample(popular_w_musics, k=20)
-        result = []
-        for music in recommended_w_musics:
-            result.append(music.music_id)
+        music_features = session.query(Music_Feature).all()
 
-        return result
+    music_df = pd.DataFrame([mf.__dict__ for mf in music_features])
+
+    with open(data_path, encoding="utf-8") as f:
+        data = json.loads(f.read())
+        
+    weather_df = pd.DataFrame(data)
+    weather_df = weather_df.dropna(axis=0)
+
+    X = weather_df[['energy', 'dance_ability', 'tempo']]
+    y = weather_df['weather']
+
+    clf = DecisionTreeClassifier()
+    clf.fit(X, y)
+
+    pred_X = music_df[['energy', 'dance_ability', 'tempo']]
+    predicted_weather = clf.predict(pred_X)
+
+    music_df['weather'] = predicted_weather
+    selected = music_df.loc[(music_df['weather'] == int(weather_id)) & (music_df['popularity'] >= 30), 'music_id']
+
+    result = random.sample(selected.tolist(), 20)
+    
+    return result
 
 if __name__ == "__main__" :
     app.run(host='0.0.0.0', debug=True)
