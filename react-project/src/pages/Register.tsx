@@ -8,7 +8,7 @@ import RegisterFinalSilde from "../components/Register/RegisterFinalSilde";
 const Register = (): JSX.Element => {
   const [page, setPage] = useState<number>(0);
   return (
-    <StyledDiv>
+    <StyledDiv className={page === 2 ? "fixed" : ""}>
       {page === 0 && <RegisterProfile nextPage={() => setPage(1)} />}
       {page === 1 && <RegisterFavoriteSetting nextPage={() => setPage(2)} />}
       {page === 2 && <RegisterFinalSilde />}
@@ -18,11 +18,14 @@ const Register = (): JSX.Element => {
 };
 
 const StyledDiv = styled.div`
-  height: 100vh;
+  min-height: 100vh;
   width: 100vw;
   position: relative;
-  overflow: hidden;
   padding: 120px 32px 0;
+  &.fixed {
+    height: 100vh;
+    overflow: hidden;
+  }
   & h1,
   & h2 {
     font-weight: 400;
