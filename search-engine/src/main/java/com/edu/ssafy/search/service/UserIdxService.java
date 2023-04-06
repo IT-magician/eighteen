@@ -51,6 +51,7 @@ public class UserIdxService {
     public void regist(String user_id) {
         String responseBody;
 
+
         responseBody = webClient.method(HttpMethod.PUT)         // POST method
                 .uri(String.format("/favorite_song_list@%s", user_id))    // baseUrl 이후 uri
                 .headers(headers -> headers.setBasicAuth(username, password)) // basic auth
@@ -127,6 +128,18 @@ public class UserIdxService {
                                 "  }\n" +
                                 "}"
                 )     // set body value
+                .retrieve()                 // client message 전송
+                .bodyToMono(String.class)  // body type : EmpInfo
+                .block();                   // await
+    }
+
+    public void unregist(String user_id) {
+        String responseBody;
+
+        responseBody = webClient.method(HttpMethod.DELETE)         // POST method
+                .uri(String.format("/favorite_song_list@%s", user_id))    // baseUrl 이후 uri
+                .headers(headers -> headers.setBasicAuth(username, password)) // basic auth
+                .acceptCharset(Charset.forName("UTF-8"))
                 .retrieve()                 // client message 전송
                 .bodyToMono(String.class)  // body type : EmpInfo
                 .block();                   // await
@@ -256,6 +269,57 @@ public class UserIdxService {
     public Map<String, Object> searchBysingerAndPagination(String user_id, String singer, long pagination_idx, long pagination_size) {
         List<SongInfoDTO> songs = searchService.searchBysinger(singer);
 
+
+        Set<Integer> user_favorite_songs = getUserFavoriteSongWithId(user_id);
+
+//        System.out.println("size : " + songs.size());
+//        System.out.println("start : " + pagination_idx*pagination_size + ", " + (pagination_idx+1)*pagination_size);
+
+        List<SongWithPreferableDTO> list = new LinkedList<>();
+        for (int i = (int) (pagination_idx*pagination_size); i < Math.min((pagination_idx+1)*pagination_size, songs.size()); i++) {
+            SongWithPreferableDTO songWithPreferableDTO = objectMapper.convertValue(songs.get(i), SongWithPreferableDTO.class);
+            songWithPreferableDTO.setPreferable(user_favorite_songs.contains(songWithPreferableDTO.getId()));
+            list.add(songWithPreferableDTO);
+        }
+
+        return Map.of(
+                "total_page", songs.size()/pagination_size + (songs.size()%pagination_size > 0?1:0),
+                "music_list", list
+        );
+    }
+
+
+    public Map<String, Object> searchBytitleAndPaginationWithPreferable(String user_id, String title, long pagination_idx, long pagination_size) {
+        List<SongInfoDTO> songs = searchService.searchBytitleOnUserData(user_id, title);
+        if (songs == null || songs.isEmpty()) return Map.of(
+                "total_page", 0,
+                "music_list", new LinkedList<>()
+        );
+
+        Set<Integer> user_favorite_songs = getUserFavoriteSongWithId(user_id);
+
+//        System.out.println("size : " + songs.size());
+//        System.out.println("start : " + pagination_idx*pagination_size + ", " + (pagination_idx+1)*pagination_size);
+
+        List<SongWithPreferableDTO> list = new LinkedList<>();
+        for (int i = (int) (pagination_idx*pagination_size); i < Math.min((pagination_idx+1)*pagination_size, songs.size()); i++) {
+            SongWithPreferableDTO songWithPreferableDTO = objectMapper.convertValue(songs.get(i), SongWithPreferableDTO.class);
+            songWithPreferableDTO.setPreferable(user_favorite_songs.contains(songWithPreferableDTO.getId()));
+            list.add(songWithPreferableDTO);
+        }
+
+        return Map.of(
+                "total_page", songs.size()/pagination_size + (songs.size()%pagination_size > 0?1:0),
+                "music_list", list
+        );
+    }
+
+    public Map<String, Object> searchBysingerAndPaginationWithPreferable(String user_id, String singer, long pagination_idx, long pagination_size) {
+        List<SongInfoDTO> songs = searchService.searchBysingerOnUserData(user_id, singer);
+        if (songs == null || songs.isEmpty()) return Map.of(
+                "total_page", 0,
+                "music_list", new LinkedList<>()
+        );
 
         Set<Integer> user_favorite_songs = getUserFavoriteSongWithId(user_id);
 

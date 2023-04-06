@@ -1,17 +1,28 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { getEighteenRandom } from "../../../apis/myEighteen";
+import { authState } from "../../../recoil/atom/authState";
 import { Song } from "../../common/song";
 
 const FavoriteRandomChoice = () => {
+  const [auth, setAuth] = useRecoilState(authState);
   const [songList, setSongList] = useState<Song[]>([]);
 
   useEffect(() => {
     const request = async () => {
-      const { data } = await getEighteenRandom();
-      setSongList(data.randoms);
-      console.log(data.randoms);
+      try {
+        const { data } = await getEighteenRandom(auth.token);
+        setSongList(data.randoms);
+      } catch (e) {
+        if (axios.isAxiosError(e)) {
+          if (e.response?.status === 401) {
+            setAuth({ ...auth, token: "" });
+          }
+        }
+      }
     };
     request();
   }, []);
@@ -35,6 +46,7 @@ const FavoriteRandomChoice = () => {
 };
 
 const StyledDiv = styled.div`
+  margin-bottom: 64px;
   & > h2 {
     font-weight: 400;
     margin: 32px 0;

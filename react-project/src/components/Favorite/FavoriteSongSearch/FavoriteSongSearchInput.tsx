@@ -8,17 +8,17 @@ const FavoriteSongSearchInput = (): JSX.Element => {
   const [search, setSearch] = useRecoilState(searchState);
 
   useEffect(() => {
-    setSearch({ ...search, keyword: "", type: "title" });
+    setSearch({ keyword: "", type: "title", loading: false, page: 0 });
   }, []);
 
   const { keyword, type } = search;
 
   const onChangeKeyword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch({ ...search, keyword: e.target.value });
+    setSearch({ ...search, keyword: e.target.value, page: 0 });
   };
 
   const onChangeType = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setSearch({ ...search, type: e.currentTarget.value });
+    setSearch({ ...search, type: e.currentTarget.value, page: 0 });
   };
 
   return (
@@ -60,6 +60,7 @@ const StyledDiv = styled.div`
 
   & > input {
     margin: auto 8px;
+    width: 0;
     flex: 1 1 0;
     background: none;
     border: 0;

@@ -10,7 +10,7 @@ const Logo = (): JSX.Element => {
   const navigate = useNavigate();
 
   const onClick = () => {
-    navigate("home");
+    navigate("/");
   };
 
   return (
@@ -34,12 +34,13 @@ const StyledDiv = styled.div`
   z-index: 1;
 
   & > p {
-    margin: 2px 8px;
+    margin: 2px 4px;
     font-size: 14px;
+    letter-spacing: 0.1em;
   }
 
   & > img {
-    height: 24px;
+    height: 32px;
   }
 `;
 

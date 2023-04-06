@@ -4,13 +4,17 @@ import styled from "styled-components";
 import BackButton from "../components/common/button/BackButton";
 import SettingImg from "../components/setting/SettingImg";
 import IconButton from "../components/common/button/IconButton";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { userState } from "../recoil/atom";
 import { Select } from "../components/common/select";
 import { VerifyInput } from "../components/common/input/Verify";
 import { nicknameVerify } from "../utils/validation";
 import { modifyProfile, deleteAccount } from "../apis/profile";
 import SettingDatePicker from "../components/setting/SettingDatePicker";
+import { authState } from "../recoil/atom/authState";
+import axios from "axios";
+import { User } from "../recoil/atom/userState";
+import { searchUnregist } from "../apis/search";
 
 // type ProfileAttr = "nickname" | "birth" | "gender" | "email" | "profileImage";
 
@@ -30,20 +34,13 @@ import SettingDatePicker from "../components/setting/SettingDatePicker";
  * 프로필 수정 화면
  */
 const Setting = (): JSX.Element => {
-  const globalUser = useRecoilValue(userState);
-  const [user, setUser] = useState(globalUser);
+  const [globalUser, setGlobalUser] = useRecoilState(userState);
+  if (!globalUser) return <></>;
+  const [auth, setAuth] = useRecoilState(authState);
+  const [user, setUser] = useState<User>({ ...globalUser });
   const [pass, setPass] = useState<boolean>(true);
   const file = useRef<File>();
   const navigate = useNavigate();
-
-  /**select에 할당할 genderIdx 설정 */
-  let genderIdx;
-
-  if (globalUser?.gender == "M") {
-    genderIdx = 0;
-  } else {
-    genderIdx = 1;
-  }
 
   /*
    *useState에 담긴 사용자 이름 수정
@@ -78,7 +75,6 @@ const Setting = (): JSX.Element => {
   const setImage = (value: File) => {
     if (user) {
       file.current = value;
-      console.log(value);
     }
   };
 
@@ -94,20 +90,34 @@ const Setting = (): JSX.Element => {
     });
     formData.append("profileInfo", new Blob([newProfile], { type: "application/json" }));
     if (file.current instanceof File) formData.append("profileImage", file.current);
-
-    const res = await modifyProfile(formData);
-    if (res.data == "ok") {
-      console.log("patch 성공");
-      navigate("/mypage");
+    try {
+      const res = await modifyProfile(formData, auth.token);
+      if (res.data == "ok") {
+        navigate("/mypage");
+      }
+    } catch (e) {
+      if (axios.isAxiosError(e)) {
+        if (e.response?.status === 401) {
+          setAuth({ ...auth, token: "" });
+        }
+      }
     }
   };
 
-  const onHandleDeleteAccount = () => {
-    deleteAccount();
-    navigate("/");
+  const onHandleDeleteAccount = async () => {
+    if (!pass) return;
+    try {
+      await searchUnregist(auth.token);
+      await deleteAccount(auth.token);
+      setGlobalUser(null);
+    } catch (e) {
+      if (axios.isAxiosError(e)) {
+        if (e.response?.status === 401) {
+          setAuth({ ...auth, token: "" });
+        }
+      }
+    }
   };
-
-  if (!globalUser) return <></>;
 
   return (
     <StyledDiv>
@@ -117,22 +127,27 @@ const Setting = (): JSX.Element => {
       <h1>프로필 설정</h1>
       <div>
         <div className="imageDiv">
-          <SettingImg image={globalUser.profileImage} setValue={setImage} />
+          <SettingImg image={user.profileImage} setValue={setImage} />
           <IconButton type="save" onClick={onHandleModifyProfile} />
         </div>
         <div className="birthSelectDiv">
-          <SettingDatePicker setValue={setBirth} birth={globalUser.birth} />
+          <SettingDatePicker setValue={setBirth} birth={user.birth} />
         </div>
-        <div>
+        <div className="NameGenderDiv">
           {user && (
-            <VerifyInput value={user.nickname} setValue={setNicname} setPass={setPass} verify={nicknameVerify} />
+            <VerifyInput
+              value={user.nickname}
+              setValue={setNicname}
+              setPass={setPass}
+              verify={nicknameVerify(auth.token)}
+            />
           )}
           <Select<string>
             options={[
               { text: "남자", value: "M" },
               { text: "여자", value: "F" },
             ]}
-            defaultIdx={genderIdx}
+            value={user.gender}
             setValue={setGender}
           />
         </div>
@@ -183,8 +198,12 @@ const StyledDiv = styled.div`
     justify-content: start;
   }
 
+  & .NameGenderDiv {
+    height: 100px;
+  }
+
   & .exitButton {
-    margin: 100px 0px 0px;
+    margin: 180px 0px 0px;
     justify-content: end;
 
     & > button {

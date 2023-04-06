@@ -45,6 +45,7 @@ const Login = (): JSX.Element => {
 const StyledDiv = styled.div`
   position: relative;
   height: 100%;
+  overflow: hidden;
 
   & * {
     box-sizing: border-box;

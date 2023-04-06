@@ -1,0 +1,88 @@
+// 인덱스 생성
+PUT /sing-a-song
+{
+  "settings": {
+    "index": {
+      "analysis": {
+        "filter": {
+          "suggest_filter": {
+            "type": "edge_ngram",
+            "min_gram": 1,
+            "max_gram": 50
+          }
+        },
+        "tokenizer": {
+          "jaso_search_tokenizer": {
+            "type": "jaso_tokenizer",
+            "mistype": true,
+            "chosung": false
+          },
+          "jaso_index_tokenizer": {
+            "type": "jaso_tokenizer",
+            "mistype": true,
+            "chosung": true
+          }
+        },
+        "analyzer": {
+          "suggest_search_analyzer": {
+            "type": "custom",
+            "tokenizer": "jaso_search_tokenizer"
+          },
+          "suggest_index_analyzer": {
+            "type": "custom",
+            "tokenizer": "jaso_index_tokenizer",
+            "filter": [
+              "suggest_filter"
+            ]
+          }
+        }
+      }
+    }
+  }
+}
+
+// 특정 필드에 대해 설정(초성 등으로 검색가능)
+PUT /sing-a-song/_mapping
+{
+  "properties": {
+    "title": {
+      "type": "text",
+      "store": true,
+      "analyzer": "suggest_index_analyzer",
+      "search_analyzer": "suggest_search_analyzer"
+    },
+    
+    "singer": {
+      "type": "text",
+      "store": true,
+      "analyzer": "suggest_index_analyzer",
+      "search_analyzer": "suggest_search_analyzer"
+    }
+  }
+}
+
+// 데이터 넣기
+POST /sing-a-song/_doc?pretty=true
+{
+  "id" : 1,
+  "title" : "아리랑",
+  "singer" : "경기도민요",
+  "lyricist" : "민요",
+  "composer" : "민요",
+  "youtube_link" : "https://www.youtube.com/user/ziller/search?query=1",
+  "youtube_lists" : [ ]
+}
+
+POST /sing-a-song/_search?pretty=true
+{
+  
+}
+
+POST /sing-a-song/_search?pretty=true
+{
+    "query" : {
+        "match" : { "title" : "ㅇㄹ" }
+    }
+}
+
+// <- kibana > dev tools.

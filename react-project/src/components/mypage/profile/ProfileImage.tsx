@@ -6,16 +6,19 @@ interface Props {
 }
 
 /**
- * 해당 페이지는 페이지 템플릿으로,
- * 추후 페이지 추가 시 이를 복사하여 사용하는 것을 추천합니다.
+ * 이미지 프로필 컴포넌트
  */
 const ProfileImage = ({ image }: Props): JSX.Element => {
   const imgURL = `${image}`;
   const dummyAlt = `eightten-logo.png`;
 
+  const onDefaultImg = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    e.currentTarget.src = `${process.env.PUBLIC_URL}/img/default_profile.png`;
+  };
+
   return (
     <StyledDiv>
-      <img src={imgURL} alt={dummyAlt} />
+      <img src={imgURL} alt={dummyAlt} onError={onDefaultImg} />
     </StyledDiv>
   );
 };
@@ -26,6 +29,12 @@ const StyledDiv = styled.div`
   height: 80px;
   background: white;
   border-radius: 50%;
+
+  & > img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+  }
 `;
 
 export default ProfileImage;

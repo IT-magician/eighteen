@@ -42,24 +42,13 @@ public class AuthController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping("/success")
-    public String publishToken(
-            HttpServletRequest request, HttpServletResponse response,
-                                           Authentication authentication) {
-        System.out.println("=======인증체크=========");
-
-        PrincipalDetails principalDetails = (PrincipalDetails)authentication.getPrincipal();
-        System.out.println(principalDetails);
-        return "토큰 생성";
-    }
-
     @GetMapping("/user")
     public String user(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         System.out.println("principalDetails:" + principalDetails.getUser());
         return "user";
     }
 
-    @RequestMapping("/reIssue")
+    @GetMapping("/reIssue")
     public ResponseEntity<?> reIssue(HttpServletRequest request) {
 
         // 쿠키에서 refresh token 값을 가져옵니다.

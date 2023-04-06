@@ -84,7 +84,7 @@ const StyledHeader = styled.header`
     position: relative;
   }
   & img {
-    z-index: 0;
+    z-index: -1;
     position: fixed;
     top: -32px;
     left: 0;

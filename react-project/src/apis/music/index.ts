@@ -6,7 +6,8 @@ import { instance } from "..";
  * @param page 페이지번호
  * @param size 페이지크기
  */
-const getMusicList = (keyword: string, page: number, size: number) => {
+const getMusicList = (keyword: string, page: number, size: number, token: string) => {
+  instance.defaults.headers["Authorization"] = token;
   return instance.get(`/music`, {
     params: {
       keyword,
@@ -20,7 +21,8 @@ const getMusicList = (keyword: string, page: number, size: number) => {
  * [GET] 노래 상세 정보 조회
  * @param musicId 노래번호
  */
-const getMusic = (musicId: number) => {
+const getMusic = (musicId: number, token: string) => {
+  instance.defaults.headers["Authorization"] = token;
   return instance.get(`/music/${musicId}`);
 };
 

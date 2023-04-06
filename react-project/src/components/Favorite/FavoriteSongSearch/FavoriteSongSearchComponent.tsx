@@ -38,13 +38,12 @@ const FavoriteSongSearchComponent = (): JSX.Element => {
   return (
     <StyledDiv ref={ref}>
       <FavoriteSongSearchInput />
-      <ul></ul>
     </StyledDiv>
   );
 };
 
 const StyledDiv = styled.div`
-  margin: 64px 0 32px;
+  margin: 0 0 32px;
   top: 80px;
   position: sticky;
   z-index: 1;

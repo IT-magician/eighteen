@@ -36,9 +36,13 @@ const SettingImgComponent = ({ image, setValue }: Props): JSX.Element => {
     if (uploadImgFile) uploadImgFile.click();
   };
 
+  const onDefaultImg = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    e.currentTarget.src = `${process.env.PUBLIC_URL}/img/default_profile.png`;
+  };
+
   return (
     <StyledDiv>
-      <img src={imgFile ? imgFile : image} alt="프로필 이미지"></img>
+      <img src={imgFile ? imgFile : image} onError={onDefaultImg}></img>
       <form>
         <label className="signup-profileImg-label" htmlFor="profileImg" />
         <input
@@ -63,7 +67,8 @@ const StyledDiv = styled.div`
   height: 80px;
 
   & > img {
-    height: 100%;
+    width: 80px;
+    height: 80px;
     aspect-ratio: 1/1;
     border-radius: 50%;
     background: white;

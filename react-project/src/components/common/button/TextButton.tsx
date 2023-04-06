@@ -28,45 +28,62 @@ const StyledButton = styled.button<{ color: Colortype }>`
   padding: 16px 24px;
   border: 0;
   border-radius: 16px;
-  background-color: ${({ color }) => {
-    switch (color) {
-      case "red":
-        return "var(--pink-500)";
-      case "gradation":
-        return "var(--gradation)";
-      case "blue":
-      default:
-        return "var(--blue-500)";
-    }
-  }};
-  box-shadow: var(--shadow);
+  background: none;
+  position: relative;
+  overflow: hidden;
 
-  &:hover {
-    background-color: ${({ color }) => {
+  &::before {
+    content: "";
+    width: 200%;
+    height: 200%;
+    z-index: -1;
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    ${({ color }) => {
       switch (color) {
         case "red":
-          return "var(--pink-400)";
+          return "background-color: var(--pink-500)";
         case "gradation":
-          return "var(--gradation)";
+          return "background: var(--gradation); filter: blur(4px);";
         case "blue":
         default:
-          return "var(--blue-400)";
+          return "background-color: var(--blue-500)";
       }
     }};
   }
+  box-shadow: var(--shadow);
+
+  &:hover {
+    &::before {
+      ${({ color }) => {
+        switch (color) {
+          case "red":
+            return "background-color: var(--pink-400)";
+          case "gradation":
+            return "background: var(--gradation); filter: blur(4px);";
+          case "blue":
+          default:
+            return "background-color: var(--blue-400)";
+        }
+      }};
+    }
+  }
 
   &:active {
-    background-color: ${({ color }) => {
-      switch (color) {
-        case "red":
-          return "var(--pink-600)";
-        case "gradation":
-          return "var(--gradation)";
-        case "blue":
-        default:
-          return "var(--blue-600)";
-      }
-    }};
+    &::before {
+      ${({ color }) => {
+        switch (color) {
+          case "red":
+            return "background-color: var(--pink-600)";
+          case "gradation":
+            return "background: var(--gradation); filter: blur(4px);";
+          case "blue":
+          default:
+            return "background-color: var(--blue-600)";
+        }
+      }};
+    }
     box-shadow: none;
   }
 `;
