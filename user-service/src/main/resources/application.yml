@@ -64,7 +64,7 @@ cloud:
       auto: false
 
 flask:
-  url: http://localhost:5000/flask
+  url: http://${api_gateway_url}/flask
 
 
 
