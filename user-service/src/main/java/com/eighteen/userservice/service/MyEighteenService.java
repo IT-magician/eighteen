@@ -95,7 +95,7 @@ public class MyEighteenService {
 }
         else {
             for (MyEighteen myEighteen : myEighteens) {
-                MusicDto randomMusic = new ModelMapper().map(myEighteenmyEighteen, MusicDto.class);
+                MusicDto randomMusic = new ModelMapper().map(myEighteen, MusicDto.class);
                 randomMusic.setIsEighteen(Boolean.TRUE);
                 randoms.add(randomMusic);
             }
