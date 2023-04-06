@@ -31,8 +31,11 @@ const SongDetailInfo = (): JSX.Element => {
         const { data } = await getMusic(+songid, auth.token);
         setData(data);
         // history에도 이를 추가합니다
-        const songHistory = JSON.parse(localStorage.getItem("song-history") ?? "[]");
-        localStorage.setItem("song-history", JSON.stringify([data.musicId, ...songHistory.splice(0, 9)]));
+        const songHistory: number[] = JSON.parse(localStorage.getItem("song-history") ?? "[]");
+        localStorage.setItem(
+          "song-history",
+          JSON.stringify([data.musicId, ...songHistory.filter((item) => item !== data.musicId).splice(0, 9)]),
+        );
       } catch (e) {
         if (axios.isAxiosError(e)) {
           if (e.response?.status === 401) {

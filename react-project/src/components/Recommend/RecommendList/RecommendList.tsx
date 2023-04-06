@@ -10,6 +10,8 @@ import { authState } from "../../../recoil/atom/authState";
 import { Weather } from "../../../recoil/atom/weatherState";
 import { Song, SongSlideList } from "../../common/song";
 import { RecommendSelector } from "../RecommendSelector";
+import RecommendEmpty from "./RecommendEmpty";
+import RecommendLoading from "./RecommendLoading";
 
 interface Props {
   weather: Weather;
@@ -18,10 +20,12 @@ interface Props {
 const RecommendList = ({ weather }: Props): JSX.Element => {
   const [auth, setAuth] = useRecoilState(authState);
   const [songList, setSongList] = useState<Song[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const { type } = useParams();
   const location = useLocation();
 
   useEffect(() => {
+    setLoading(false);
     const searchParams = new URLSearchParams(location.search);
     const gender = searchParams.get("gender") ?? "M";
     const age = searchParams.get("age") ?? "1";
@@ -39,6 +43,8 @@ const RecommendList = ({ weather }: Props): JSX.Element => {
             setAuth({ ...auth, token: "" });
           }
         }
+      } finally {
+        setLoading(false);
       }
     };
     const getRecommendList = async (type: RecommendType, id?: string) => {
@@ -52,8 +58,11 @@ const RecommendList = ({ weather }: Props): JSX.Element => {
             setAuth({ ...auth, token: "" });
           }
         }
+      } finally {
+        setLoading(false);
       }
     };
+    setLoading(true);
 
     switch (type) {
       case "ranking":
@@ -78,6 +87,8 @@ const RecommendList = ({ weather }: Props): JSX.Element => {
   }, [location]);
   return (
     <StyledDiv>
+      {loading && <RecommendLoading />}
+      {loading || Boolean(songList.length) || <RecommendEmpty />}
       <SongSlideList songList={songList} ranking={type === "ranking"} />
       <RecommendSelector weather={weather} />
     </StyledDiv>
