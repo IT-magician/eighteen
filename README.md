@@ -165,6 +165,10 @@
 
 gitlab runner으로 CI/CD를 gitlab에서 제어가능 & 팀원과 CI/CD 진행상황 공유가능
 
+![gitlab ci/cd dashboard1](./images/gitlab_runner1.jpeg)
+![gitlab ci/cd dashboard2](./images/gitlab_runner1.jpeg)
+![gitlab ci/cd dashboard2](./images/gitlab_runner1.jpeg)
+
 ## 🎯 Elk stack
 
 Elastic Search의 인덱싱 기능을 사용해서 검색속도를 높히면서 DB의 부하를 줄였다
