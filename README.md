@@ -166,8 +166,8 @@
 gitlab runner으로 CI/CD를 gitlab에서 제어가능 & 팀원과 CI/CD 진행상황 공유가능
 
 ![gitlab ci/cd dashboard1](./images/gitlab_runner1.jpeg)
-![gitlab ci/cd dashboard2](./images/gitlab_runner1.jpeg)
-![gitlab ci/cd dashboard2](./images/gitlab_runner1.jpeg)
+![gitlab ci/cd dashboard2](./images/gitlab_runner2.jpeg)
+![gitlab ci/cd dashboard2](./images/gitlab_runner3.jpeg)
 
 ## 🎯 Elk stack
 
