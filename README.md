@@ -172,7 +172,7 @@ gitlab runner으로 CI/CD를 gitlab에서 제어가능 & 팀원과 CI/CD 진행�
 > ![gitlab ci/cd dashboard2](./images/gitlab_runner2.jpeg)  
 ---
 3) Gitlab CI/CD Job Process Detail
-> ![gitlab ci/cd dashboard2](./images/gitlab_runner3.jpeg)  
+> ![gitlab ci/cd dashboard2](./images/gitlab_runner3.jpg)  
 
 ## 🎯 Elk stack
 
